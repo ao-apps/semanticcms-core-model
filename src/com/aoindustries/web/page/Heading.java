@@ -30,6 +30,15 @@ public class Heading extends Element {
 
 	private String label;
 
+	// TODO: Get rid of this?
+	public Heading(String label) {
+		this.label = label==null || label.isEmpty() ? null : label;
+	}
+
+	public Heading() {
+		this(null);
+	}
+
 	@Override
 	public Heading freeze() {
 		super.freeze();
