@@ -43,6 +43,7 @@ public class Page extends Node {
 	public static final int DEFAULT_TOC_LEVELS = 3;
 
 	private PageRef pageRef;
+	private PageRef src;
 	private String title;
 	private Boolean toc;
 	private int tocLevels = DEFAULT_TOC_LEVELS;
@@ -111,6 +112,18 @@ public class Page extends Node {
 	public void setPageRef(PageRef pageRef) {
 		checkNotFrozen();
 		this.pageRef = pageRef;
+	}
+
+	/**
+	 * The PageRef of the editable source for this page, if any.
+	 */
+	public PageRef getSrc() {
+		return src;
+	}
+
+	public void setSrc(PageRef src) {
+		checkNotFrozen();
+		this.src = src;
 	}
 
 	public String getTitle() {
