@@ -1,10 +1,32 @@
+/*
+ * ao-web-page - Java API for modeling web page content and relationships.
+ * Copyright (C) 2015, 2016  AO Industries, Inc.
+ *     support@aoindustries.com
+ *     7262 Bull Pen Cir
+ *     Mobile, AL 36695
+ *
+ * This file is part of ao-web-page.
+ *
+ * ao-web-page is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ao-web-page is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with ao-web-page.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.aoindustries.web.page;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.io.Writer;
 import org.junit.AfterClass;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -25,11 +47,8 @@ public class NodeBodyWriterTest {
 	private static Node testNode;
 	private static String testNodeBody;
 
-	private static final ElementContext nullElementContext = new ElementContext() {
-		@Override
-		public void include(String resource, Writer out) throws IOException {
-			// Do nothing
-		}
+	private static final ElementContext nullElementContext = (resource, out) -> {
+		// Do nothing
 	};
 
 	@BeforeClass
@@ -57,6 +76,10 @@ public class NodeBodyWriterTest {
 				@Override
 				public String getListItemCssClass() {
 					return "test_element";
+				}
+				@Override
+				public String getLinkCssClass() {
+					return "testLink";
 				}
 			},
 			(out, context) -> out.write(TEST_ELEMENT_BODY)

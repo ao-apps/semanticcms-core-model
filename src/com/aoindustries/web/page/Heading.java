@@ -56,6 +56,11 @@ public class Heading extends Element {
 		return "heading";
 	}
 
+	@Override
+	public String getLinkCssClass() {
+		return null;
+	}
+
 	// <editor-fold desc="Child Headings">
 	private List<Heading> childHeadings;
 
