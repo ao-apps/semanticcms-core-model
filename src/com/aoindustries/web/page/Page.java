@@ -244,7 +244,7 @@ public class Page extends Node {
 
 	@Override
 	public String getListItemCssClass() {
-		return getChildPages().isEmpty() ? "list-item-page-nochildren" : "list-item-page-children";
+		return getChildPages().isEmpty() ? "ao-web-page-list-item-page-nochildren" : "ao-web-page-list-item-page-children";
 	}
 
 	// <editor-fold desc="Top Level Headings">
