@@ -43,7 +43,7 @@ final public class DiaExport {
 
 	private static final String WINDOWS_DIAW_PATH = "C:\\Program Files (x86)\\Dia\\bin\\diaw.exe";
 
-	private static final String DIA_EXTENSION = ".dia";
+	public static final String DIA_EXTENSION = ".dia";
 
 	private static final String TEMP_SUBDIR = DiaExport.class.getName();
 
@@ -86,8 +86,7 @@ final public class DiaExport {
 			tmpDir,
 			TEMP_SUBDIR
 				+ pageRef.getBookPrefix().replace('/', File.separatorChar)
-				+ File.separatorChar
-				+ diaPath
+				+ diaPath.replace('/', File.separatorChar)
 				+ "-"
 				+ (width==null ? "_" : width.toString())
 				+ "x"
