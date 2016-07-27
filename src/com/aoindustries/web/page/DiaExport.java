@@ -28,6 +28,7 @@ import com.aoindustries.lang.ProcessResult;
 import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Locale;
@@ -73,7 +74,7 @@ final public class DiaExport {
 		Integer width,
 		Integer height,
 		File tmpDir
-	) throws IOException {
+	) throws FileNotFoundException, IOException {
 		File diaFile = pageRef.getResourceFile(true, true);
 
 		String diaPath = pageRef.getPath();
