@@ -41,6 +41,7 @@ public class Book implements Comparable<Book> {
 	private final String name;
 	private final String pathPrefix;
 	private final File cvsworkDirectory;
+	private final PageRef contentRoot;
 	private final String title;
 	private final String pageHeader;
 	private final int navigationFrameWidth;
@@ -79,6 +80,7 @@ public class Book implements Comparable<Book> {
 			}
 		}
 		this.unmodifiableParam = Collections.unmodifiableMap(newParam);
+		this.contentRoot = new PageRef(this, properties.getProperty("content.root"));
 	}
 
 	@Override
@@ -107,16 +109,23 @@ public class Book implements Comparable<Book> {
 		return name;
 	}
 
-	public File getCvsworkDirectory() {
-		return cvsworkDirectory;
-	}
-
 	/**
 	 * Gets the path prefix for all pages in this book.
 	 * This will be an empty string for the root book (/).
 	 */
 	public String getPathPrefix() {
 		return pathPrefix;
+	}
+
+	public File getCvsworkDirectory() {
+		return cvsworkDirectory;
+	}
+
+	/**
+	 * Gets the content root for the book.
+	 */
+	public PageRef getContentRoot() {
+		return contentRoot;
 	}
 
 	public String getTitle() {
