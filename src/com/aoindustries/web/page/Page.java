@@ -22,6 +22,7 @@
  */
 package com.aoindustries.web.page;
 
+import com.aoindustries.lang.NotImplementedException;
 import com.aoindustries.util.AoCollections;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,7 +48,10 @@ public class Page extends Node {
 	private String title;
 	private Boolean toc;
 	private int tocLevels = DEFAULT_TOC_LEVELS;
+	private List<PageRef> parentPages;
+	private boolean allowParentMismatch;
 	private List<PageRef> childPages;
+	private boolean allowChildMismatch;
 	private List<Element> elements;
 	private Map<String,Element> elementsById;
 
@@ -162,6 +166,30 @@ public class Page extends Node {
 		this.tocLevels = tocLevels;
 	}
 
+	public List<PageRef> getParentPages() {
+		if(parentPages == null) {
+			throw new NotImplementedException("TODO: Auto parent(s) here");
+			//return Collections.emptyList();
+		} else {
+			return Collections.unmodifiableList(parentPages);
+		}
+	}
+
+	public void addParentPage(PageRef parentPage) {
+		checkNotFrozen();
+		if(parentPages == null) parentPages = new ArrayList<>();
+		parentPages.add(parentPage);
+	}
+
+	public boolean getAllowParentMismatch() {
+		return allowParentMismatch;
+	}
+
+	public void setAllowParentMismatch(boolean allowParentMismatch) {
+		checkNotFrozen();
+		this.allowParentMismatch = allowParentMismatch;
+	}
+
 	public List<PageRef> getChildPages() {
 		if(childPages == null) return Collections.emptyList();
 		return Collections.unmodifiableList(childPages);
@@ -171,6 +199,15 @@ public class Page extends Node {
 		checkNotFrozen();
 		if(childPages == null) childPages = new ArrayList<>();
 		childPages.add(childPage);
+	}
+
+	public boolean getAllowChildMismatch() {
+		return allowChildMismatch;
+	}
+
+	public void setAllowChildMismatch(boolean allowChildMismatch) {
+		checkNotFrozen();
+		this.allowChildMismatch = allowChildMismatch;
 	}
 
 	/**
