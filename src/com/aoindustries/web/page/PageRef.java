@@ -38,6 +38,12 @@ public class PageRef {
 
 	private final String bookName;
 	private final String path;
+	
+	/**
+	 * TODO: Consider not having reference to book here, it simplifies the book loading order issue
+	 *       (see BooksContextListener), and rules about allow missing books can be handled in more
+	 *       appropriate places.
+	 */
 	private final Book book;
 
 	private PageRef(String bookName, String path, Book book) {

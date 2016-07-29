@@ -22,10 +22,12 @@
  */
 package com.aoindustries.web.page;
 
+import com.aoindustries.util.AoCollections;
 import java.io.File;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -41,6 +43,7 @@ public class Book implements Comparable<Book> {
 	private final String name;
 	private final String pathPrefix;
 	private final File cvsworkDirectory;
+	private final List<PageRef> unmodifiableParentPages;
 	private final PageRef contentRoot;
 	private final String title;
 	private final String pageHeader;
@@ -51,7 +54,7 @@ public class Book implements Comparable<Book> {
 	private final String logoAlt;
 	private final Map<String,String> unmodifiableParam;
 
-	public Book(String name, String cvsworkDirectory, Properties properties) {
+	public Book(String name, String cvsworkDirectory, List<PageRef> parentPages, Properties properties) {
 		if(!name.startsWith("/")) throw new IllegalArgumentException("Book name must begin with a slash (/): " + name);
 		this.name = name;
 		this.pathPrefix = "/".equals(name) ? "" : name;
@@ -60,6 +63,7 @@ public class Book implements Comparable<Book> {
 		} else {
 			this.cvsworkDirectory = new File(cvsworkDirectory);
 		}
+		this.unmodifiableParentPages = AoCollections.optimalUnmodifiableList(parentPages);
 		this.title = properties.getProperty("title");
 		this.pageHeader = properties.getProperty("pageHeader");
 		this.navigationFrameWidth = Integer.parseInt(properties.getProperty("navigationFrameWidth"));
@@ -80,6 +84,7 @@ public class Book implements Comparable<Book> {
 			}
 		}
 		this.unmodifiableParam = Collections.unmodifiableMap(newParam);
+		// Create the page refs once other aspects of the book have already been setup, since we'll be leaking "this"
 		this.contentRoot = new PageRef(this, properties.getProperty("content.root"));
 	}
 
@@ -119,6 +124,14 @@ public class Book implements Comparable<Book> {
 
 	public File getCvsworkDirectory() {
 		return cvsworkDirectory;
+	}
+
+	/**
+	 * Gets the parent pages for this book in the context of the current overall
+	 * content.
+	 */
+	public List<PageRef> getParentPages() {
+		return unmodifiableParentPages;
 	}
 
 	/**
