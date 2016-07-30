@@ -26,8 +26,10 @@ import com.aoindustries.util.AoCollections;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Page extends Node {
 
@@ -47,9 +49,9 @@ public class Page extends Node {
 	private String title;
 	private Boolean toc;
 	private int tocLevels = DEFAULT_TOC_LEVELS;
-	private List<PageRef> parentPages;
+	private Set<PageRef> parentPages;
 	private boolean allowParentMismatch;
-	private List<PageRef> childPages;
+	private Set<PageRef> childPages;
 	private boolean allowChildMismatch;
 	private List<Element> elements;
 	private Map<String,Element> elementsById;
@@ -165,15 +167,15 @@ public class Page extends Node {
 		this.tocLevels = tocLevels;
 	}
 
-	public List<PageRef> getParentPages() {
-		if(parentPages == null) return Collections.emptyList();
-		return Collections.unmodifiableList(parentPages);
+	public Set<PageRef> getParentPages() {
+		if(parentPages == null) return Collections.emptySet();
+		return Collections.unmodifiableSet(parentPages);
 	}
 
 	public void addParentPage(PageRef parentPage) {
 		checkNotFrozen();
-		if(parentPages == null) parentPages = new ArrayList<>();
-		parentPages.add(parentPage);
+		if(parentPages == null) parentPages = new LinkedHashSet<>();
+		if(!parentPages.add(parentPage)) throw new IllegalStateException("Duplicate parent: " + parentPage);
 	}
 
 	public boolean getAllowParentMismatch() {
@@ -185,15 +187,15 @@ public class Page extends Node {
 		this.allowParentMismatch = allowParentMismatch;
 	}
 
-	public List<PageRef> getChildPages() {
-		if(childPages == null) return Collections.emptyList();
-		return Collections.unmodifiableList(childPages);
+	public Set<PageRef> getChildPages() {
+		if(childPages == null) return Collections.emptySet();
+		return Collections.unmodifiableSet(childPages);
 	}
 
 	public void addChildPage(PageRef childPage) {
 		checkNotFrozen();
-		if(childPages == null) childPages = new ArrayList<>();
-		childPages.add(childPage);
+		if(childPages == null) childPages = new LinkedHashSet<>();
+		if(!childPages.add(childPage)) throw new IllegalStateException("Duplicate child: " + childPage);
 	}
 
 	public boolean getAllowChildMismatch() {
