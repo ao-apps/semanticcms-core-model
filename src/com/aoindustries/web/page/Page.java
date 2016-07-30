@@ -22,7 +22,6 @@
  */
 package com.aoindustries.web.page;
 
-import com.aoindustries.lang.NotImplementedException;
 import com.aoindustries.util.AoCollections;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -167,12 +166,8 @@ public class Page extends Node {
 	}
 
 	public List<PageRef> getParentPages() {
-		if(parentPages == null) {
-			throw new NotImplementedException("TODO: Auto parent(s) here");
-			//return Collections.emptyList();
-		} else {
-			return Collections.unmodifiableList(parentPages);
-		}
+		if(parentPages == null) return Collections.emptyList();
+		return Collections.unmodifiableList(parentPages);
 	}
 
 	public void addParentPage(PageRef parentPage) {
