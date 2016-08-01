@@ -50,7 +50,7 @@ final public class DiaExport {
 
 	public static boolean isWindows() {
 		String osName = System.getProperty("os.name");
-		return osName!=null && osName.toLowerCase(Locale.ENGLISH).contains("windows");
+		return osName!=null && osName.toLowerCase(Locale.ROOT).contains("windows");
 	}
 
 	private static String getDiaExportPath() {
@@ -79,7 +79,7 @@ final public class DiaExport {
 
 		String diaPath = pageRef.getPath();
 		// Strip extension if matches expected value
-		if(diaPath.toLowerCase(Locale.ENGLISH).endsWith(DIA_EXTENSION)) {
+		if(diaPath.toLowerCase(Locale.ROOT).endsWith(DIA_EXTENSION)) {
 			diaPath = diaPath.substring(0, diaPath.length() - DIA_EXTENSION.length());
 		}
 		// Generate the temp filename
