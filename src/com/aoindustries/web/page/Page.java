@@ -48,6 +48,8 @@ public class Page extends Node {
 	private PageRef src;
 	private Set<Author> authors;
 	private String title;
+	private String description;
+	private String keywords;
 	private Boolean toc;
 	private int tocLevels = DEFAULT_TOC_LEVELS;
 	private Set<PageRef> parentPages;
@@ -150,6 +152,24 @@ public class Page extends Node {
 	public void setTitle(String title) {
 		checkNotFrozen();
         this.title = title;
+    }
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		checkNotFrozen();
+        this.description = description;
+    }
+
+	public String getKeywords() {
+		return keywords;
+	}
+
+	public void setKeywords(String keywords) {
+		checkNotFrozen();
+        this.keywords = keywords;
     }
 
 	/**
