@@ -48,6 +48,7 @@ public class Page extends Node {
 	private PageRef src;
 	private Set<Author> authors;
 	private String title;
+	private String shortTitle;
 	private String description;
 	private String keywords;
 	private Boolean toc;
@@ -152,6 +153,23 @@ public class Page extends Node {
 	public void setTitle(String title) {
 		checkNotFrozen();
         this.title = title;
+    }
+
+	/**
+	 * A short title is used when the context of a page is well established, such as when
+	 * showing a path to the current location in the site.  The short title defaults to <code>getTitle</code>.
+	 *
+	 * @return  the short page title
+	 *
+	 * @see  #getTitle
+	 */
+	public String getShortTitle() {
+		return shortTitle != null ? shortTitle : getTitle();
+	}
+
+	public void setShortTitle(String shortTitle) {
+		checkNotFrozen();
+        this.shortTitle = shortTitle;
     }
 
 	public String getDescription() {
@@ -301,11 +319,13 @@ public class Page extends Node {
 	}
 
 	/**
-	 * The page label is its title.
+	 * The page label is its short title.
+	 *
+	 * @see  #getShortTitle()
 	 */
 	@Override
 	public String getLabel() {
-		return title;
+		return getShortTitle();
 	}
 
 	@Override
