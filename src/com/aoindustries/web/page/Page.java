@@ -46,6 +46,7 @@ public class Page extends Node {
 
 	private PageRef pageRef;
 	private PageRef src;
+	private Set<Author> authors;
 	private String title;
 	private Boolean toc;
 	private int tocLevels = DEFAULT_TOC_LEVELS;
@@ -129,6 +130,17 @@ public class Page extends Node {
 	public void setSrc(PageRef src) {
 		checkNotFrozen();
 		this.src = src;
+	}
+
+	public Set<Author> getAuthors() {
+		if(authors == null) return Collections.emptySet();
+		return Collections.unmodifiableSet(authors);
+	}
+
+	public void addAuthor(Author author) {
+		checkNotFrozen();
+		if(authors == null) authors = new LinkedHashSet<>();
+		if(!authors.add(author)) throw new IllegalStateException("Duplicate author: " + author);
 	}
 
 	public String getTitle() {

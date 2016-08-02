@@ -41,7 +41,7 @@ public class Author {
 	 * Either href may be provided, or book/page may be provided, but not both.
 	 * When page provided without book, assumes page is within current book.
 	 * When page provided, book is also required.
-	 * When name not provided, and page is accessible, uses page title as the author name.
+	 * When name not provided, and page provided, uses page title as the author name.
 	 */
 	public Author(String name, String href, String bookName, String page) {
 		// No empty strings
