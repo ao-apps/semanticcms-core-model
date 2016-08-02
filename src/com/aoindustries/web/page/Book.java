@@ -26,7 +26,9 @@ import com.aoindustries.util.AoCollections;
 import java.io.File;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -47,6 +49,7 @@ public class Book implements Comparable<Book> {
 	private final PageRef contentRoot;
 	private final String title;
 	private final String pageHeader;
+	private final Set<Author> unmodifiableAuthors;
 	private final int navigationFrameWidth;
 	private final String logoSrc;
 	private final int logoWidth;
@@ -54,8 +57,17 @@ public class Book implements Comparable<Book> {
 	private final String logoAlt;
 	private final Map<String,String> unmodifiableParam;
 
-	public Book(String name, String cvsworkDirectory, Set<PageRef> parentPages, Properties properties) {
+	private static String getProperty(Properties bookProps, Set<Object> usedKeys, String key) {
+		usedKeys.add(key);
+		return bookProps.getProperty(key);
+	}
+
+	public Book(String name, String cvsworkDirectory, Set<PageRef> parentPages, Properties bookProps) {
 		if(!name.startsWith("/")) throw new IllegalArgumentException("Book name must begin with a slash (/): " + name);
+
+		// Tracks each properties key used, will throw exception if any key exists in the properties file that is not used
+		Set<Object> usedKeys = new HashSet<>(bookProps.size() * 4/3 + 1);
+
 		this.name = name;
 		this.pathPrefix = "/".equals(name) ? "" : name;
 		if(cvsworkDirectory.startsWith("~/")) {
@@ -64,28 +76,53 @@ public class Book implements Comparable<Book> {
 			this.cvsworkDirectory = new File(cvsworkDirectory);
 		}
 		this.unmodifiableParentPages = AoCollections.optimalUnmodifiableSet(parentPages);
-		this.title = properties.getProperty("title");
-		this.pageHeader = properties.getProperty("pageHeader");
-		this.navigationFrameWidth = Integer.parseInt(properties.getProperty("navigationFrameWidth"));
-		this.logoSrc = properties.getProperty("logoSrc");
-		this.logoWidth = Integer.parseInt(properties.getProperty("logoWidth"));
-		this.logoHeight = Integer.parseInt(properties.getProperty("logoHeight"));
-		this.logoAlt = properties.getProperty("logoAlt");
-		Map<String,String> newParam = new LinkedHashMap<>(properties.size() * 4/3 + 1);
+		this.title = getProperty(bookProps, usedKeys, "title");
+		this.pageHeader = getProperty(bookProps, usedKeys, "pageHeader");
+		Set<Author> authors = new LinkedHashSet<>();
+		for(int i=1; i<Integer.MAX_VALUE; i++) {
+			String authorName = getProperty(bookProps, usedKeys, "author." + i + ".name");
+			String authorHref = getProperty(bookProps, usedKeys, "author." + i + ".href");
+			String authorBook = getProperty(bookProps, usedKeys, "author." + i + ".book");
+			String authorPage = getProperty(bookProps, usedKeys, "author." + i + ".page");
+			if(authorName==null && authorHref==null && authorBook==null && authorPage==null) break;
+			// Default to this book if nothing set
+			if(authorPage != null && authorBook == null) authorBook = name;
+			Author newAuthor = new Author(
+				authorName,
+				authorHref,
+				authorBook,
+				authorPage
+			);
+			if(!authors.add(newAuthor)) throw new IllegalStateException(name + ": Duplicate author: " + newAuthor);
+		}
+		this.unmodifiableAuthors = AoCollections.optimalUnmodifiableSet(authors);
+		this.navigationFrameWidth = Integer.parseInt(getProperty(bookProps, usedKeys, "navigationFrameWidth"));
+		this.logoSrc = getProperty(bookProps, usedKeys, "logoSrc");
+		this.logoWidth = Integer.parseInt(getProperty(bookProps, usedKeys, "logoWidth"));
+		this.logoHeight = Integer.parseInt(getProperty(bookProps, usedKeys, "logoHeight"));
+		this.logoAlt = getProperty(bookProps, usedKeys, "logoAlt");
+		Map<String,String> newParam = new LinkedHashMap<>((bookProps.size() - usedKeys.size()) * 4/3 + 1);
 		@SuppressWarnings("unchecked")
-		Enumeration<String> propertyNames = (Enumeration)properties.propertyNames();
+		Enumeration<String> propertyNames = (Enumeration)bookProps.propertyNames();
 		while(propertyNames.hasMoreElements()) {
 			String propertyName = propertyNames.nextElement();
 			if(propertyName.startsWith(PARAM_PREFIX)) {
 				newParam.put(
 					propertyName.substring(PARAM_PREFIX.length()),
-					properties.getProperty(propertyName)
+					getProperty(bookProps, usedKeys, propertyName)
 				);
 			}
 		}
 		this.unmodifiableParam = Collections.unmodifiableMap(newParam);
 		// Create the page refs once other aspects of the book have already been setup, since we'll be leaking "this"
-		this.contentRoot = new PageRef(this, properties.getProperty("content.root"));
+		this.contentRoot = new PageRef(this, getProperty(bookProps, usedKeys, "content.root"));
+
+		// Make sure all keys used
+		Set<Object> unusedKeys = new HashSet<>();
+		for(Object key : bookProps.keySet()) {
+			if(!usedKeys.contains(key)) unusedKeys.add(key);
+		}
+		if(!unusedKeys.isEmpty()) throw new IllegalStateException(name + ": Unused keys: " + unusedKeys);
 	}
 
 	@Override
@@ -147,6 +184,14 @@ public class Book implements Comparable<Book> {
 
 	public String getPageHeader() {
 		return pageHeader;
+	}
+
+	/**
+	 * Gets the authors of the book.  Any page without more specific authors
+	 * in itself or a parent (within the book) will use these authors.
+	 */
+	public Set<Author> getAuthors() {
+		return unmodifiableAuthors;
 	}
 
 	public int getNavigationFrameWidth() {
