@@ -87,6 +87,10 @@ public class Book implements Comparable<Book> {
 			if(authorName==null && authorHref==null && authorBook==null && authorPage==null) break;
 			// Default to this book if nothing set
 			if(authorPage != null && authorBook == null) authorBook = name;
+			// Name required when referencing an author outside this book
+			if(authorName == null && authorBook != null && !authorBook.equals(name)) {
+				throw new IllegalStateException(name + ": Author name required when author is in a different book: " + authorPage);
+			}
 			Author newAuthor = new Author(
 				authorName,
 				authorHref,
