@@ -24,7 +24,6 @@ package com.aoindustries.web.page;
 
 import com.aoindustries.util.AoCollections;
 import java.io.File;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -117,7 +116,7 @@ public class Book implements Comparable<Book> {
 				);
 			}
 		}
-		this.unmodifiableParam = Collections.unmodifiableMap(newParam);
+		this.unmodifiableParam = AoCollections.optimalUnmodifiableMap(newParam);
 		// Create the page refs once other aspects of the book have already been setup, since we'll be leaking "this"
 		this.contentRoot = new PageRef(this, getProperty(bookProps, usedKeys, "content.root"));
 
