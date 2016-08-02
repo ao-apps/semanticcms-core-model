@@ -101,7 +101,7 @@ public class Book implements Comparable<Book> {
 		this.logoWidth = Integer.parseInt(getProperty(bookProps, usedKeys, "logoWidth"));
 		this.logoHeight = Integer.parseInt(getProperty(bookProps, usedKeys, "logoHeight"));
 		this.logoAlt = getProperty(bookProps, usedKeys, "logoAlt");
-		Map<String,String> newParam = new LinkedHashMap<>((bookProps.size() - usedKeys.size()) * 4/3 + 1);
+		Map<String,String> newParam = new LinkedHashMap<>();
 		@SuppressWarnings("unchecked")
 		Enumeration<String> propertyNames = (Enumeration)bookProps.propertyNames();
 		while(propertyNames.hasMoreElements()) {

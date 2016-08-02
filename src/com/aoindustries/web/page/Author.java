@@ -27,7 +27,8 @@ import java.util.Objects;
 /**
  * An author of a book, a page, or a set of pages.
  * 
- * Possible Google+ integration: http://www.vervesearch.com/blog/how-to-implement-the-relauthor-tag-a-step-by-step-guide/
+ * TODO: Possible Google+ integration: http://www.vervesearch.com/blog/how-to-implement-the-relauthor-tag-a-step-by-step-guide/
+ * TODO: And also: https://yoast.com/push-rel-author-head/
  */
 public class Author {
 
