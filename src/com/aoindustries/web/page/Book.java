@@ -46,9 +46,9 @@ public class Book implements Comparable<Book> {
 	private final File cvsworkDirectory;
 	private final Set<PageRef> unmodifiableParentPages;
 	private final PageRef contentRoot;
+	private final Set<Author> unmodifiableAuthors;
 	private final String title;
 	private final String pageHeader;
-	private final Set<Author> unmodifiableAuthors;
 	private final int navigationFrameWidth;
 	private final String logoSrc;
 	private final int logoWidth;
@@ -75,8 +75,6 @@ public class Book implements Comparable<Book> {
 			this.cvsworkDirectory = new File(cvsworkDirectory);
 		}
 		this.unmodifiableParentPages = AoCollections.optimalUnmodifiableSet(parentPages);
-		this.title = getProperty(bookProps, usedKeys, "title");
-		this.pageHeader = getProperty(bookProps, usedKeys, "pageHeader");
 		Set<Author> authors = new LinkedHashSet<>();
 		for(int i=1; i<Integer.MAX_VALUE; i++) {
 			String authorName = getProperty(bookProps, usedKeys, "author." + i + ".name");
@@ -99,6 +97,8 @@ public class Book implements Comparable<Book> {
 			if(!authors.add(newAuthor)) throw new IllegalStateException(name + ": Duplicate author: " + newAuthor);
 		}
 		this.unmodifiableAuthors = AoCollections.optimalUnmodifiableSet(authors);
+		this.title = getProperty(bookProps, usedKeys, "title");
+		this.pageHeader = getProperty(bookProps, usedKeys, "pageHeader");
 		this.navigationFrameWidth = Integer.parseInt(getProperty(bookProps, usedKeys, "navigationFrameWidth"));
 		this.logoSrc = getProperty(bookProps, usedKeys, "logoSrc");
 		this.logoWidth = Integer.parseInt(getProperty(bookProps, usedKeys, "logoWidth"));
@@ -181,20 +181,20 @@ public class Book implements Comparable<Book> {
 		return contentRoot;
 	}
 
-	public String getTitle() {
-		return title;
-	}
-
-	public String getPageHeader() {
-		return pageHeader;
-	}
-
 	/**
 	 * Gets the authors of the book.  Any page without more specific authors
 	 * in itself or a parent (within the book) will use these authors.
 	 */
 	public Set<Author> getAuthors() {
 		return unmodifiableAuthors;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getPageHeader() {
+		return pageHeader;
 	}
 
 	public int getNavigationFrameWidth() {
