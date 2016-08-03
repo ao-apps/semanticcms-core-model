@@ -46,6 +46,7 @@ public class Book implements Comparable<Book> {
 	private final File cvsworkDirectory;
 	private final Set<PageRef> unmodifiableParentPages;
 	private final PageRef contentRoot;
+	private final Copyright copyright;
 	private final Set<Author> unmodifiableAuthors;
 	private final String title;
 	private final String pageHeader;
@@ -75,6 +76,22 @@ public class Book implements Comparable<Book> {
 			this.cvsworkDirectory = new File(cvsworkDirectory);
 		}
 		this.unmodifiableParentPages = AoCollections.optimalUnmodifiableSet(parentPages);
+		String copyrightRightsHolder = getProperty(bookProps, usedKeys, "copyright.rightsHolder");
+		String copyrightRights = getProperty(bookProps, usedKeys, "copyright.rights");
+		String copyrightDateCopyrighted = getProperty(bookProps, usedKeys, "copyright.dateCopyrighted");
+		if(
+			copyrightRightsHolder != null
+			|| copyrightRights != null
+			|| copyrightDateCopyrighted != null
+		) {
+			this.copyright = new Copyright(
+				copyrightRightsHolder    != null ? copyrightRightsHolder    : "",
+				copyrightRights          != null ? copyrightRights          : "",
+				copyrightDateCopyrighted != null ? copyrightDateCopyrighted : ""
+			);
+		} else {
+			this.copyright = null;
+		}
 		Set<Author> authors = new LinkedHashSet<>();
 		for(int i=1; i<Integer.MAX_VALUE; i++) {
 			String authorName = getProperty(bookProps, usedKeys, "author." + i + ".name");
@@ -179,6 +196,14 @@ public class Book implements Comparable<Book> {
 	 */
 	public PageRef getContentRoot() {
 		return contentRoot;
+	}
+
+	/**
+	 * Gets the copyright for the book or {@code null} if none declared.
+	 * As book copyrights are not inherited, all copyright fields will be non-null.
+	 */
+	public Copyright getCopyright() {
+		return copyright;
 	}
 
 	/**

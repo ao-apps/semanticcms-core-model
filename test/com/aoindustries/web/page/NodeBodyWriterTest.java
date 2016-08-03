@@ -30,9 +30,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- * @author orion
- */
 public class NodeBodyWriterTest {
 
 	private static final String TEST_BODY_PREFIX = "<TestNode>Test body <";

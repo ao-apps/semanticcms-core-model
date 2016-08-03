@@ -46,6 +46,7 @@ public class Page extends Node {
 
 	private PageRef pageRef;
 	private PageRef src;
+	private Copyright copyright;
 	private Set<Author> authors;
 	private String title;
 	private String shortTitle;
@@ -134,6 +135,15 @@ public class Page extends Node {
 		checkNotFrozen();
 		this.src = src;
 	}
+
+	public Copyright getCopyright() {
+		return copyright;
+	}
+
+	public void setCopyright(Copyright copyright) {
+		checkNotFrozen();
+        this.copyright = copyright;
+    }
 
 	public Set<Author> getAuthors() {
 		if(authors == null) return Collections.emptySet();

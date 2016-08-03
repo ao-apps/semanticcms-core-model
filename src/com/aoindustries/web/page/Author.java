@@ -29,6 +29,7 @@ import java.util.Objects;
  * 
  * TODO: Possible Google+ integration: http://www.vervesearch.com/blog/how-to-implement-the-relauthor-tag-a-step-by-step-guide/
  * TODO: And also: https://yoast.com/push-rel-author-head/
+ * TODO: This seems killed by Google, any value in it still?
  */
 public class Author {
 
