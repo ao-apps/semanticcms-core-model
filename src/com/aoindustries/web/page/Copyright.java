@@ -65,22 +65,22 @@ public class Copyright {
 
 	@Override
 	public String toString() {
-		boolean hasField = false;
-		StringBuilder copy = new StringBuilder();
-		copy.append("Copyright ©");
-		if(dateCopyrighted != null && !dateCopyrighted.isEmpty()) {
-			hasField = true;
-			copy.append(' ').append(dateCopyrighted).append('.');
+		if(isEmpty()) {
+			return "No copyright";
+		} else {
+			StringBuilder copy = new StringBuilder();
+			copy.append("Copyright ©");
+			if(dateCopyrighted != null && !dateCopyrighted.isEmpty()) {
+				copy.append(' ').append(dateCopyrighted).append('.');
+			}
+			if(rightsHolder != null && !rightsHolder.isEmpty()) {
+				copy.append(' ').append(rightsHolder).append('.');
+			}
+			if(rights != null && !rights.isEmpty()) {
+				copy.append(' ').append(rights).append('.');
+			}
+			return copy.toString();
 		}
-		if(rightsHolder != null && !rightsHolder.isEmpty()) {
-			hasField = true;
-			copy.append(' ').append(rightsHolder).append('.');
-		}
-		if(rights != null && !rights.isEmpty()) {
-			hasField = true;
-			copy.append(' ').append(rights).append('.');
-		}
-		return hasField ? copy.toString() : "No copyright";
 	}
 
 	private boolean equals(
@@ -139,8 +139,20 @@ public class Copyright {
 	}
 
 	/**
+	 * Checks if the copyright is empty (has all null or blank fields)
+	 */
+	public boolean isEmpty() {
+		return
+			(rightsHolder == null || rightsHolder.isEmpty())
+			&& (rights == null || rights.isEmpty())
+			&& (dateCopyrighted == null || dateCopyrighted.isEmpty())
+		;
+	}
+
+	/*
 	 * Inherits missing fields from the given parent.
 	 */
+	/*
 	public Copyright inheritFieldsFrom(Copyright parent) {
 		String newRightsHolder    = this.rightsHolder    != null ? this.rightsHolder    : parent.rightsHolder;
 		String newRights          = this.rights          != null ? this.rights          : parent.rights;
@@ -152,4 +164,5 @@ public class Copyright {
 		// Create a new object
 		return new Copyright(newRightsHolder, newRights, newDateCopyrighted);
 	}
+	 */
 }

@@ -203,6 +203,7 @@ public class Book implements Comparable<Book> {
 	 * As book copyrights are not inherited, all copyright fields will be non-null.
 	 */
 	public Copyright getCopyright() {
+		assert copyright==null || !copyright.isEmpty();
 		return copyright;
 	}
 
