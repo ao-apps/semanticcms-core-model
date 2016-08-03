@@ -52,9 +52,9 @@ public class Copyright {
 	) {
 		// Other checks
 		if(
-			(rightsHolder==null || rightsHolder.isEmpty())
-			&& (rights==null || rights.isEmpty())
-			&& (dateCopyrighted==null || dateCopyrighted.isEmpty())
+			rightsHolder == null
+			&& rights == null
+			&& dateCopyrighted == null
 		) {
 			throw new IllegalArgumentException("At least one of rightsHolder, rights, or dateCopyrighted required");
 		}
@@ -65,18 +65,22 @@ public class Copyright {
 
 	@Override
 	public String toString() {
+		boolean hasField = false;
 		StringBuilder copy = new StringBuilder();
 		copy.append("Copyright ©");
 		if(dateCopyrighted != null && !dateCopyrighted.isEmpty()) {
+			hasField = true;
 			copy.append(' ').append(dateCopyrighted).append('.');
 		}
 		if(rightsHolder != null && !rightsHolder.isEmpty()) {
+			hasField = true;
 			copy.append(' ').append(rightsHolder).append('.');
 		}
 		if(rights != null && !rights.isEmpty()) {
+			hasField = true;
 			copy.append(' ').append(rights).append('.');
 		}
-		return copy.toString();
+		return hasField ? copy.toString() : "No copyright";
 	}
 
 	private boolean equals(
