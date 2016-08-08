@@ -22,7 +22,7 @@
  */
 package com.aoindustries.web.page;
 
-import java.util.Objects;
+import com.aoindustries.lang.ObjectUtils;
 
 /**
  * The copyright info for a book, a page, or a set of pages.
@@ -89,9 +89,9 @@ public class Copyright {
 		String otherDateCopyrighted
 	) {
 		return
-			Objects.equals(rightsHolder, otherRightsHolder)
-			&& Objects.equals(rights, otherRights)
-			&& Objects.equals(dateCopyrighted, otherDateCopyrighted)
+			ObjectUtils.equals(rightsHolder, otherRightsHolder)
+			&& ObjectUtils.equals(rights, otherRights)
+			&& ObjectUtils.equals(dateCopyrighted, otherDateCopyrighted)
 		;
 	}
 
@@ -108,7 +108,7 @@ public class Copyright {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(
+		return ObjectUtils.hash(
 			rightsHolder,
 			rights,
 			dateCopyrighted

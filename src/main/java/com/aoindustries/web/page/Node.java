@@ -84,9 +84,9 @@ abstract public class Node implements Freezable<Node> {
 	 */
 	public Long addChildElement(Element childElement, ElementWriter elementWriter) {
 		checkNotFrozen();
-		if(childElements == null) childElements = new ArrayList<>();
+		if(childElements == null) childElements = new ArrayList<Element>();
 		childElements.add(childElement);
-		if(elementWriters == null) elementWriters = new HashMap<>();
+		if(elementWriters == null) elementWriters = new HashMap<Long,ElementWriter>();
 		while(true) {
 			Long elementKey = random.nextLong();
 			if(!elementWriters.containsKey(elementKey)) {
@@ -111,7 +111,7 @@ abstract public class Node implements Freezable<Node> {
 
 	public void addFile(PageRef file) {
 		checkNotFrozen();
-		if(files == null) files = new LinkedHashSet<>();
+		if(files == null) files = new LinkedHashSet<PageRef>();
 		files.add(file);
 	}
 
@@ -126,7 +126,7 @@ abstract public class Node implements Freezable<Node> {
 
 	public void addPageLink(PageRef pageLink) {
 		checkNotFrozen();
-		if(pageLinks == null) pageLinks = new LinkedHashSet<>();
+		if(pageLinks == null) pageLinks = new LinkedHashSet<PageRef>();
 		pageLinks.add(pageLink);
 	}
 
@@ -161,7 +161,10 @@ abstract public class Node implements Freezable<Node> {
 		try {
 			appendLabel(sb);
 		} catch(IOException e) {
-			throw new AssertionError("Should not happen because using StringBuilder", e);
+			// Java 1.7: new constructor
+			AssertionError ae = new AssertionError("Should not happen because using StringBuilder");
+			ae.initCause(e);
+			throw ae;
 		}
 		return sb.toString();
 	}

@@ -66,7 +66,7 @@ public class Book implements Comparable<Book> {
 		if(!name.startsWith("/")) throw new IllegalArgumentException("Book name must begin with a slash (/): " + name);
 
 		// Tracks each properties key used, will throw exception if any key exists in the properties file that is not used
-		Set<Object> usedKeys = new HashSet<>(bookProps.size() * 4/3 + 1);
+		Set<Object> usedKeys = new HashSet<Object>(bookProps.size() * 4/3 + 1);
 
 		this.name = name;
 		this.pathPrefix = "/".equals(name) ? "" : name;
@@ -92,7 +92,7 @@ public class Book implements Comparable<Book> {
 		} else {
 			this.copyright = null;
 		}
-		Set<Author> authors = new LinkedHashSet<>();
+		Set<Author> authors = new LinkedHashSet<Author>();
 		for(int i=1; i<Integer.MAX_VALUE; i++) {
 			String authorName = getProperty(bookProps, usedKeys, "author." + i + ".name");
 			String authorHref = getProperty(bookProps, usedKeys, "author." + i + ".href");
@@ -121,7 +121,7 @@ public class Book implements Comparable<Book> {
 		this.logoWidth = Integer.parseInt(getProperty(bookProps, usedKeys, "logoWidth"));
 		this.logoHeight = Integer.parseInt(getProperty(bookProps, usedKeys, "logoHeight"));
 		this.logoAlt = getProperty(bookProps, usedKeys, "logoAlt");
-		Map<String,String> newParam = new LinkedHashMap<>();
+		Map<String,String> newParam = new LinkedHashMap<String,String>();
 		@SuppressWarnings("unchecked")
 		Enumeration<String> propertyNames = (Enumeration)bookProps.propertyNames();
 		while(propertyNames.hasMoreElements()) {
@@ -138,7 +138,7 @@ public class Book implements Comparable<Book> {
 		this.contentRoot = new PageRef(this, getProperty(bookProps, usedKeys, "content.root"));
 
 		// Make sure all keys used
-		Set<Object> unusedKeys = new HashSet<>();
+		Set<Object> unusedKeys = new HashSet<Object>();
 		for(Object key : bookProps.keySet()) {
 			if(!usedKeys.contains(key)) unusedKeys.add(key);
 		}
