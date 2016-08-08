@@ -22,7 +22,7 @@
  */
 package com.aoindustries.web.page;
 
-import java.util.Objects;
+import com.aoindustries.lang.ObjectUtils;
 
 /**
  * A page may contain any number of elements (along with arbitrary HTML
@@ -155,8 +155,8 @@ abstract public class Element extends Node {
 
 	@Override
 	public int hashCode() {
-		int hash = Objects.hashCode(page);
-		hash = hash * 31 + Objects.hashCode(id);
+		int hash = ObjectUtils.hashCode(page);
+		hash = hash * 31 + ObjectUtils.hashCode(id);
 		return hash;
 	}
 

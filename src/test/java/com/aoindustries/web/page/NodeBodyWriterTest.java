@@ -24,6 +24,7 @@ package com.aoindustries.web.page;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.Writer;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -44,8 +45,12 @@ public class NodeBodyWriterTest {
 	private static Node testNode;
 	private static String testNodeBody;
 
-	private static final ElementContext nullElementContext = (resource, out) -> {
-		// Do nothing
+	// Java 1.8: Use lambda
+	private static final ElementContext nullElementContext = new ElementContext() {
+		@Override
+		public void include(String resource, Writer out) {
+			// Do nothing
+		}
 	};
 
 	@BeforeClass
@@ -79,7 +84,13 @@ public class NodeBodyWriterTest {
 					return "testLink";
 				}
 			},
-			(out, context) -> out.write(TEST_ELEMENT_BODY)
+			// Java 1.8: (out, context) -> out.write(TEST_ELEMENT_BODY)
+			new ElementWriter() {
+				@Override
+				public void writeTo(Writer out, ElementContext context) throws IOException {
+					throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+				}
+			}
 		);
 		StringBuilder SB = new StringBuilder();
 		SB.append(TEST_BODY_PREFIX);
@@ -103,7 +114,8 @@ public class NodeBodyWriterTest {
 			for(int off = 0; off < writeLen; off++) {
 				StringWriter out = new StringWriter(TEST_EXPECTED_RESULT.length());
 				try {
-					try (NodeBodyWriter writer = new NodeBodyWriter(testNode, out, nullElementContext)) {
+					NodeBodyWriter writer = new NodeBodyWriter(testNode, out, nullElementContext);
+					try {
 						writer.write(testNodeBodyChars, 0, off);
 						for(int pos = off; pos < testNodeBodyLen; pos += writeLen) {
 							int end = pos + writeLen;
@@ -113,6 +125,8 @@ public class NodeBodyWriterTest {
 							assertTrue((pos + len) <= testNodeBodyLen);
 							writer.write(testNodeBodyChars, pos, len);
 						}
+					} finally {
+						writer.close();
 					}
 				} finally {
 					out.close();

@@ -74,7 +74,7 @@ public class Heading extends Element {
 	 */
 	public void addChildHeading(Heading heading) {
 		checkNotFrozen();
-		if(childHeadings == null) childHeadings = new ArrayList<>();
+		if(childHeadings == null) childHeadings = new ArrayList<Heading>();
 		childHeadings.add(heading);
 	}
 	// </editor-fold>
