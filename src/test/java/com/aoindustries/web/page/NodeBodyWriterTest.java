@@ -88,7 +88,7 @@ public class NodeBodyWriterTest {
 			new ElementWriter() {
 				@Override
 				public void writeTo(Writer out, ElementContext context) throws IOException {
-					throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+					out.write(TEST_ELEMENT_BODY);
 				}
 			}
 		);
