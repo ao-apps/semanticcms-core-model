@@ -22,7 +22,7 @@
  */
 package com.aoindustries.web.page;
 
-import java.util.Objects;
+import com.aoindustries.lang.ObjectUtils;
 
 /**
  * An author of a book, a page, or a set of pages.
@@ -85,16 +85,17 @@ public class Author {
 		if(!(obj instanceof Author)) return false;
 		Author o = (Author)obj;
 		return
-			Objects.equals(name, o.name)
-			&& Objects.equals(href, o.href)
-			&& Objects.equals(bookName, o.bookName)
-			&& Objects.equals(page, o.page)
+			ObjectUtils.equals(name, o.name)
+			&& ObjectUtils.equals(href, o.href)
+			&& ObjectUtils.equals(bookName, o.bookName)
+			&& ObjectUtils.equals(page, o.page)
 		;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(
+		// Java 1.8: Objects.hash
+		return ObjectUtils.hash(
 			name,
 			href,
 			bookName,

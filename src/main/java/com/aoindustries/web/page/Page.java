@@ -152,7 +152,7 @@ public class Page extends Node {
 
 	public void addAuthor(Author author) {
 		checkNotFrozen();
-		if(authors == null) authors = new LinkedHashSet<>();
+		if(authors == null) authors = new LinkedHashSet<Author>();
 		if(!authors.add(author)) throw new IllegalStateException("Duplicate author: " + author);
 	}
 
@@ -234,7 +234,7 @@ public class Page extends Node {
 
 	public void addParentPage(PageRef parentPage) {
 		checkNotFrozen();
-		if(parentPages == null) parentPages = new LinkedHashSet<>();
+		if(parentPages == null) parentPages = new LinkedHashSet<PageRef>();
 		if(!parentPages.add(parentPage)) throw new IllegalStateException("Duplicate parent: " + parentPage);
 	}
 
@@ -254,7 +254,7 @@ public class Page extends Node {
 
 	public void addChildPage(PageRef childPage) {
 		checkNotFrozen();
-		if(childPages == null) childPages = new LinkedHashSet<>();
+		if(childPages == null) childPages = new LinkedHashSet<PageRef>();
 		if(!childPages.add(childPage)) throw new IllegalStateException("Duplicate child: " + childPage);
 	}
 
@@ -304,7 +304,7 @@ public class Page extends Node {
 		checkNotFrozen();
 		element.setPage(this);
 		// elements
-		if(elements == null) elements = new ArrayList<>();
+		if(elements == null) elements = new ArrayList<Element>();
 		elements.add(element);
 		// elementsById
 		addToElementsById(element);
@@ -313,7 +313,7 @@ public class Page extends Node {
 	private void addToElementsById(Element element) {
 		String id = element.getId();
 		if(id != null) {
-			if(elementsById == null) elementsById = new HashMap<>();
+			if(elementsById == null) elementsById = new HashMap<String,Element>();
 			if(elementsById.put(id, element) != null) throw new AssertionError("Duplicate id: " + id);
 		}
 	}
@@ -356,7 +356,7 @@ public class Page extends Node {
 	 */
 	public void addTopLevelHeading(Heading heading) {
 		checkNotFrozen();
-		if(topLevelHeadings == null) topLevelHeadings = new ArrayList<>();
+		if(topLevelHeadings == null) topLevelHeadings = new ArrayList<Heading>();
 		topLevelHeadings.add(heading);
 	}
 	// </editor-fold>
