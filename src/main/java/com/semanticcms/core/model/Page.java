@@ -26,6 +26,7 @@ import com.aoindustries.util.AoCollections;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +61,8 @@ public class Page extends Node {
 	private boolean allowChildMismatch;
 	private List<Element> elements;
 	private Map<String,Element> elementsById;
+	// Keeps track of which element Ids are system generated
+	private Set<String> generatedIds;
 
 	@Override
 	public boolean equals(Object obj) {
@@ -275,6 +278,14 @@ public class Page extends Node {
 	}
 
 	/**
+	 * Gets which element IDs were generated.
+	 */
+	public Set<String> getGeneratedIds() {
+		if(generatedIds == null) return Collections.emptySet();
+		return Collections.unmodifiableSet(generatedIds);
+	}
+
+	/**
 	 * Adds an element to this page.
 	 */
 	public void addElement(Element element) {
@@ -284,14 +295,18 @@ public class Page extends Node {
 		if(elements == null) elements = new ArrayList<Element>();
 		elements.add(element);
 		// elementsById
-		addToElementsById(element);
+		addToElementsById(element, false);
 	}
 
-	private void addToElementsById(Element element) {
+	private void addToElementsById(Element element, boolean generated) {
 		String id = element.getIdNoGen();
 		if(id != null) {
 			if(elementsById == null) elementsById = new HashMap<String,Element>();
 			if(elementsById.put(id, element) != null) throw new AssertionError("Duplicate id: " + id);
+			if(generated) {
+				if(generatedIds == null) generatedIds = new HashSet<String>();
+				if(!generatedIds.add(id)) throw new AssertionError("Duplicate id: " + id);
+			}
 		}
 	}
 
@@ -301,8 +316,8 @@ public class Page extends Node {
 	 *
 	 * @see  Element#setId(java.lang.String)
 	 */
-	void onElementIdSet(Element element) {
-		addToElementsById(element);
+	void onElementIdSet(Element element, boolean generated) {
+		addToElementsById(element, generated);
 	}
 
 	/**
