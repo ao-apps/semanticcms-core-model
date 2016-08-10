@@ -48,7 +48,7 @@ public class Heading extends Element {
 
 	@Override
 	public String getListItemCssClass() {
-		return "semanticcms-core-model-list-item-heading";
+		return "semanticcms-core-list-item-heading";
 	}
 
 	@Override
