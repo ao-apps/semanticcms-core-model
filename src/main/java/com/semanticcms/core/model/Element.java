@@ -224,7 +224,7 @@ abstract public class Element extends Node {
 						elementsById == null
 						|| !elementsById.containsKey(newId)
 					) {
-						setId(newId);
+						setId(newId, true);
 						break;
 					}
 					// Reset for next element number to check
@@ -236,12 +236,16 @@ abstract public class Element extends Node {
 	}
 
 	public void setId(String id) {
+		setId(id, false);
+	}
+
+	void setId(String id, boolean generated) {
 		checkNotFrozen();
 		if(this.id != null) throw new IllegalStateException("id already set");
 		if(id != null && !id.isEmpty()) {
 			if(!isValidId(id)) throw new IllegalArgumentException("Invalid id: " + id);
 			this.id = id;
-			if(page != null) page.onElementIdSet(this);
+			if(page != null) page.onElementIdSet(this, generated);
 		}
 	}
 
