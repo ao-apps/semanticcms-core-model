@@ -74,36 +74,13 @@ public class Page extends Node {
 
 	@Override
 	public Page freeze() {
-		if(
-			elements != null
-			&& (
-				elementsById == null
-				|| elements.size() > elementsById.size()
-			)
-		) {
-			// Generate missing ids
+		if(elements != null) {
+			// Generate any missing IDs and freeze all elements
 			for(Element element : elements) {
-				String id = element.getId();
-				if(id == null) {
-					StringBuilder possId = Element.generateIdPrefix(element.getLabel(), element.getDefaultIdPrefix());
-					int possIdLen = possId.length();
-					// Find an unused identifier
-					for(int i=1; i<=Integer.MAX_VALUE; i++) {
-						if(i == Integer.MAX_VALUE) throw new IllegalStateException("ID not generated");
-						if(i>1) possId.append('-').append(i);
-						String newId = possId.toString();
-						if(
-							elementsById == null
-							|| !elementsById.containsKey(newId)
-						) {
-							element.setId(newId);
-							element.freeze();
-							break;
-						}
-						// Reset for next element number to check
-						possId.setLength(possIdLen);
-					}
-				}
+				// Callikng getId causes any missing id to be generated
+				element.getId();
+				// Freeze it now, nothing else should change
+				element.freeze();
 			}
 			assert elementsById != null;
 			assert elements.size() == elementsById.size() : "elements and elementsById are different size: " + elements.size() + " != " + elementsById.size();
@@ -311,7 +288,7 @@ public class Page extends Node {
 	}
 
 	private void addToElementsById(Element element) {
-		String id = element.getId();
+		String id = element.getIdNoGen();
 		if(id != null) {
 			if(elementsById == null) elementsById = new HashMap<String,Element>();
 			if(elementsById.put(id, element) != null) throw new AssertionError("Duplicate id: " + id);
