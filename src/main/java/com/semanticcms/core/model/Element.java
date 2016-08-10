@@ -23,6 +23,7 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.lang.ObjectUtils;
+import java.util.Map;
 
 /**
  * A page may contain any number of elements (along with arbitrary HTML
@@ -197,9 +198,40 @@ abstract public class Element extends Node {
 	}
 
 	/**
-	 * Every element may have an id, and, when not null, the id must be unique per page.
+	 * Gets the ID, without generating it if missing.
+	 */
+	String getIdNoGen() {
+		return id;
+	}
+
+	/**
+	 * When inside a page, every element must have a per-page unique ID, when one is not provided, it will be generated.
+	 * When not inside a page, no missing ID is generated and it will remain null.
 	 */
 	public String getId() {
+		if(id == null) {
+			if(page != null) {
+				Map<String,Element> elementsById = page.getElementsById();
+				// Generate the ID now
+				StringBuilder possId = Element.generateIdPrefix(getLabel(), getDefaultIdPrefix());
+				int possIdLen = possId.length();
+				// Find an unused identifier
+				for(int i=1; i<=Integer.MAX_VALUE; i++) {
+					if(i == Integer.MAX_VALUE) throw new IllegalStateException("ID not generated");
+					if(i>1) possId.append('-').append(i);
+					String newId = possId.toString();
+					if(
+						elementsById == null
+						|| !elementsById.containsKey(newId)
+					) {
+						setId(newId);
+						break;
+					}
+					// Reset for next element number to check
+					possId.setLength(possIdLen);
+				}
+			}
+		}
 		return id;
 	}
 
