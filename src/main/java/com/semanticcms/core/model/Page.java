@@ -122,8 +122,8 @@ public class Page extends Node {
 
 	public void setCopyright(Copyright copyright) {
 		checkNotFrozen();
-        this.copyright = copyright;
-    }
+		this.copyright = copyright;
+	}
 
 	public Set<Author> getAuthors() {
 		if(authors == null) return Collections.emptySet();
@@ -142,8 +142,8 @@ public class Page extends Node {
 
 	public void setTitle(String title) {
 		checkNotFrozen();
-        this.title = title;
-    }
+		this.title = title;
+	}
 
 	/**
 	 * A short title is used when the context of a page is well established, such as when
@@ -159,8 +159,8 @@ public class Page extends Node {
 
 	public void setShortTitle(String shortTitle) {
 		checkNotFrozen();
-        this.shortTitle = shortTitle;
-    }
+		this.shortTitle = shortTitle;
+	}
 
 	public String getDescription() {
 		return description;
@@ -168,8 +168,8 @@ public class Page extends Node {
 
 	public void setDescription(String description) {
 		checkNotFrozen();
-        this.description = description;
-    }
+		this.description = description;
+	}
 
 	public String getKeywords() {
 		return keywords;
@@ -177,8 +177,8 @@ public class Page extends Node {
 
 	public void setKeywords(String keywords) {
 		checkNotFrozen();
-        this.keywords = keywords;
-    }
+		this.keywords = keywords;
+	}
 
 	/**
 	 * Gets the table of contents (toc) setting:
