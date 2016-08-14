@@ -37,7 +37,7 @@ public class Page extends Node {
 	public static final int MIN_TOC_LEVELS = 1;
 
 	/**
-	 * This matches the table of contents implementation in toc.inc.jsp
+	 * This matches the table of contents implementation in /semanticcms-section-servlet/toc.inc.jspx
 	 * and is a result of HTML only having H1 through H6.  H1 is reserved
 	 * for the page title and headings become H2 through H6.
 	 */
@@ -260,7 +260,7 @@ public class Page extends Node {
 	 * Gets all elements in the page (including all child elements) that are of the
 	 * given type, in the order they were declared in the page.
 	 */
-	public <E extends Element> List<E> filterElements(Class<E> clazz) {
+	public <E extends Element> List<? extends E> filterElements(Class<E> clazz) {
 		if(elements == null) return Collections.emptyList();
 		return AoCollections.filter(elements, clazz);
 	}
@@ -334,22 +334,4 @@ public class Page extends Node {
 	public String getListItemCssClass() {
 		return getChildPages().isEmpty() ? "semanticcms-core-model-list-item-page-nochildren" : "semanticcms-core-model-list-item-page-children";
 	}
-
-	// <editor-fold desc="Top Level Headings">
-	private List<Heading> topLevelHeadings;
-
-	public List<Heading> getTopLevelHeadings() {
-		if(topLevelHeadings == null) return Collections.emptyList();
-		return Collections.unmodifiableList(topLevelHeadings);
-	}
-
-	/**
-	 * Adds a top level heading to this page.
-	 */
-	public void addTopLevelHeading(Heading heading) {
-		checkNotFrozen();
-		if(topLevelHeadings == null) topLevelHeadings = new ArrayList<Heading>();
-		topLevelHeadings.add(heading);
-	}
-	// </editor-fold>
 }
