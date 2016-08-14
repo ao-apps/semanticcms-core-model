@@ -22,14 +22,10 @@
  */
 package com.semanticcms.core.model;
 
-import com.semanticcms.core.model.ElementContext;
-import com.semanticcms.core.model.Node;
-import com.semanticcms.core.model.Element;
-import com.semanticcms.core.model.NodeBodyWriter;
-import com.semanticcms.core.model.ElementWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Map;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -53,7 +49,7 @@ public class NodeBodyWriterTest {
 	// Java 1.8: Use lambda
 	private static final ElementContext nullElementContext = new ElementContext() {
 		@Override
-		public void include(String resource, Writer out) {
+		public void include(String resource, Writer out, Map<String,Object> args) {
 			// Do nothing
 		}
 	};
