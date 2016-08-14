@@ -186,4 +186,41 @@ abstract public class Node implements Freezable<Node> {
 	 * or {@code null} if not supported.
 	 */
 	abstract public String getListItemCssClass();
+
+	/**
+	 * <p>
+	 * Looks for the nearest nested elements of the given class.  These elements
+	 * may be direct descendents or descendents further down the tree, but only
+	 * the top-most descendents are returned.
+	 * </p>
+	 * <p>
+	 * If the node is a page, its elements are checked, but the elements of its child pages are not.
+	 * </p>
+	 *
+	 * @return   The unmodifiable list of top-level matches, in the order they were declared in the page, or empty list if none found.
+	 */
+	public <E extends Element> List<? extends E> findTopLevelElements(Class<E> elementType) {
+		List<? extends E> matches = findTopLevelElementsRecurse(elementType, this, null);
+		if(matches == null) return Collections.emptyList();
+		return Collections.unmodifiableList(matches);
+	}
+
+	/**
+	 * Recursive component of findTopLevelElements.
+	 * 
+	 * @see  #findTopLevelElements
+	 */
+	private static <E extends Element> List<E> findTopLevelElementsRecurse(Class<E> elementType, Node node, List<E> matches) {
+		for(Element elem : node.getChildElements()) {
+			if(elementType.isInstance(elem)) {
+				// Found match
+				if(matches == null) matches = new ArrayList<E>();
+				matches.add(elementType.cast(elem));
+			} else {
+				// Look further down the tree
+				matches = findTopLevelElementsRecurse(elementType, elem, matches);
+			}
+		}
+		return matches;
+	}
 }
