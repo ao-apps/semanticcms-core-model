@@ -22,8 +22,8 @@
  */
 package com.semanticcms.core.model;
 
-import java.io.IOException;
 import java.io.Writer;
+import java.util.Map;
 
 /**
  * An element context is able to process includes of other resources during element writing.
@@ -31,7 +31,7 @@ import java.io.Writer;
 public interface ElementContext {
 
 	/**
-	 * Includes the given resource into the given writer
+	 * Includes the given resource into the given writer with the provided arguments.
 	 */
-	void include(String resource, Writer out) throws IOException;
+	void include(String resource, Writer out, Map<String,Object> args) throws Exception;
 }
