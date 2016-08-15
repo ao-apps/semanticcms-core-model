@@ -22,7 +22,6 @@
  */
 package com.semanticcms.core.model;
 
-import java.io.IOException;
 import java.io.Writer;
 
 /**
@@ -35,5 +34,5 @@ public interface ElementWriter {
 	 * This should include everything added before the body, the body itself,
 	 * and everything after after the body.
 	 */
-	void writeTo(Writer out, ElementContext context) throws IOException;
+	void writeTo(Writer out, ElementContext context) throws Exception;
 }
