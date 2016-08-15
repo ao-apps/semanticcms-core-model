@@ -23,6 +23,7 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.util.StringUtility;
+import com.aoindustries.util.WrappedException;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.logging.Level;
@@ -128,7 +129,15 @@ public class NodeBodyWriter extends Writer {
 						ElementWriter elementWriter = node.getElementWriter(elementKey);
 						if(elementWriter != null) {
 							// Substitute child element
-							elementWriter.writeTo(out, context);
+							try {
+								elementWriter.writeTo(out, context);
+							} catch(IOException e) {
+								throw e;
+							} catch(RuntimeException e) {
+								throw e;
+							} catch(Exception e) {
+								throw new WrappedException(e);
+							}
 						} else {
 							if(logger.isLoggable(Level.WARNING)) {
 								logger.warning("ElementWriter not found by key: " + String.valueOf(elementKeyBuffer) + " in " + node);
