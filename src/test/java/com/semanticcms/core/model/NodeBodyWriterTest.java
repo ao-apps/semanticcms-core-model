@@ -49,7 +49,7 @@ public class NodeBodyWriterTest {
 	// Java 1.8: Use lambda
 	private static final ElementContext nullElementContext = new ElementContext() {
 		@Override
-		public void include(String resource, Writer out, Map<String,Object> args) {
+		public void include(String resource, Writer out, Map<String,?> args) {
 			// Do nothing
 		}
 	};
