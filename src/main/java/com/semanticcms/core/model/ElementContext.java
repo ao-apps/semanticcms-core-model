@@ -33,5 +33,5 @@ public interface ElementContext {
 	/**
 	 * Includes the given resource into the given writer with the provided arguments.
 	 */
-	void include(String resource, Writer out, Map<String,Object> args) throws Exception;
+	void include(String resource, Writer out, Map<String,?> args) throws Exception;
 }
