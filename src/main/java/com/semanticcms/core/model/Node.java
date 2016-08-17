@@ -36,7 +36,7 @@ import java.util.Set;
 
 /**
  * A node contains elements, but is not necessarily an element itself.
- * A node can also have references to files and pages.
+ * A node can also have references to pages.
  * A node can have a captured body.
  */
 abstract public class Node implements Freezable<Node> {
@@ -49,7 +49,6 @@ abstract public class Node implements Freezable<Node> {
 	private boolean frozen;
 	private List<Element> childElements;
 	private Map<Long,ElementWriter> elementWriters;
-	private Set<PageRef> files;
 	private Set<PageRef> pageLinks;
 	private BufferResult body;
 
@@ -98,21 +97,6 @@ abstract public class Node implements Freezable<Node> {
 
 	ElementWriter getElementWriter(long elementKey) {
 		return elementWriters==null ? null : elementWriters.get(elementKey);
-	}
-
-	/**
-	 * Gets the set of all files this node directly links to; this does not
-	 * include files linked to by child elements.
-	 */
-	public Set<PageRef> getFiles() {
-		if(files == null) return Collections.emptySet();
-		return Collections.unmodifiableSet(files);
-	}
-
-	public void addFile(PageRef file) {
-		checkNotFrozen();
-		if(files == null) files = new LinkedHashSet<PageRef>();
-		files.add(file);
 	}
 
 	/**
