@@ -162,6 +162,15 @@ abstract public class Element extends Node {
 	}
 
 	/**
+	 * Gets the element ID template for generating IDs.
+	 * 
+	 * @see  #getLabel()  Defaults to getLabel()
+	 */
+	protected String getElementIdTemplate() {
+		return getLabel();
+	}
+
+	/**
 	 * Gets the default element ID prefix for this type of element.
 	 */
 	abstract protected String getDefaultIdPrefix();
@@ -213,7 +222,7 @@ abstract public class Element extends Node {
 			if(page != null) {
 				Map<String,Element> elementsById = page.getElementsById();
 				// Generate the ID now
-				StringBuilder possId = Element.generateIdPrefix(getLabel(), getDefaultIdPrefix());
+				StringBuilder possId = Element.generateIdPrefix(getElementIdTemplate(), getDefaultIdPrefix());
 				int possIdLen = possId.length();
 				// Find an unused identifier
 				for(int i=1; i<=Integer.MAX_VALUE; i++) {
