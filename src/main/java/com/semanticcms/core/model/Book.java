@@ -49,12 +49,6 @@ public class Book implements Comparable<Book> {
 	private final Copyright copyright;
 	private final Set<Author> unmodifiableAuthors;
 	private final String title;
-	private final String pageHeader;
-	private final int navigationFrameWidth;
-	private final String logoSrc;
-	private final int logoWidth;
-	private final int logoHeight;
-	private final String logoAlt;
 	private final Map<String,String> unmodifiableParam;
 
 	private static String getProperty(Properties bookProps, Set<Object> usedKeys, String key) {
@@ -115,12 +109,6 @@ public class Book implements Comparable<Book> {
 		}
 		this.unmodifiableAuthors = AoCollections.optimalUnmodifiableSet(authors);
 		this.title = getProperty(bookProps, usedKeys, "title");
-		this.pageHeader = getProperty(bookProps, usedKeys, "pageHeader");
-		this.navigationFrameWidth = Integer.parseInt(getProperty(bookProps, usedKeys, "navigationFrameWidth"));
-		this.logoSrc = getProperty(bookProps, usedKeys, "logoSrc");
-		this.logoWidth = Integer.parseInt(getProperty(bookProps, usedKeys, "logoWidth"));
-		this.logoHeight = Integer.parseInt(getProperty(bookProps, usedKeys, "logoHeight"));
-		this.logoAlt = getProperty(bookProps, usedKeys, "logoAlt");
 		Map<String,String> newParam = new LinkedHashMap<String,String>();
 		@SuppressWarnings("unchecked")
 		Enumeration<String> propertyNames = (Enumeration)bookProps.propertyNames();
@@ -217,30 +205,6 @@ public class Book implements Comparable<Book> {
 
 	public String getTitle() {
 		return title;
-	}
-
-	public String getPageHeader() {
-		return pageHeader;
-	}
-
-	public int getNavigationFrameWidth() {
-		return navigationFrameWidth;
-	}
-
-	public String getLogoSrc() {
-		return logoSrc;
-	}
-
-	public int getLogoWidth() {
-		return logoWidth;
-	}
-
-	public int getLogoHeight() {
-		return logoHeight;
-	}
-
-	public String getLogoAlt() {
-		return logoAlt;
 	}
 
 	public Map<String,String> getParam() {
