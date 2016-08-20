@@ -26,8 +26,8 @@ import com.aoindustries.lang.ObjectUtils;
 import java.util.Map;
 
 /**
- * A page may contain any number of elements (along with arbitrary HTML
- * and JSP content).  Each element may also contain other elements.
+ * A page may contain any number of elements (along with arbitrary textual data
+ * and other content).  Each element may also contain other elements.
  */
 abstract public class Element extends Node {
 
