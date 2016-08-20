@@ -183,8 +183,8 @@ abstract public class Node implements Freezable<Node> {
 	 *
 	 * @return   The unmodifiable list of top-level matches, in the order they were declared in the page, or empty list if none found.
 	 */
-	public <E extends Element> List<? extends E> findTopLevelElements(Class<E> elementType) {
-		List<? extends E> matches = findTopLevelElementsRecurse(elementType, this, null);
+	public <E extends Element> List<E> findTopLevelElements(Class<E> elementType) {
+		List<E> matches = findTopLevelElementsRecurse(elementType, this, null);
 		if(matches == null) return Collections.emptyList();
 		return Collections.unmodifiableList(matches);
 	}
