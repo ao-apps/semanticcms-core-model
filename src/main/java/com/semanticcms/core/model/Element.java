@@ -175,12 +175,6 @@ abstract public class Element extends Node {
 	 */
 	abstract protected String getDefaultIdPrefix();
 
-	/**
-	 * Gets the CSS class used to stylize links to elements of this type
-	 * or {@code null} if not supported.
-	 */
-	abstract public String getLinkCssClass();
-
 	@Override
 	public Element freeze() {
 		super.freeze();
