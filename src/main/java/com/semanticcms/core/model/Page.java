@@ -260,7 +260,7 @@ public class Page extends Node {
 	 * Gets all elements in the page (including all child elements) that are of the
 	 * given type, in the order they were declared in the page.
 	 */
-	public <E extends Element> List<? extends E> filterElements(Class<E> clazz) {
+	public <E extends Element> List<E> filterElements(Class<E> clazz) {
 		if(elements == null) return Collections.emptyList();
 		return AoCollections.filter(elements, clazz);
 	}
