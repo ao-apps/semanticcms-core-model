@@ -80,10 +80,6 @@ public class NodeBodyWriterTest {
 				public String getListItemCssClass() {
 					return "test_element";
 				}
-				@Override
-				public String getLinkCssClass() {
-					return "testLink";
-				}
 			},
 			// Java 1.8: (out, context) -> out.write(TEST_ELEMENT_BODY)
 			new ElementWriter() {
