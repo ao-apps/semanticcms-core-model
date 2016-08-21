@@ -329,9 +329,4 @@ public class Page extends Node {
 	public String getLabel() {
 		return getShortTitle();
 	}
-
-	@Override
-	public String getListItemCssClass() {
-		return getChildPages().isEmpty() ? "semanticcms-core-model-list-item-page-nochildren" : "semanticcms-core-model-list-item-page-children";
-	}
 }

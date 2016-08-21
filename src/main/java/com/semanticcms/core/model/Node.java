@@ -166,12 +166,6 @@ abstract public class Node implements Freezable<Node> {
 	}
 
 	/**
-	 * Gets the CSS class used to stylize list items of this node type
-	 * or {@code null} if not supported.
-	 */
-	abstract public String getListItemCssClass();
-
-	/**
 	 * <p>
 	 * Looks for the nearest nested elements of the given class.  These elements
 	 * may be direct descendents or descendents further down the tree, but only
