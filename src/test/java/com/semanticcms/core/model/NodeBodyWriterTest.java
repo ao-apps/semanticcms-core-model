@@ -61,10 +61,6 @@ public class NodeBodyWriterTest {
 			public String getLabel() {
 				return "Test Node";
 			}
-			@Override
-			public String getListItemCssClass() {
-				return "test_item";
-			}
 		};
 		Long elementKey = testNode.addChildElement(
 			new Element() {
@@ -75,10 +71,6 @@ public class NodeBodyWriterTest {
 				@Override
 				protected String getDefaultIdPrefix() {
 					return "test";
-				}
-				@Override
-				public String getListItemCssClass() {
-					return "test_element";
 				}
 			},
 			// Java 1.8: (out, context) -> out.write(TEST_ELEMENT_BODY)
