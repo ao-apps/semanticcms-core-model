@@ -53,6 +53,7 @@ public class Page extends Node {
 	private String shortTitle;
 	private String description;
 	private String keywords;
+	private Boolean allowRobots;
 	private Boolean toc;
 	private int tocLevels = DEFAULT_TOC_LEVELS;
 	private Set<PageRef> parentPages;
@@ -181,12 +182,30 @@ public class Page extends Node {
 	}
 
 	/**
+	 * Gets the allowRobots setting:
+	 * <ul>
+	 *   <li>{@literal null} (The default) - Inherit from parent(s) within book or book settings if have no parents within the book.</li>
+	 *   <li>{@literal true} - Robots allowed</li>
+	 *   <li>{@literal false} - Robots not allowed</li>
+	 * </ul>
+	 */
+	public Boolean getAllowRobots() {
+		return allowRobots;
+	}
+
+	public void setAllowRobots(Boolean allowRobots) {
+		checkNotFrozen();
+		this.allowRobots = allowRobots;
+	}
+
+	/**
 	 * Gets the table of contents (toc) setting:
 	 * <ul>
+	 *   <li>{@literal null} (The default) - Show table of contents depending on number of entries in the table</li>
 	 *   <li>{@literal true} - Always show table of contents</li>
 	 *   <li>{@literal false} - Never show table of contents</li>
-	 *   <li>{@literal null} (The default) - Show table of contents depending on number of entries in the table</li>
 	 * </ul>
+	 * TODO: Move this to Section.
 	 */
 	public Boolean getToc() {
 		return toc;
@@ -197,6 +216,9 @@ public class Page extends Node {
 		this.toc = toc;
 	}
 
+	/**
+	 * TODO: Move this to Section.
+	 */
 	public int getTocLevels() {
 		return tocLevels;
 	}
