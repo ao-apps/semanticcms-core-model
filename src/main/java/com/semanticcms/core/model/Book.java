@@ -49,6 +49,7 @@ public class Book implements Comparable<Book> {
 	private final Copyright copyright;
 	private final Set<Author> unmodifiableAuthors;
 	private final String title;
+	private final boolean allowRobots;
 	private final Map<String,String> unmodifiableParam;
 
 	private static String getProperty(Properties bookProps, Set<Object> usedKeys, String key) {
@@ -56,7 +57,7 @@ public class Book implements Comparable<Book> {
 		return bookProps.getProperty(key);
 	}
 
-	public Book(String name, String cvsworkDirectory, Set<PageRef> parentPages, Properties bookProps) {
+	public Book(String name, String cvsworkDirectory, boolean allowRobots, Set<PageRef> parentPages, Properties bookProps) {
 		if(!name.startsWith("/")) throw new IllegalArgumentException("Book name must begin with a slash (/): " + name);
 
 		// Tracks each properties key used, will throw exception if any key exists in the properties file that is not used
@@ -109,6 +110,7 @@ public class Book implements Comparable<Book> {
 		}
 		this.unmodifiableAuthors = AoCollections.optimalUnmodifiableSet(authors);
 		this.title = getProperty(bookProps, usedKeys, "title");
+		this.allowRobots = allowRobots;
 		Map<String,String> newParam = new LinkedHashMap<String,String>();
 		@SuppressWarnings("unchecked")
 		Enumeration<String> propertyNames = (Enumeration)bookProps.propertyNames();
@@ -205,6 +207,14 @@ public class Book implements Comparable<Book> {
 
 	public String getTitle() {
 		return title;
+	}
+
+	/**
+	 * Gets the allowRobots setting of the book.  Any page with an "auto"
+	 * setting and no parents within the book will use this setting.
+	 */
+	public boolean getAllowRobots() {
+		return allowRobots;
 	}
 
 	public Map<String,String> getParam() {
