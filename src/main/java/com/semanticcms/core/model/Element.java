@@ -290,4 +290,12 @@ abstract public class Element extends Node {
 		childElement.setParentElement(this);
 		return elementKey;
 	}
+
+	/**
+	 * When hidden, an element is not added to common elements like navigation trees.
+	 * By default, elements are not hidden.
+	 */
+	public boolean isHidden() {
+		return false;
+	}
 }
