@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class Page extends Node {
+public class Page extends Node implements Comparable<Page> {
 
 	public static final int MIN_TOC_LEVELS = 1;
 
@@ -74,6 +74,11 @@ public class Page extends Node {
 	@Override
 	public int hashCode() {
 		return pageRef.hashCode();
+	}
+
+	@Override
+	public int compareTo(Page o) {
+		return pageRef.compareTo(o.pageRef);
 	}
 
 	@Override
