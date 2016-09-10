@@ -34,7 +34,7 @@ import java.io.IOException;
  * // TODO: Support parameters to a page, child, link, ...
  *          Parameters provided in path/page?, param.* attributes, and nested tags - matching/extending AO taglib.
  */
-public class PageRef {
+public class PageRef implements Comparable<PageRef> {
 
 	private final String bookName;
 	private final String path;
@@ -126,6 +126,16 @@ public class PageRef {
 			hash = h;
 		}
 		return h;
+	}
+
+	/**
+	 * Orders by servletPath.
+	 * 
+	 * @see  #getServletPath()
+	 */
+	@Override
+	public int compareTo(PageRef o) {
+		return getServletPath().compareTo(o.getServletPath());
 	}
 
 	private volatile String servletPath;
