@@ -22,6 +22,7 @@
  */
 package com.semanticcms.core.model;
 
+import com.aoindustries.lang.NullArgumentException;
 import com.aoindustries.lang.ObjectUtils;
 import java.util.Map;
 
@@ -79,6 +80,8 @@ abstract public class Element extends Node {
 	 * @see <a href="http://www.w3.org/TR/2002/REC-xhtml1-20020801/#C_8">http://www.w3.org/TR/2002/REC-xhtml1-20020801/#C_8</a>
 	 */
 	public static StringBuilder generateIdPrefix(String template, String prefix) {
+		NullArgumentException.checkNotNull(template, "template");
+		NullArgumentException.checkNotNull(prefix, "prefix");
 		assert isValidId(prefix);
 		final int len = template.length();
 		// First character must be [A-Za-z]
@@ -216,7 +219,11 @@ abstract public class Element extends Node {
 			if(page != null) {
 				Map<String,Element> elementsById = page.getElementsById();
 				// Generate the ID now
-				StringBuilder possId = Element.generateIdPrefix(getElementIdTemplate(), getDefaultIdPrefix());
+				String template = getElementIdTemplate();
+				if(template == null) {
+					throw new IllegalStateException("null from getElementIdTemplate");
+				}
+				StringBuilder possId = Element.generateIdPrefix(template, getDefaultIdPrefix());
 				int possIdLen = possId.length();
 				// Find an unused identifier
 				for(int i=1; i<=Integer.MAX_VALUE; i++) {
