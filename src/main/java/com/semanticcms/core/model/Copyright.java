@@ -71,13 +71,16 @@ public class Copyright {
 			StringBuilder copy = new StringBuilder();
 			copy.append("Copyright ©");
 			if(dateCopyrighted != null && !dateCopyrighted.isEmpty()) {
-				copy.append(' ').append(dateCopyrighted).append('.');
+				copy.append(' ').append(dateCopyrighted);
+				if(!dateCopyrighted.endsWith(".")) copy.append('.');
 			}
 			if(rightsHolder != null && !rightsHolder.isEmpty()) {
-				copy.append(' ').append(rightsHolder).append('.');
+				copy.append(' ').append(rightsHolder);
+				if(!rightsHolder.endsWith(".")) copy.append('.');
 			}
 			if(rights != null && !rights.isEmpty()) {
-				copy.append(' ').append(rights).append('.');
+				copy.append(' ').append(rights);
+				if(!rights.endsWith(".")) copy.append('.');
 			}
 			return copy.toString();
 		}
