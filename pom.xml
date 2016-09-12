@@ -27,7 +27,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 	<parent>
 		<groupId>com.semanticcms</groupId>
 		<artifactId>semanticcms-core</artifactId>
-		<version>1.3</version>
+		<version>1.4-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.semanticcms</groupId>
@@ -36,7 +36,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 	<packaging>jar</packaging>
 
 	<name>SemanticCMS Core Model</name>
-	<url>https://semanticcms.com/docs/semanticcms-core-model/</url>
+	<url>https://semanticcms.com/core/model/</url>
 	<description>Java API for modeling web page content and relationships.</description>
 
 	<scm>
