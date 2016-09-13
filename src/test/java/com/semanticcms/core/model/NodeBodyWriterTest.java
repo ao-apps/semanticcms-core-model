@@ -37,8 +37,8 @@ public class NodeBodyWriterTest {
 	private static final String TEST_BODY_PREFIX = "<TestNode>Test body <";
 	private static final String TEST_ELEMENT_BODY = "<TestElement />";
 	private static final String TEST_BODY_SUFFIX =
-		"<" + NodeBodyWriter.MARKER_PREFIX + "ffffffffffffffff" + NodeBodyWriter.MARKER_SUFFIX
-		+ "</TestNode>"
+		//"<" + NodeBodyWriter.MARKER_PREFIX + "ffffffffffffffff" + NodeBodyWriter.MARKER_SUFFIX
+		"</TestNode>"
 		+ NodeBodyWriter.MARKER_PREFIX + "ffffffff";
 
 	private static final String TEST_EXPECTED_RESULT = TEST_BODY_PREFIX + TEST_ELEMENT_BODY + TEST_BODY_SUFFIX;
