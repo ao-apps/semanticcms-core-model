@@ -24,6 +24,7 @@ package com.semanticcms.core.model;
 
 import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.io.buffer.EmptyResult;
+import com.aoindustries.util.AoCollections;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -46,7 +47,8 @@ abstract public class Node implements Freezable<Node> {
 	 */
 	private static final SecureRandom random = new SecureRandom();
 
-	private boolean frozen;
+	protected final Object lock = new Object();
+	protected boolean frozen;
 	private List<Element> childElements;
 	private Map<Long,ElementWriter> elementWriters;
 	private Set<PageRef> pageLinks;
@@ -62,11 +64,17 @@ abstract public class Node implements Freezable<Node> {
 
 	@Override
 	public Node freeze() {
-		frozen = true;
+		synchronized(lock) {
+			if(childElements != null) childElements = AoCollections.optimalUnmodifiableList(childElements);
+			if(elementWriters != null) elementWriters = AoCollections.optimalUnmodifiableMap(elementWriters);
+			if(pageLinks != null) pageLinks = AoCollections.optimalUnmodifiableSet(pageLinks);
+			frozen = true;
+		}
 		return this;
 	}
 
 	protected void checkNotFrozen() throws FrozenException {
+		assert Thread.holdsLock(lock);
 		if(frozen) throw new FrozenException();
 	}
 
@@ -74,29 +82,36 @@ abstract public class Node implements Freezable<Node> {
 	 * Every node may potentially have child elements.
 	 */
 	public List<Element> getChildElements() {
-		if(childElements == null) return Collections.emptyList();
-		return Collections.unmodifiableList(childElements);
+		synchronized(lock) {
+			if(childElements == null) return Collections.emptyList();
+			if(frozen) return childElements;
+			return AoCollections.unmodifiableCopyList(childElements);
+		}
 	}
 
 	/**
 	 * Adds a child element to this node.
 	 */
 	public Long addChildElement(Element childElement, ElementWriter elementWriter) {
-		checkNotFrozen();
-		if(childElements == null) childElements = new ArrayList<Element>();
-		childElements.add(childElement);
-		if(elementWriters == null) elementWriters = new HashMap<Long,ElementWriter>();
-		while(true) {
-			Long elementKey = random.nextLong();
-			if(!elementWriters.containsKey(elementKey)) {
-				elementWriters.put(elementKey, elementWriter);
-				return elementKey;
+		synchronized(lock) {
+			checkNotFrozen();
+			if(childElements == null) childElements = new ArrayList<Element>();
+			childElements.add(childElement);
+			if(elementWriters == null) elementWriters = new HashMap<Long,ElementWriter>();
+			while(true) {
+				Long elementKey = random.nextLong();
+				if(!elementWriters.containsKey(elementKey)) {
+					elementWriters.put(elementKey, elementWriter);
+					return elementKey;
+				}
 			}
 		}
 	}
 
 	ElementWriter getElementWriter(long elementKey) {
-		return elementWriters==null ? null : elementWriters.get(elementKey);
+		synchronized(lock) {
+			return elementWriters==null ? null : elementWriters.get(elementKey);
+		}
 	}
 
 	/**
@@ -104,32 +119,41 @@ abstract public class Node implements Freezable<Node> {
 	 * include pages linked to by child elements.
 	 */
 	public Set<PageRef> getPageLinks() {
-		if(pageLinks == null) return Collections.emptySet();
-		return Collections.unmodifiableSet(pageLinks);
+		synchronized(lock) {
+			if(pageLinks == null) return Collections.emptySet();
+			if(frozen) return pageLinks;
+			return AoCollections.unmodifiableCopySet(pageLinks);
+		}
 	}
 
 	public void addPageLink(PageRef pageLink) {
-		checkNotFrozen();
-		if(pageLinks == null) pageLinks = new LinkedHashSet<PageRef>();
-		pageLinks.add(pageLink);
+		synchronized(lock) {
+			checkNotFrozen();
+			if(pageLinks == null) pageLinks = new LinkedHashSet<PageRef>();
+			pageLinks.add(pageLink);
+		}
 	}
 
 	/**
 	 * Every node may potentially have HTML body.
 	 */
 	public BufferResult getBody() {
-		if(body == null) return EmptyResult.getInstance();
-		return body;
+		synchronized(lock) {
+			if(body == null) return EmptyResult.getInstance();
+			return body;
+		}
 	}
 
 	public void setBody(BufferResult body) {
-		checkNotFrozen();
-		try {
-			assert body.getLength()==body.trim().getLength() : "body must have already been trimmed";
-		} catch(IOException e) {
-			throw new AssertionError(e);
+		synchronized(lock) {
+			checkNotFrozen();
+			try {
+				assert body.getLength()==body.trim().getLength() : "body must have already been trimmed";
+			} catch(IOException e) {
+				throw new AssertionError(e);
+			}
+			this.body = body;
 		}
-		this.body = body;
 	}
 
 	/**

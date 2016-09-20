@@ -148,20 +148,29 @@ abstract public class Element extends Node {
 	public boolean equals(Object obj) {
 		if(!(obj instanceof Element)) return false;
 		if(this == obj) return true;
+		Page page1;
+		String id1;
+		synchronized(lock) {
+			page1 = page;
+			id1 = id;
+		}
+		if(page1 == null || id1 == null) return false;
 		Element other = (Element)obj;
-		return
-			page != null
-			&& id != null
-			&& page.equals(other.page)
-			&& id.equals(other.id)
-		;
+		synchronized(other.lock) {
+			return
+				page1.equals(other.page)
+				&& id1.equals(other.id)
+			;
+		}
 	}
 
 	@Override
 	public int hashCode() {
-		int hash = ObjectUtils.hashCode(page);
-		hash = hash * 31 + ObjectUtils.hashCode(id);
-		return hash;
+		synchronized(lock) {
+			int hash = ObjectUtils.hashCode(page);
+			hash = hash * 31 + ObjectUtils.hashCode(id);
+			return hash;
+		}
 	}
 
 	/**
@@ -188,7 +197,9 @@ abstract public class Element extends Node {
 	 * Every element may (and usually will) exist within a page.
 	 */
 	public Page getPage() {
-		return page;
+		synchronized(lock) {
+			return page;
+		}
 	}
 
 	/**
@@ -197,9 +208,11 @@ abstract public class Element extends Node {
 	 * @see Page#addElement(com.aoindustries.docs.Element)
 	 */
 	void setPage(Page page) {
-		checkNotFrozen();
-		if(this.page != null) throw new IllegalStateException("element already has a page: " + this);
-		this.page = page;
+		synchronized(lock) {
+			checkNotFrozen();
+			if(this.page != null) throw new IllegalStateException("element already has a page: " + this);
+			this.page = page;
+		}
 		assert checkPageAndParentElement();
 	}
 
@@ -207,7 +220,9 @@ abstract public class Element extends Node {
 	 * Gets the ID, without generating it if missing.
 	 */
 	String getIdNoGen() {
-		return id;
+		synchronized(lock) {
+			return id;
+		}
 	}
 
 	/**
@@ -215,34 +230,36 @@ abstract public class Element extends Node {
 	 * When not inside a page, no missing ID is generated and it will remain null.
 	 */
 	public String getId() {
-		if(id == null) {
-			if(page != null) {
-				Map<String,Element> elementsById = page.getElementsById();
-				// Generate the ID now
-				String template = getElementIdTemplate();
-				if(template == null) {
-					throw new IllegalStateException("null from getElementIdTemplate");
-				}
-				StringBuilder possId = Element.generateIdPrefix(template, getDefaultIdPrefix());
-				int possIdLen = possId.length();
-				// Find an unused identifier
-				for(int i=1; i<=Integer.MAX_VALUE; i++) {
-					if(i == Integer.MAX_VALUE) throw new IllegalStateException("ID not generated");
-					if(i>1) possId.append('-').append(i);
-					String newId = possId.toString();
-					if(
-						elementsById == null
-						|| !elementsById.containsKey(newId)
-					) {
-						setId(newId, true);
-						break;
+		synchronized(lock) {
+			if(id == null) {
+				if(page != null) {
+					Map<String,Element> elementsById = page.getElementsById();
+					// Generate the ID now
+					String template = getElementIdTemplate();
+					if(template == null) {
+						throw new IllegalStateException("null from getElementIdTemplate");
 					}
-					// Reset for next element number to check
-					possId.setLength(possIdLen);
+					StringBuilder possId = Element.generateIdPrefix(template, getDefaultIdPrefix());
+					int possIdLen = possId.length();
+					// Find an unused identifier
+					for(int i=1; i<=Integer.MAX_VALUE; i++) {
+						if(i == Integer.MAX_VALUE) throw new IllegalStateException("ID not generated");
+						if(i>1) possId.append('-').append(i);
+						String newId = possId.toString();
+						if(
+							elementsById == null
+							|| !elementsById.containsKey(newId)
+						) {
+							setId(newId, true);
+							break;
+						}
+						// Reset for next element number to check
+						possId.setLength(possIdLen);
+					}
 				}
 			}
+			return id;
 		}
-		return id;
 	}
 
 	public void setId(String id) {
@@ -250,12 +267,14 @@ abstract public class Element extends Node {
 	}
 
 	void setId(String id, boolean generated) {
-		checkNotFrozen();
-		if(this.id != null) throw new IllegalStateException("id already set");
-		if(id != null && !id.isEmpty()) {
-			if(!isValidId(id)) throw new IllegalArgumentException("Invalid id: " + id);
-			this.id = id;
-			if(page != null) page.onElementIdSet(this, generated);
+		synchronized(lock) {
+			checkNotFrozen();
+			if(this.id != null) throw new IllegalStateException("id already set");
+			if(id != null && !id.isEmpty()) {
+				if(!isValidId(id)) throw new IllegalArgumentException("Invalid id: " + id);
+				this.id = id;
+				if(page != null) page.onElementIdSet(this, generated);
+			}
 		}
 	}
 
@@ -265,25 +284,35 @@ abstract public class Element extends Node {
 	 * any parent.
 	 */
 	public Element getParentElement() {
-		return parentElement;
+		synchronized(lock) {
+			return parentElement;
+		}
 	}
 
 	/**
 	 * Sets the parent element of this element.
 	 */
 	private void setParentElement(Element parentElement) {
-		checkNotFrozen();
-		if(this.parentElement != null) throw new IllegalStateException("parentElement already set");
-		this.parentElement = parentElement;
+		synchronized(lock) {
+			checkNotFrozen();
+			if(this.parentElement != null) throw new IllegalStateException("parentElement already set");
+			this.parentElement = parentElement;
+		}
 		assert checkPageAndParentElement();
 	}
 
 	private boolean checkPageAndParentElement() {
+		Page p;
+		Element pe;
+		synchronized(lock) {
+			p = this.page;
+			pe = this.parentElement;
+		}
 		if(
-			page != null
-			&& parentElement != null
+			p != null
+			&& pe != null
 		) {
-			if(!page.equals(parentElement.page)) throw new IllegalArgumentException("parentElement is not on the same page");
+			if(!p.equals(pe.getPage())) throw new IllegalArgumentException("parentElement is not on the same page");
 		}
 		return true;
 	}
