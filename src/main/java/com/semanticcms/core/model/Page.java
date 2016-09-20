@@ -68,87 +68,116 @@ public class Page extends Node implements Comparable<Page> {
 	@Override
 	public boolean equals(Object obj) {
 		if(!(obj instanceof Page)) return false;
-		return pageRef.equals(((Page)obj).pageRef);
+		return getPageRef().equals(((Page)obj).getPageRef());
 	}
 
 	@Override
 	public int hashCode() {
-		return pageRef.hashCode();
+		return getPageRef().hashCode();
 	}
 
 	@Override
 	public int compareTo(Page o) {
-		return pageRef.compareTo(o.pageRef);
+		return getPageRef().compareTo(o.getPageRef());
 	}
 
 	@Override
 	public Page freeze() {
-		if(elements != null) {
-			// Generate any missing IDs and freeze all elements
-			for(Element element : elements) {
-				// Callikng getId causes any missing id to be generated
-				element.getId();
-				// Freeze it now, nothing else should change
-				element.freeze();
+		synchronized(lock) {
+			if(authors != null) authors = AoCollections.optimalUnmodifiableSet(authors);
+			if(parentPages != null) parentPages = AoCollections.optimalUnmodifiableSet(parentPages);
+			if(childPages != null) childPages = AoCollections.optimalUnmodifiableSet(childPages);
+			if(elements != null) {
+				// Generate any missing IDs and freeze all elements
+				for(Element element : elements) {
+					// Calling getId causes any missing id to be generated
+					element.getId();
+					// Freeze it now, nothing else should change
+					element.freeze();
+				}
+				assert elementsById != null;
+				assert elements.size() == elementsById.size() : "elements and elementsById are different size: " + elements.size() + " != " + elementsById.size();
+				elements = AoCollections.optimalUnmodifiableList(elements);
+				elementsById = AoCollections.optimalUnmodifiableMap(elementsById);
 			}
-			assert elementsById != null;
-			assert elements.size() == elementsById.size() : "elements and elementsById are different size: " + elements.size() + " != " + elementsById.size();
+			if(generatedIds != null) generatedIds = AoCollections.optimalUnmodifiableSet(generatedIds);
+			super.freeze();
+			return this;
 		}
-		super.freeze();
-		return this;
 	}
 
 	/**
 	 * The PageRef that refers to this page.
 	 */
 	public PageRef getPageRef() {
-		return pageRef;
+		synchronized(lock) {
+			return pageRef;
+		}
 	}
 
 	public void setPageRef(PageRef pageRef) {
-		checkNotFrozen();
-		this.pageRef = pageRef;
+		synchronized(lock) {
+			checkNotFrozen();
+			this.pageRef = pageRef;
+		}
 	}
 
 	/**
 	 * The PageRef of the editable source for this page, if any.
 	 */
 	public PageRef getSrc() {
-		return src;
+		synchronized(lock) {
+			return src;
+		}
 	}
 
 	public void setSrc(PageRef src) {
-		checkNotFrozen();
-		this.src = src;
+		synchronized(lock) {
+			checkNotFrozen();
+			this.src = src;
+		}
 	}
 
 	public Copyright getCopyright() {
-		return copyright;
+		synchronized(lock) {
+			return copyright;
+		}
 	}
 
 	public void setCopyright(Copyright copyright) {
-		checkNotFrozen();
-		this.copyright = copyright;
+		synchronized(lock) {
+			checkNotFrozen();
+			this.copyright = copyright;
+		}
 	}
 
 	public Set<Author> getAuthors() {
-		if(authors == null) return Collections.emptySet();
-		return Collections.unmodifiableSet(authors);
+		synchronized(lock) {
+			if(authors == null) return Collections.emptySet();
+			if(frozen) return authors;
+			return AoCollections.unmodifiableCopySet(authors);
+		}
 	}
 
 	public void addAuthor(Author author) {
-		checkNotFrozen();
-		if(authors == null) authors = new LinkedHashSet<Author>();
-		if(!authors.add(author)) throw new IllegalStateException("Duplicate author: " + author);
+		synchronized(lock) {
+			checkNotFrozen();
+			if(authors == null) authors = new LinkedHashSet<Author>();
+			if(!authors.add(author)) throw new IllegalStateException("Duplicate author: " + author);
+		}
 	}
 
 	public String getTitle() {
-		return title;
+		synchronized(lock) {
+			return title;
+		}
 	}
 
 	public void setTitle(String title) {
-		checkNotFrozen();
-		this.title = title;
+		synchronized(lock) {
+			checkNotFrozen();
+			this.title = title;
+		}
 	}
 
 	/**
@@ -160,30 +189,42 @@ public class Page extends Node implements Comparable<Page> {
 	 * @see  #getTitle
 	 */
 	public String getShortTitle() {
-		return shortTitle != null ? shortTitle : getTitle();
+		synchronized(lock) {
+			return shortTitle != null ? shortTitle : getTitle();
+		}
 	}
 
 	public void setShortTitle(String shortTitle) {
-		checkNotFrozen();
-		this.shortTitle = shortTitle;
+		synchronized(lock) {
+			checkNotFrozen();
+			this.shortTitle = shortTitle;
+		}
 	}
 
 	public String getDescription() {
-		return description;
+		synchronized(lock) {
+			return description;
+		}
 	}
 
 	public void setDescription(String description) {
-		checkNotFrozen();
-		this.description = description;
+		synchronized(lock) {
+			checkNotFrozen();
+			this.description = description;
+		}
 	}
 
 	public String getKeywords() {
-		return keywords;
+		synchronized(lock) {
+			return keywords;
+		}
 	}
 
 	public void setKeywords(String keywords) {
-		checkNotFrozen();
-		this.keywords = keywords;
+		synchronized(lock) {
+			checkNotFrozen();
+			this.keywords = keywords;
+		}
 	}
 
 	/**
@@ -195,12 +236,16 @@ public class Page extends Node implements Comparable<Page> {
 	 * </ul>
 	 */
 	public Boolean getAllowRobots() {
-		return allowRobots;
+		synchronized(lock) {
+			return allowRobots;
+		}
 	}
 
 	public void setAllowRobots(Boolean allowRobots) {
-		checkNotFrozen();
-		this.allowRobots = allowRobots;
+		synchronized(lock) {
+			checkNotFrozen();
+			this.allowRobots = allowRobots;
+		}
 	}
 
 	/**
@@ -213,65 +258,91 @@ public class Page extends Node implements Comparable<Page> {
 	 * TODO: Move this to Section.
 	 */
 	public Boolean getToc() {
-		return toc;
+		synchronized(lock) {
+			return toc;
+		}
 	}
 
 	public void setToc(Boolean toc) {
-		checkNotFrozen();
-		this.toc = toc;
+		synchronized(lock) {
+			checkNotFrozen();
+			this.toc = toc;
+		}
 	}
 
 	/**
 	 * TODO: Move this to Section.
 	 */
 	public int getTocLevels() {
-		return tocLevels;
+		synchronized(lock) {
+			return tocLevels;
+		}
 	}
 
 	public void setTocLevels(int tocLevels) {
-		checkNotFrozen();
-		if(tocLevels < MIN_TOC_LEVELS || tocLevels > MAX_TOC_LEVELS) throw new IllegalArgumentException("tocLevels must be between " + MIN_TOC_LEVELS + " and " + MAX_TOC_LEVELS + ": " + tocLevels);
-		this.tocLevels = tocLevels;
+		synchronized(lock) {
+			checkNotFrozen();
+			if(tocLevels < MIN_TOC_LEVELS || tocLevels > MAX_TOC_LEVELS) throw new IllegalArgumentException("tocLevels must be between " + MIN_TOC_LEVELS + " and " + MAX_TOC_LEVELS + ": " + tocLevels);
+			this.tocLevels = tocLevels;
+		}
 	}
 
 	public Set<PageRef> getParentPages() {
-		if(parentPages == null) return Collections.emptySet();
-		return Collections.unmodifiableSet(parentPages);
+		synchronized(lock) {
+			if(parentPages == null) return Collections.emptySet();
+			if(frozen) return parentPages;
+			return AoCollections.unmodifiableCopySet(parentPages);
+		}
 	}
 
 	public void addParentPage(PageRef parentPage) {
-		checkNotFrozen();
-		if(parentPages == null) parentPages = new LinkedHashSet<PageRef>();
-		if(!parentPages.add(parentPage)) throw new IllegalStateException("Duplicate parent: " + parentPage);
+		synchronized(lock) {
+			checkNotFrozen();
+			if(parentPages == null) parentPages = new LinkedHashSet<PageRef>();
+			if(!parentPages.add(parentPage)) throw new IllegalStateException("Duplicate parent: " + parentPage);
+		}
 	}
 
 	public boolean getAllowParentMismatch() {
-		return allowParentMismatch;
+		synchronized(lock) {
+			return allowParentMismatch;
+		}
 	}
 
 	public void setAllowParentMismatch(boolean allowParentMismatch) {
-		checkNotFrozen();
-		this.allowParentMismatch = allowParentMismatch;
+		synchronized(lock) {
+			checkNotFrozen();
+			this.allowParentMismatch = allowParentMismatch;
+		}
 	}
 
 	public Set<PageRef> getChildPages() {
-		if(childPages == null) return Collections.emptySet();
-		return Collections.unmodifiableSet(childPages);
+		synchronized(lock) {
+			if(childPages == null) return Collections.emptySet();
+			if(frozen) return childPages;
+			return AoCollections.unmodifiableCopySet(childPages);
+		}
 	}
 
 	public void addChildPage(PageRef childPage) {
-		checkNotFrozen();
-		if(childPages == null) childPages = new LinkedHashSet<PageRef>();
-		if(!childPages.add(childPage)) throw new IllegalStateException("Duplicate child: " + childPage);
+		synchronized(lock) {
+			checkNotFrozen();
+			if(childPages == null) childPages = new LinkedHashSet<PageRef>();
+			if(!childPages.add(childPage)) throw new IllegalStateException("Duplicate child: " + childPage);
+		}
 	}
 
 	public boolean getAllowChildMismatch() {
-		return allowChildMismatch;
+		synchronized(lock) {
+			return allowChildMismatch;
+		}
 	}
 
 	public void setAllowChildMismatch(boolean allowChildMismatch) {
-		checkNotFrozen();
-		this.allowChildMismatch = allowChildMismatch;
+		synchronized(lock) {
+			checkNotFrozen();
+			this.allowChildMismatch = allowChildMismatch;
+		}
 	}
 
 	/**
@@ -279,8 +350,11 @@ public class Page extends Node implements Comparable<Page> {
 	 * order they were declared in the page.
 	 */
 	public List<Element> getElements() {
-		if(elements == null) return Collections.emptyList();
-		return Collections.unmodifiableList(elements);
+		synchronized(lock) {
+			if(elements == null) return Collections.emptyList();
+			if(frozen) return elements;
+			return AoCollections.unmodifiableCopyList(elements);
+		}
 	}
 
 	/**
@@ -288,8 +362,10 @@ public class Page extends Node implements Comparable<Page> {
 	 * given type, in the order they were declared in the page.
 	 */
 	public <E extends Element> List<E> filterElements(Class<E> clazz) {
-		if(elements == null) return Collections.emptyList();
-		return AoCollections.filter(elements, clazz);
+		synchronized(lock) {
+			if(elements == null) return Collections.emptyList();
+			return AoCollections.filter(elements, clazz);
+		}
 	}
 
 	/**
@@ -300,32 +376,41 @@ public class Page extends Node implements Comparable<Page> {
 	 * @see  #freeze()
 	 */
 	public Map<String,Element> getElementsById() {
-		if(elementsById == null) return Collections.emptyMap();
-		return Collections.unmodifiableMap(elementsById);
+		synchronized(lock) {
+			if(elementsById == null) return Collections.emptyMap();
+			if(frozen) return elementsById;
+			return AoCollections.unmodifiableCopyMap(elementsById);
+		}
 	}
 
 	/**
 	 * Gets which element IDs were generated.
 	 */
 	public Set<String> getGeneratedIds() {
-		if(generatedIds == null) return Collections.emptySet();
-		return Collections.unmodifiableSet(generatedIds);
+		synchronized(lock) {
+			if(generatedIds == null) return Collections.emptySet();
+			if(frozen) return generatedIds;
+			return AoCollections.unmodifiableCopySet(generatedIds);
+		}
 	}
 
 	/**
 	 * Adds an element to this page.
 	 */
 	public void addElement(Element element) {
-		checkNotFrozen();
-		element.setPage(this);
-		// elements
-		if(elements == null) elements = new ArrayList<Element>();
-		elements.add(element);
-		// elementsById
-		addToElementsById(element, false);
+		synchronized(lock) {
+			checkNotFrozen();
+			element.setPage(this);
+			// elements
+			if(elements == null) elements = new ArrayList<Element>();
+			elements.add(element);
+			// elementsById
+			addToElementsById(element, false);
+		}
 	}
 
 	private void addToElementsById(Element element, boolean generated) {
+		assert Thread.holdsLock(lock);
 		String id = element.getIdNoGen();
 		if(id != null) {
 			if(elementsById == null) elementsById = new HashMap<String,Element>();
@@ -344,7 +429,9 @@ public class Page extends Node implements Comparable<Page> {
 	 * @see  Element#setId(java.lang.String)
 	 */
 	void onElementIdSet(Element element, boolean generated) {
-		addToElementsById(element, generated);
+		synchronized(lock) {
+			addToElementsById(element, generated);
+		}
 	}
 
 	/**
