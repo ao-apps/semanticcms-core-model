@@ -43,9 +43,54 @@ import java.util.Set;
 abstract public class Node implements Freezable<Node> {
 
 	/**
-	 * Random numbers for node keys.
+	 * Should be kept as a thread-local, is not thread safe.
 	 */
-	private static final SecureRandom random = new SecureRandom();
+	static class IdGenerator {
+
+		/**
+		 * Random numbers for node keys.
+		 */
+		private static final SecureRandom secureRandom = new SecureRandom();
+
+		/**
+		 * The number of consecutive values to use per thread before getting a new random start.
+		 * To reduce the lock contention and load on the random number generator, each thread will use a range of values
+		 * started at a value provided by this random.  TODO: Watch for and avoid wraparound.
+		 */
+		private static final int CONSECUTIVE_COUNT = 16384;
+
+		private long nextVal;
+		private long rangeEnd;
+
+		long getNextId() {
+			long c = nextVal++;
+			if(c >= rangeEnd) {
+				// Start new range
+				c = secureRandom.nextLong();
+				// Avoid wraparound
+				if(c > (Long.MAX_VALUE - CONSECUTIVE_COUNT)) c -= CONSECUTIVE_COUNT;
+				nextVal = c + 1;
+				rangeEnd = c + CONSECUTIVE_COUNT;
+			}
+			return c;
+		}
+
+		/**
+		 * Resets the idGenerator to start a new random range on next id.
+		 * This should be called when an id collision is detected.
+		 */
+		void reset() {
+			nextVal = 0;
+			rangeEnd = 0;
+		}
+	}
+
+	private static final ThreadLocal<IdGenerator> idGenerators = new ThreadLocal<IdGenerator>() {
+		@Override
+		protected IdGenerator initialValue() {
+			return new IdGenerator();
+		}
+	};
 
 	protected final Object lock = new Object();
 	protected boolean frozen;
@@ -98,11 +143,15 @@ abstract public class Node implements Freezable<Node> {
 			if(childElements == null) childElements = new ArrayList<Element>();
 			childElements.add(childElement);
 			if(elementWriters == null) elementWriters = new HashMap<Long,ElementWriter>();
+			IdGenerator idGenerator = idGenerators.get();
 			while(true) {
-				Long elementKey = random.nextLong();
+				Long elementKey = idGenerator.getNextId();
 				if(!elementWriters.containsKey(elementKey)) {
 					elementWriters.put(elementKey, elementWriter);
 					return elementKey;
+				} else {
+					// Reset generator when duplicate found (this should be extremely rare)
+					idGenerator.reset();
 				}
 			}
 		}
