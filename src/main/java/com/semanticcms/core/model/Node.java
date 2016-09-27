@@ -92,7 +92,8 @@ abstract public class Node implements Freezable<Node> {
 		}
 	};
 
-	protected final Object lock = new Object();
+	private static class Lock {}
+	protected final Lock lock = new Lock();
 	protected boolean frozen;
 	private List<Element> childElements;
 	private Map<Long,ElementWriter> elementWriters;
