@@ -140,14 +140,14 @@ abstract public class Element extends Node {
 	private Element parentElement;
 
 	/**
-	 * Two elements are equal when they are the same object or are on the same page
-	 * and have the same ID.  If either one does not have a page
+	 * Two elements are equal when they are the same object or when they are
+	 * on the same page and have the same ID.  If either one does not have a page
 	 * or does not (yet) have an ID, they will not be equal.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof Element)) return false;
 		if(this == obj) return true;
+		if(!(obj instanceof Element)) return false;
 		Page page1;
 		String id1;
 		synchronized(lock) {
@@ -166,11 +166,15 @@ abstract public class Element extends Node {
 
 	@Override
 	public int hashCode() {
+		Page p;
+		String i;
 		synchronized(lock) {
-			int hash = ObjectUtils.hashCode(page);
-			hash = hash * 31 + ObjectUtils.hashCode(id);
-			return hash;
+			p = this.page;
+			i = this.id;
 		}
+		int hash = ObjectUtils.hashCode(p);
+		hash = hash * 31 + ObjectUtils.hashCode(i);
+		return hash;
 	}
 
 	/**
