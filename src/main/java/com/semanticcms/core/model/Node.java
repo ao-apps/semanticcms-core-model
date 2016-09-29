@@ -94,11 +94,11 @@ abstract public class Node implements Freezable<Node> {
 
 	private static class Lock {}
 	protected final Lock lock = new Lock();
-	protected boolean frozen;
+	protected volatile boolean frozen; // Accessed without lock, only updated under lock
 	private List<Element> childElements;
 	private Map<Long,ElementWriter> elementWriters;
 	private Set<PageRef> pageLinks;
-	private BufferResult body;
+	private volatile BufferResult body;
 
 	/**
 	 * The toString calls {@link #getLabel()}
@@ -111,16 +111,17 @@ abstract public class Node implements Freezable<Node> {
 	@Override
 	public Node freeze() {
 		synchronized(lock) {
-			if(childElements != null) childElements = AoCollections.optimalUnmodifiableList(childElements);
-			if(elementWriters != null) elementWriters = AoCollections.optimalUnmodifiableMap(elementWriters);
-			if(pageLinks != null) pageLinks = AoCollections.optimalUnmodifiableSet(pageLinks);
-			frozen = true;
+			if(!frozen) {
+				if(childElements != null) childElements = AoCollections.optimalUnmodifiableList(childElements);
+				if(elementWriters != null) elementWriters = AoCollections.optimalUnmodifiableMap(elementWriters);
+				if(pageLinks != null) pageLinks = AoCollections.optimalUnmodifiableSet(pageLinks);
+				frozen = true;
+			}
 		}
 		return this;
 	}
 
 	protected void checkNotFrozen() throws FrozenException {
-		assert Thread.holdsLock(lock);
 		if(frozen) throw new FrozenException();
 	}
 
@@ -188,22 +189,19 @@ abstract public class Node implements Freezable<Node> {
 	 * Every node may potentially have HTML body.
 	 */
 	public BufferResult getBody() {
-		synchronized(lock) {
-			if(body == null) return EmptyResult.getInstance();
-			return body;
-		}
+		BufferResult b = body;
+		if(b == null) return EmptyResult.getInstance();
+		return b;
 	}
 
 	public void setBody(BufferResult body) {
-		synchronized(lock) {
-			checkNotFrozen();
-			try {
-				assert body.getLength()==body.trim().getLength() : "body must have already been trimmed";
-			} catch(IOException e) {
-				throw new AssertionError(e);
-			}
-			this.body = body;
+		checkNotFrozen();
+		try {
+			assert body.getLength()==body.trim().getLength() : "body must have already been trimmed";
+		} catch(IOException e) {
+			throw new AssertionError(e);
 		}
+		this.body = body;
 	}
 
 	/**
