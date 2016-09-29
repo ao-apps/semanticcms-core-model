@@ -45,21 +45,21 @@ public class Page extends Node implements Comparable<Page> {
 
 	public static final int DEFAULT_TOC_LEVELS = 3;
 
-	private PageRef pageRef;
-	private PageRef src;
-	private Copyright copyright;
+	private volatile PageRef pageRef;
+	private volatile PageRef src;
+	private volatile Copyright copyright;
 	private Set<Author> authors;
-	private String title;
-	private String shortTitle;
-	private String description;
-	private String keywords;
-	private Boolean allowRobots;
-	private Boolean toc;
-	private int tocLevels = DEFAULT_TOC_LEVELS;
+	private volatile String title;
+	private volatile String shortTitle;
+	private volatile String description;
+	private volatile String keywords;
+	private volatile Boolean allowRobots;
+	private volatile Boolean toc;
+	private volatile int tocLevels = DEFAULT_TOC_LEVELS;
 	private Set<PageRef> parentPages;
-	private boolean allowParentMismatch;
+	private volatile boolean allowParentMismatch;
 	private Set<PageRef> childPages;
-	private boolean allowChildMismatch;
+	private volatile boolean allowChildMismatch;
 	private List<Element> elements;
 	private Map<String,Element> elementsById;
 	// Keeps track of which element Ids are system generated
@@ -84,71 +84,61 @@ public class Page extends Node implements Comparable<Page> {
 	@Override
 	public Page freeze() {
 		synchronized(lock) {
-			if(authors != null) authors = AoCollections.optimalUnmodifiableSet(authors);
-			if(parentPages != null) parentPages = AoCollections.optimalUnmodifiableSet(parentPages);
-			if(childPages != null) childPages = AoCollections.optimalUnmodifiableSet(childPages);
-			if(elements != null) {
-				// Generate any missing IDs and freeze all elements
-				for(Element element : elements) {
-					// Calling getId causes any missing id to be generated
-					element.getId();
-					// Freeze it now, nothing else should change
-					element.freeze();
+			if(!frozen) {
+				if(authors != null) authors = AoCollections.optimalUnmodifiableSet(authors);
+				if(parentPages != null) parentPages = AoCollections.optimalUnmodifiableSet(parentPages);
+				if(childPages != null) childPages = AoCollections.optimalUnmodifiableSet(childPages);
+				if(elements != null) {
+					// Generate any missing IDs and freeze all elements
+					for(Element element : elements) {
+						// Calling getId causes any missing id to be generated
+						element.getId();
+						// Freeze it now, nothing else should change
+						element.freeze();
+					}
+					assert elementsById != null;
+					assert elements.size() == elementsById.size() : "elements and elementsById are different size: " + elements.size() + " != " + elementsById.size();
+					elements = AoCollections.optimalUnmodifiableList(elements);
+					elementsById = AoCollections.optimalUnmodifiableMap(elementsById);
 				}
-				assert elementsById != null;
-				assert elements.size() == elementsById.size() : "elements and elementsById are different size: " + elements.size() + " != " + elementsById.size();
-				elements = AoCollections.optimalUnmodifiableList(elements);
-				elementsById = AoCollections.optimalUnmodifiableMap(elementsById);
+				if(generatedIds != null) generatedIds = AoCollections.optimalUnmodifiableSet(generatedIds);
+				super.freeze();
 			}
-			if(generatedIds != null) generatedIds = AoCollections.optimalUnmodifiableSet(generatedIds);
-			super.freeze();
-			return this;
 		}
+		return this;
 	}
 
 	/**
 	 * The PageRef that refers to this page.
 	 */
 	public PageRef getPageRef() {
-		synchronized(lock) {
-			return pageRef;
-		}
+		return pageRef;
 	}
 
 	public void setPageRef(PageRef pageRef) {
-		synchronized(lock) {
-			checkNotFrozen();
-			this.pageRef = pageRef;
-		}
+		checkNotFrozen();
+		this.pageRef = pageRef;
 	}
 
 	/**
 	 * The PageRef of the editable source for this page, if any.
 	 */
 	public PageRef getSrc() {
-		synchronized(lock) {
-			return src;
-		}
+		return src;
 	}
 
 	public void setSrc(PageRef src) {
-		synchronized(lock) {
-			checkNotFrozen();
-			this.src = src;
-		}
+		checkNotFrozen();
+		this.src = src;
 	}
 
 	public Copyright getCopyright() {
-		synchronized(lock) {
-			return copyright;
-		}
+		return copyright;
 	}
 
 	public void setCopyright(Copyright copyright) {
-		synchronized(lock) {
-			checkNotFrozen();
-			this.copyright = copyright;
-		}
+		checkNotFrozen();
+		this.copyright = copyright;
 	}
 
 	public Set<Author> getAuthors() {
@@ -168,16 +158,12 @@ public class Page extends Node implements Comparable<Page> {
 	}
 
 	public String getTitle() {
-		synchronized(lock) {
-			return title;
-		}
+		return title;
 	}
 
 	public void setTitle(String title) {
-		synchronized(lock) {
-			checkNotFrozen();
-			this.title = title;
-		}
+		checkNotFrozen();
+		this.title = title;
 	}
 
 	/**
@@ -189,42 +175,31 @@ public class Page extends Node implements Comparable<Page> {
 	 * @see  #getTitle
 	 */
 	public String getShortTitle() {
-		synchronized(lock) {
-			return shortTitle != null ? shortTitle : getTitle();
-		}
+		String st = shortTitle;
+		return st != null ? st : getTitle();
 	}
 
 	public void setShortTitle(String shortTitle) {
-		synchronized(lock) {
-			checkNotFrozen();
-			this.shortTitle = shortTitle;
-		}
+		checkNotFrozen();
+		this.shortTitle = shortTitle;
 	}
 
 	public String getDescription() {
-		synchronized(lock) {
-			return description;
-		}
+		return description;
 	}
 
 	public void setDescription(String description) {
-		synchronized(lock) {
-			checkNotFrozen();
-			this.description = description;
-		}
+		checkNotFrozen();
+		this.description = description;
 	}
 
 	public String getKeywords() {
-		synchronized(lock) {
-			return keywords;
-		}
+		return keywords;
 	}
 
 	public void setKeywords(String keywords) {
-		synchronized(lock) {
-			checkNotFrozen();
-			this.keywords = keywords;
-		}
+		checkNotFrozen();
+		this.keywords = keywords;
 	}
 
 	/**
@@ -236,16 +211,12 @@ public class Page extends Node implements Comparable<Page> {
 	 * </ul>
 	 */
 	public Boolean getAllowRobots() {
-		synchronized(lock) {
-			return allowRobots;
-		}
+		return allowRobots;
 	}
 
 	public void setAllowRobots(Boolean allowRobots) {
-		synchronized(lock) {
-			checkNotFrozen();
-			this.allowRobots = allowRobots;
-		}
+		checkNotFrozen();
+		this.allowRobots = allowRobots;
 	}
 
 	/**
@@ -258,33 +229,25 @@ public class Page extends Node implements Comparable<Page> {
 	 * TODO: Move this to Section.
 	 */
 	public Boolean getToc() {
-		synchronized(lock) {
-			return toc;
-		}
+		return toc;
 	}
 
 	public void setToc(Boolean toc) {
-		synchronized(lock) {
-			checkNotFrozen();
-			this.toc = toc;
-		}
+		checkNotFrozen();
+		this.toc = toc;
 	}
 
 	/**
 	 * TODO: Move this to Section.
 	 */
 	public int getTocLevels() {
-		synchronized(lock) {
-			return tocLevels;
-		}
+		return tocLevels;
 	}
 
 	public void setTocLevels(int tocLevels) {
-		synchronized(lock) {
-			checkNotFrozen();
-			if(tocLevels < MIN_TOC_LEVELS || tocLevels > MAX_TOC_LEVELS) throw new IllegalArgumentException("tocLevels must be between " + MIN_TOC_LEVELS + " and " + MAX_TOC_LEVELS + ": " + tocLevels);
-			this.tocLevels = tocLevels;
-		}
+		checkNotFrozen();
+		if(tocLevels < MIN_TOC_LEVELS || tocLevels > MAX_TOC_LEVELS) throw new IllegalArgumentException("tocLevels must be between " + MIN_TOC_LEVELS + " and " + MAX_TOC_LEVELS + ": " + tocLevels);
+		this.tocLevels = tocLevels;
 	}
 
 	public Set<PageRef> getParentPages() {
@@ -304,16 +267,12 @@ public class Page extends Node implements Comparable<Page> {
 	}
 
 	public boolean getAllowParentMismatch() {
-		synchronized(lock) {
-			return allowParentMismatch;
-		}
+		return allowParentMismatch;
 	}
 
 	public void setAllowParentMismatch(boolean allowParentMismatch) {
-		synchronized(lock) {
-			checkNotFrozen();
-			this.allowParentMismatch = allowParentMismatch;
-		}
+		checkNotFrozen();
+		this.allowParentMismatch = allowParentMismatch;
 	}
 
 	public Set<PageRef> getChildPages() {
@@ -333,16 +292,12 @@ public class Page extends Node implements Comparable<Page> {
 	}
 
 	public boolean getAllowChildMismatch() {
-		synchronized(lock) {
-			return allowChildMismatch;
-		}
+		return allowChildMismatch;
 	}
 
 	public void setAllowChildMismatch(boolean allowChildMismatch) {
-		synchronized(lock) {
-			checkNotFrozen();
-			this.allowChildMismatch = allowChildMismatch;
-		}
+		checkNotFrozen();
+		this.allowChildMismatch = allowChildMismatch;
 	}
 
 	/**

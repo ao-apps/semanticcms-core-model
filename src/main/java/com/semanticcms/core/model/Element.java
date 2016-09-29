@@ -135,9 +135,9 @@ abstract public class Element extends Node {
 		return idPrefix;
 	}
 
-	private Page page;
-	private String id;
-	private Element parentElement;
+	private volatile Page page;
+	private volatile String id;
+	private volatile Element parentElement;
 
 	/**
 	 * Two elements are equal when they are the same object or when they are
@@ -148,32 +148,20 @@ abstract public class Element extends Node {
 	public boolean equals(Object obj) {
 		if(this == obj) return true;
 		if(!(obj instanceof Element)) return false;
-		Page page1;
-		String id1;
-		synchronized(lock) {
-			page1 = page;
-			id1 = id;
-		}
-		if(page1 == null || id1 == null) return false;
+		Page p = page;
+		String i = id;
+		if(p == null || i == null) return false;
 		Element other = (Element)obj;
-		synchronized(other.lock) {
-			return
-				page1.equals(other.page)
-				&& id1.equals(other.id)
-			;
-		}
+		return
+			p.equals(other.page)
+			&& i.equals(other.id)
+		;
 	}
 
 	@Override
 	public int hashCode() {
-		Page p;
-		String i;
-		synchronized(lock) {
-			p = this.page;
-			i = this.id;
-		}
-		int hash = ObjectUtils.hashCode(p);
-		hash = hash * 31 + ObjectUtils.hashCode(i);
+		int hash = ObjectUtils.hashCode(page);
+		hash = hash * 31 + ObjectUtils.hashCode(id);
 		return hash;
 	}
 
@@ -191,19 +179,11 @@ abstract public class Element extends Node {
 	 */
 	abstract protected String getDefaultIdPrefix();
 
-	@Override
-	public Element freeze() {
-		super.freeze();
-		return this;
-	}
-
 	/**
 	 * Every element may (and usually will) exist within a page.
 	 */
 	public Page getPage() {
-		synchronized(lock) {
-			return page;
-		}
+		return page;
 	}
 
 	/**
@@ -224,9 +204,7 @@ abstract public class Element extends Node {
 	 * Gets the ID, without generating it if missing.
 	 */
 	String getIdNoGen() {
-		synchronized(lock) {
-			return id;
-		}
+		return id;
 	}
 
 	/**
@@ -234,36 +212,38 @@ abstract public class Element extends Node {
 	 * When not inside a page, no missing ID is generated and it will remain null.
 	 */
 	public String getId() {
-		synchronized(lock) {
-			if(id == null) {
-				if(page != null) {
-					Map<String,Element> elementsById = page.getElementsById();
-					// Generate the ID now
-					String template = getElementIdTemplate();
-					if(template == null) {
-						throw new IllegalStateException("null from getElementIdTemplate");
-					}
-					StringBuilder possId = Element.generateIdPrefix(template, getDefaultIdPrefix());
-					int possIdLen = possId.length();
-					// Find an unused identifier
-					for(int i=1; i<=Integer.MAX_VALUE; i++) {
-						if(i == Integer.MAX_VALUE) throw new IllegalStateException("ID not generated");
-						if(i>1) possId.append('-').append(i);
-						String newId = possId.toString();
-						if(
-							elementsById == null
-							|| !elementsById.containsKey(newId)
-						) {
-							setId(newId, true);
-							break;
+		if(id == null) {
+			synchronized(lock) {
+				if(id == null) {
+					if(page != null) {
+						Map<String,Element> elementsById = page.getElementsById();
+						// Generate the ID now
+						String template = getElementIdTemplate();
+						if(template == null) {
+							throw new IllegalStateException("null from getElementIdTemplate");
 						}
-						// Reset for next element number to check
-						possId.setLength(possIdLen);
+						StringBuilder possId = Element.generateIdPrefix(template, getDefaultIdPrefix());
+						int possIdLen = possId.length();
+						// Find an unused identifier
+						for(int i=1; i<=Integer.MAX_VALUE; i++) {
+							if(i == Integer.MAX_VALUE) throw new IllegalStateException("ID not generated");
+							if(i>1) possId.append('-').append(i);
+							String newId = possId.toString();
+							if(
+								elementsById == null
+								|| !elementsById.containsKey(newId)
+							) {
+								setId(newId, true);
+								break;
+							}
+							// Reset for next element number to check
+							possId.setLength(possIdLen);
+						}
 					}
 				}
 			}
-			return id;
 		}
+		return id;
 	}
 
 	public void setId(String id) {
@@ -288,9 +268,7 @@ abstract public class Element extends Node {
 	 * any parent.
 	 */
 	public Element getParentElement() {
-		synchronized(lock) {
-			return parentElement;
-		}
+		return parentElement;
 	}
 
 	/**
@@ -306,12 +284,8 @@ abstract public class Element extends Node {
 	}
 
 	private boolean checkPageAndParentElement() {
-		Page p;
-		Element pe;
-		synchronized(lock) {
-			p = this.page;
-			pe = this.parentElement;
-		}
+		Page p = this.page;
+		Element pe = this.parentElement;
 		if(
 			p != null
 			&& pe != null
