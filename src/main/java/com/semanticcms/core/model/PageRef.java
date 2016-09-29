@@ -172,6 +172,7 @@ public class PageRef implements Comparable<PageRef> {
 	}
 
 	private volatile File resourceFile;
+	private volatile Boolean exists;
 
 	/**
 	 * the underlying file, only available when have access to the referenced book
@@ -207,8 +208,15 @@ public class PageRef implements Comparable<PageRef> {
 				) {
 					throw new SecurityException();
 				}
-				if(requireFile && !rf.exists()) throw new FileNotFoundException(rf.getPath());
 				this.resourceFile = rf;
+			}
+			if(requireFile) {
+				Boolean e = this.exists;
+				if(e == null) {
+					e = rf.exists();
+					this.exists = e;
+				}
+				if(!e) throw new FileNotFoundException(rf.getPath());
 			}
 			return rf;
 		}
