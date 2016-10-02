@@ -36,7 +36,14 @@ import java.io.IOException;
  */
 public class PageRef implements Comparable<PageRef> {
 
+	/**
+	 * @see  String#intern()  always interned
+	 */
 	private final String bookName;
+
+	/**
+	 * @see  String#intern()  always interned
+	 */
 	private final String path;
 	
 	/**
@@ -47,24 +54,34 @@ public class PageRef implements Comparable<PageRef> {
 	private final Book book;
 
 	private PageRef(String bookName, String path, Book book) {
-		this.bookName = NullArgumentException.checkNotNull(bookName, "bookName");
-		this.path = NullArgumentException.checkNotNull(path, "path");
+		assert book != null || bookName == bookName.intern();
+		this.bookName = book != null ? book.getName() : bookName;
+		this.path = path.intern();
 		if(!path.startsWith("/")) throw new IllegalArgumentException("Path does not begin with a slash: " + path);
-		assert book==null || book.getName().equals(bookName);
 		this.book = book;
 	}
 
 	public PageRef(String bookName, String path) {
-		this(bookName, path, null);
+		this(
+			NullArgumentException.checkNotNull(bookName, "bookName").intern(),
+			NullArgumentException.checkNotNull(path, "path"),
+			null
+		);
 	}
 
 	public PageRef(Book book, String path) {
-		this(book.getName(), path, book);
+		this(
+			null,
+			NullArgumentException.checkNotNull(path, "path"),
+			NullArgumentException.checkNotNull(book, "book")
+		);
 	}
 
 	/**
 	 * The name of the book the page is part of.
 	 * This will always begin with a slash (/).
+	 * 
+	 * @see  String#intern()  always interned
 	 */
 	public String getBookName() {
 		return bookName;
@@ -73,13 +90,18 @@ public class PageRef implements Comparable<PageRef> {
 	/**
 	 * The prefix of the book the page is part of.
 	 * This will be <code>""</code> for the root book <code>"/"</code>.
+	 * 
+	 * @see  String#intern()  always interned
 	 */
 	public String getBookPrefix() {
-		return "/".equals(bookName) ? "" : bookName;
+		String bn = bookName;
+		return "/".equals(bn) ? "" : bn;
 	}
 
 	/**
 	 * The book-relative path to the page, always starting with a slash (/).
+	 * 
+	 * @see  String#intern()  always interned
 	 */
 	public String getPath() {
 		return path;
@@ -107,11 +129,14 @@ public class PageRef implements Comparable<PageRef> {
 
 	@Override
 	public boolean equals(Object obj) {
+		if(this == obj) return true;
 		if(!(obj instanceof PageRef)) return false;
 		PageRef other = (PageRef)obj;
+		assert bookName == bookName.intern();
+		assert path == path.intern();
 		return
-			bookName.equals(other.bookName)
-			&& path.equals(other.path)
+			bookName == other.bookName
+			&& path == other.path
 		;
 	}
 
@@ -149,7 +174,8 @@ public class PageRef implements Comparable<PageRef> {
 	public String getServletPath() {
 		String sp = servletPath;
 		if(sp == null) {
-			sp = ("/".equals(bookName)) ? path : (bookName + path);
+			String bn = bookName;
+			sp = ("/".equals(bn)) ? path : (bn + path);
 			servletPath = sp;
 		}
 		return sp;
@@ -162,7 +188,8 @@ public class PageRef implements Comparable<PageRef> {
 	 * @see #getServletPath() 
 	 */
 	public void appendServletPath(Appendable out) throws IOException {
-		if(!"/".equals(bookName)) out.append(bookName);
+		String bn = bookName;
+		if(!"/".equals(bn)) out.append(bn);
 		out.append(path);
 	}
 
