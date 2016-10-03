@@ -262,6 +262,34 @@ abstract public class Element extends Node {
 		}
 	}
 
+	private volatile ElementRef elementRef;
+
+	/**
+	 * Gets an ElementRef for this element.
+	 * Must have a page set.
+	 * If id has not yet been set, one will be generated.
+	 *
+	 * @throws  IllegalStateException  if page not set
+	 */
+	public ElementRef getElementRef() throws IllegalStateException {
+		Page p = page;
+		if(p == null) throw new IllegalStateException("page not set");
+		PageRef pageRef = p.getPageRef();
+		String i = getId();
+		if(i == null) throw new IllegalStateException("page not set so no id generated");
+		ElementRef er = elementRef;
+		if(
+			er == null
+			// Make sure object still valid
+			|| !er.getPageRef().equals(pageRef)
+			|| !er.getId().equals(i)
+		) {
+			er = new ElementRef(pageRef, i);
+			elementRef = er;
+		}
+		return er;
+	}
+
 	/**
 	 * Elements may be nested, gets the parent Element above this element.
 	 * Top-level parents within a page, or standalone elements, will not have
