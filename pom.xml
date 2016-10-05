@@ -32,7 +32,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 
 	<groupId>com.semanticcms</groupId>
 	<artifactId>semanticcms-core-model</artifactId>
-	<version>1.7-SNAPSHOT</version>
+	<version>1.7.0</version>
 	<packaging>jar</packaging>
 
 	<name>SemanticCMS Core Model</name>
@@ -44,7 +44,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 		<connection>scm:git:git://github.com/aoindustries/semanticcms-core-model.git</connection>
 		<developerConnection>scm:git:git@github.com:aoindustries/semanticcms-core-model.git</developerConnection>
 		<url>http://github.com/aoindustries/semanticcms-core-model</url>
-		<tag>HEAD</tag>
+		<tag>semanticcms-core-model-1.7.0</tag>
 	</scm>
 
 	<profiles>
