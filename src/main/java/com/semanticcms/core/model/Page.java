@@ -56,9 +56,9 @@ public class Page extends Node implements Comparable<Page> {
 	private volatile Boolean allowRobots;
 	private volatile Boolean toc;
 	private volatile int tocLevels = DEFAULT_TOC_LEVELS;
-	private Set<PageRef> parentPages;
+	private Set<ParentRef> parentRefs;
 	private volatile boolean allowParentMismatch;
-	private Set<PageRef> childPages;
+	private Set<ChildRef> childRefs;
 	private volatile boolean allowChildMismatch;
 	private List<Element> elements;
 	private Map<String,Element> elementsById;
@@ -86,8 +86,8 @@ public class Page extends Node implements Comparable<Page> {
 		synchronized(lock) {
 			if(!frozen) {
 				if(authors != null) authors = AoCollections.optimalUnmodifiableSet(authors);
-				if(parentPages != null) parentPages = AoCollections.optimalUnmodifiableSet(parentPages);
-				if(childPages != null) childPages = AoCollections.optimalUnmodifiableSet(childPages);
+				if(parentRefs != null) parentRefs = AoCollections.optimalUnmodifiableSet(parentRefs);
+				if(childRefs != null) childRefs = AoCollections.optimalUnmodifiableSet(childRefs);
 				if(elements != null) {
 					// Generate any missing IDs and freeze all elements
 					for(Element element : elements) {
@@ -250,19 +250,19 @@ public class Page extends Node implements Comparable<Page> {
 		this.tocLevels = tocLevels;
 	}
 
-	public Set<PageRef> getParentPages() {
+	public Set<ParentRef> getParentRefs() {
 		synchronized(lock) {
-			if(parentPages == null) return Collections.emptySet();
-			if(frozen) return parentPages;
-			return AoCollections.unmodifiableCopySet(parentPages);
+			if(parentRefs == null) return Collections.emptySet();
+			if(frozen) return parentRefs;
+			return AoCollections.unmodifiableCopySet(parentRefs);
 		}
 	}
 
-	public void addParentPage(PageRef parentPage) {
+	public void addParentRef(ParentRef parentRef) {
 		synchronized(lock) {
 			checkNotFrozen();
-			if(parentPages == null) parentPages = new LinkedHashSet<PageRef>();
-			if(!parentPages.add(parentPage)) throw new IllegalStateException("Duplicate parent: " + parentPage);
+			if(parentRefs == null) parentRefs = new LinkedHashSet<ParentRef>();
+			if(!parentRefs.add(parentRef)) throw new IllegalStateException("Duplicate parent: " + parentRef);
 		}
 	}
 
@@ -275,19 +275,19 @@ public class Page extends Node implements Comparable<Page> {
 		this.allowParentMismatch = allowParentMismatch;
 	}
 
-	public Set<PageRef> getChildPages() {
+	public Set<ChildRef> getChildRefs() {
 		synchronized(lock) {
-			if(childPages == null) return Collections.emptySet();
-			if(frozen) return childPages;
-			return AoCollections.unmodifiableCopySet(childPages);
+			if(childRefs == null) return Collections.emptySet();
+			if(frozen) return childRefs;
+			return AoCollections.unmodifiableCopySet(childRefs);
 		}
 	}
 
-	public void addChildPage(PageRef childPage) {
+	public void addChildRef(ChildRef childRef) {
 		synchronized(lock) {
 			checkNotFrozen();
-			if(childPages == null) childPages = new LinkedHashSet<PageRef>();
-			if(!childPages.add(childPage)) throw new IllegalStateException("Duplicate child: " + childPage);
+			if(childRefs == null) childRefs = new LinkedHashSet<ChildRef>();
+			if(!childRefs.add(childRef)) throw new IllegalStateException("Duplicate child: " + childRef);
 		}
 	}
 
