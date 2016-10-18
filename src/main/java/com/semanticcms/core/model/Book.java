@@ -52,7 +52,7 @@ public class Book implements Comparable<Book> {
 	private final String pathPrefix;
 
 	private final File cvsworkDirectory;
-	private final Set<PageRef> unmodifiableParentPages;
+	private final Set<ParentRef> unmodifiableParentRefs;
 	private final PageRef contentRoot;
 	private final Copyright copyright;
 	private final Set<Author> unmodifiableAuthors;
@@ -65,7 +65,7 @@ public class Book implements Comparable<Book> {
 		return bookProps.getProperty(key);
 	}
 
-	public Book(String name, String cvsworkDirectory, boolean allowRobots, Set<PageRef> parentPages, Properties bookProps) {
+	public Book(String name, String cvsworkDirectory, boolean allowRobots, Set<ParentRef> parentRefs, Properties bookProps) {
 		if(!name.startsWith("/")) throw new IllegalArgumentException("Book name must begin with a slash (/): " + name);
 
 		// Tracks each properties key used, will throw exception if any key exists in the properties file that is not used
@@ -78,7 +78,7 @@ public class Book implements Comparable<Book> {
 		} else {
 			this.cvsworkDirectory = new File(cvsworkDirectory);
 		}
-		this.unmodifiableParentPages = AoCollections.optimalUnmodifiableSet(parentPages);
+		this.unmodifiableParentRefs = AoCollections.optimalUnmodifiableSet(parentRefs);
 		String copyrightRightsHolder = getProperty(bookProps, usedKeys, "copyright.rightsHolder");
 		String copyrightRights = getProperty(bookProps, usedKeys, "copyright.rights");
 		String copyrightDateCopyrighted = getProperty(bookProps, usedKeys, "copyright.dateCopyrighted");
@@ -196,8 +196,8 @@ public class Book implements Comparable<Book> {
 	 * Gets the parent pages for this book in the context of the current overall
 	 * content.
 	 */
-	public Set<PageRef> getParentPages() {
-		return unmodifiableParentPages;
+	public Set<ParentRef> getParentRefs() {
+		return unmodifiableParentRefs;
 	}
 
 	/**
