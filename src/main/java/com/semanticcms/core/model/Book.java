@@ -23,6 +23,7 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.util.AoCollections;
+import com.aoindustries.util.StringUtility;
 import java.io.File;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -53,6 +54,7 @@ public class Book implements Comparable<Book> {
 
 	private final File cvsworkDirectory;
 	private final Set<ParentRef> unmodifiableParentRefs;
+	private final String canonicalBase;
 	private final PageRef contentRoot;
 	private final Copyright copyright;
 	private final Set<Author> unmodifiableAuthors;
@@ -132,6 +134,7 @@ public class Book implements Comparable<Book> {
 			}
 		}
 		this.unmodifiableParam = AoCollections.optimalUnmodifiableMap(newParam);
+		this.canonicalBase = StringUtility.nullIfEmpty(getProperty(bookProps, usedKeys, "canonicalBase"));
 		// Create the page refs once other aspects of the book have already been setup, since we'll be leaking "this"
 		this.contentRoot = new PageRef(this, getProperty(bookProps, usedKeys, "content.root"));
 
@@ -198,6 +201,14 @@ public class Book implements Comparable<Book> {
 	 */
 	public Set<ParentRef> getParentRefs() {
 		return unmodifiableParentRefs;
+	}
+
+	/**
+	 * Gets the configured canonicalBase for this book, or {@code null} if not
+	 * configured.
+	 */
+	public String getCanonicalBase() {
+		return canonicalBase;
 	}
 
 	/**
