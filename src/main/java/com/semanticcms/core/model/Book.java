@@ -134,7 +134,11 @@ public class Book implements Comparable<Book> {
 			}
 		}
 		this.unmodifiableParam = AoCollections.optimalUnmodifiableMap(newParam);
-		this.canonicalBase = StringUtility.nullIfEmpty(getProperty(bookProps, usedKeys, "canonicalBase"));
+		String cb = StringUtility.nullIfEmpty(getProperty(bookProps, usedKeys, "canonicalBase"));
+		while(cb != null && cb.endsWith("/")) {
+			cb = StringUtility.nullIfEmpty(cb.substring(0, cb.length() - 1));
+		}
+		this.canonicalBase = cb;
 		// Create the page refs once other aspects of the book have already been setup, since we'll be leaking "this"
 		this.contentRoot = new PageRef(this, getProperty(bookProps, usedKeys, "content.root"));
 
@@ -205,7 +209,8 @@ public class Book implements Comparable<Book> {
 
 	/**
 	 * Gets the configured canonicalBase for this book, or {@code null} if not
-	 * configured.
+	 * configured.  Any trailing slash (/) has been stripped from the canonicalBase
+	 * so can directly concatenate canonicalBase + path
 	 */
 	public String getCanonicalBase() {
 		return canonicalBase;
