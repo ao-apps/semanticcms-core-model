@@ -176,6 +176,7 @@ public class Page extends Node implements Comparable<Page> {
 	public void setDateCreated(ReadableDateTime dateCreated) {
 		checkNotFrozen();
 		this.dateCreated = dateCreated==null ? null : dateCreated.toDateTime();
+		checkDates();
 	}
 
 	/**
@@ -191,6 +192,7 @@ public class Page extends Node implements Comparable<Page> {
 	public void setDatePublished(ReadableDateTime datePublished) {
 		checkNotFrozen();
 		this.datePublished = datePublished==null ? null : datePublished.toDateTime();
+		checkDates();
 	}
 
 	/**
@@ -203,6 +205,7 @@ public class Page extends Node implements Comparable<Page> {
 	public void setDateModified(ReadableDateTime dateModified) {
 		checkNotFrozen();
 		this.dateModified = dateModified==null ? null : dateModified.toDateTime();
+		checkDates();
 	}
 
 	/**
@@ -217,6 +220,32 @@ public class Page extends Node implements Comparable<Page> {
 	public void setDateReviewed(ReadableDateTime dateReviewed) {
 		checkNotFrozen();
 		this.dateReviewed = dateReviewed==null ? null : dateReviewed.toDateTime();
+		checkDates();
+	}
+
+	/**
+	 * Checks the dates for consistency.
+	 */
+	private void checkDates() {
+		DateTime created = this.dateCreated;
+		DateTime published = this.datePublished;
+		DateTime modified = this.dateModified;
+		DateTime reviewed = this.dateReviewed;
+		if(
+			created != null
+			&& published != null
+			&& published.compareTo(created) < 0
+		) throw new IllegalArgumentException("published may not be before created");
+		if(
+			created != null
+			&& modified != null
+			&& modified.compareTo(created) < 0
+		) throw new IllegalArgumentException("modified may not be before created");
+		if(
+			created != null
+			&& reviewed != null
+			&& reviewed.compareTo(created) < 0
+		) throw new IllegalArgumentException("reviewed may not be before created");
 	}
 
 	public String getTitle() {
