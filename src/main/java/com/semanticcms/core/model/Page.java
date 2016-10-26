@@ -31,6 +31,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.joda.time.DateTime;
+import org.joda.time.ReadableDateTime;
 
 public class Page extends Node implements Comparable<Page> {
 
@@ -49,6 +51,10 @@ public class Page extends Node implements Comparable<Page> {
 	private volatile PageRef src;
 	private volatile Copyright copyright;
 	private Set<Author> authors;
+	private volatile DateTime dateCreated;
+	private volatile DateTime datePublished;
+	private volatile DateTime dateModified;
+	private volatile DateTime dateReviewed;
 	private volatile String title;
 	private volatile String shortTitle;
 	private volatile String description;
@@ -155,6 +161,62 @@ public class Page extends Node implements Comparable<Page> {
 			if(authors == null) authors = new LinkedHashSet<Author>();
 			if(!authors.add(author)) throw new IllegalStateException("Duplicate author: " + author);
 		}
+	}
+
+	/**
+	 * <a href="https://schema.org/dateCreated">https://schema.org/dateCreated</a>
+	 *
+	 * @see  #getDatePublished()  When created and published are the same date, prefer
+	 *                            published because it seems to have more use overall than created.
+	 */
+	public DateTime getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(ReadableDateTime dateCreated) {
+		checkNotFrozen();
+		this.dateCreated = dateCreated==null ? null : dateCreated.toDateTime();
+	}
+
+	/**
+	 * <a href="https://schema.org/datePublished">https://schema.org/datePublished</a>
+	 *
+	 * @see  #getDateCreated()  When created and published are the same date, prefer
+	 *                          published because it seems to have more use overall than created.
+	 */
+	public DateTime getDatePublished() {
+		return datePublished;
+	}
+
+	public void setDatePublished(ReadableDateTime datePublished) {
+		checkNotFrozen();
+		this.datePublished = datePublished==null ? null : datePublished.toDateTime();
+	}
+
+	/**
+	 * <a href="https://schema.org/dateModified">https://schema.org/dateModified</a>
+	 */
+	public DateTime getDateModified() {
+		return dateModified;
+	}
+
+	public void setDateModified(ReadableDateTime dateModified) {
+		checkNotFrozen();
+		this.dateModified = dateModified==null ? null : dateModified.toDateTime();
+	}
+
+	/**
+	 * This has no equivalent in <a href="https://schema.org/">https://schema.org/</a>, however
+	 * we feel it is important to actively review content to ensure its accuracy, even when it
+	 * has not been modified.
+	 */
+	public DateTime getDateReviewed() {
+		return dateReviewed;
+	}
+
+	public void setDateReviewed(ReadableDateTime dateReviewed) {
+		checkNotFrozen();
+		this.dateReviewed = dateReviewed==null ? null : dateReviewed.toDateTime();
 	}
 
 	public String getTitle() {
