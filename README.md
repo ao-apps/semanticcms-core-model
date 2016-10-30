@@ -3,6 +3,7 @@ Java API for modeling web page content and relationships.
 
 ## Project Links
 * [Project Home](https://semanticcms.com/core/model/)
+* [Changelog](https://semanticcms.com/core/model/changelog)
 * [API Docs](https://semanticcms.com/core/model/apidocs/)
 * [Maven Central Repository](https://search.maven.org/#search%7Cgav%7C1%7Cg:%22com.semanticcms%22%20AND%20a:%22semanticcms-core-model%22)
 * [GitHub](https://github.com/aoindustries/semanticcms-core-model)
