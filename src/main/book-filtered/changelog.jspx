@@ -178,7 +178,6 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 				<li>Headings moved to own projects and renamed to "Section".</li>
 				<li><![CDATA[Passing args as Map&lt;String,?&gt; instead of forcing Map&lt;String,Object&gt;]]></li>
 				<li>Pulled files out of core and made files be elements.</li>
-				<li>Added minimum Maven version per current plugins.</li>
 			</ul>
 		</changelog:release>
 
