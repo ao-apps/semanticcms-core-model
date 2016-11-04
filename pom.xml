@@ -65,8 +65,8 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 							<configuration>
 								<links>
 									<link>http://www.joda.org/joda-time/apidocs/</link>
-									<link>https://www.aoindustries.com/ao-io-buffer/apidocs/</link>
-									<link>https://www.aoindustries.com/aocode-public/apidocs/</link>
+									<link>https://aoindustries.com/ao-io-buffer/apidocs/</link>
+									<link>https://aoindustries.com/aocode-public/apidocs/</link>
 								</links>
 							</configuration>
 						</plugin>
