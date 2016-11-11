@@ -296,7 +296,7 @@ public class Page extends Node implements Comparable<Page> {
 	/**
 	 * Gets the allowRobots setting:
 	 * <ul>
-	 *   <li>{@literal null} (The default) - Inherit from parent(s) within book or book settings if have no parents within the book.</li>
+	 *   <li>{@literal null} (The default) - Inherit setting from parent(s) within the book or book settings if have no parents within the book</li>
 	 *   <li>{@literal true} - Robots allowed</li>
 	 *   <li>{@literal false} - Robots not allowed</li>
 	 * </ul>
