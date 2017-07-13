@@ -1,6 +1,6 @@
 <!--
 semanticcms-core-model - Java API for modeling web page content and relationships.
-Copyright (C) 2016  AO Industries, Inc.
+Copyright (C) 2016, 2017  AO Industries, Inc.
     support@aoindustries.com
     7262 Bull Pen Cir
     Mobile, AL 36695
@@ -36,7 +36,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2016-10-30T17:32:26-0500"
-		dateModified="2016-11-15T17:26:59-0600"
+		dateModified="2017-07-13T13:20:31-0500"
 	>
 		<!-- The current snapshot, unreleased version -->
 		<c:set var="version" value="@{com.semanticcms:semanticcms-core-model:pom.version}" />
@@ -51,7 +51,16 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 				groupId="@{documented.groupId}"
 				artifactId="@{documented.artifactId}"
 				scmUrl="@{documented.scm.url}"
-			/>
+			>
+				<ul>
+					<li>
+						Nodes, including both pages and elements, now have properties.
+						Properties are a mapping from string name to object value.
+						Properties are immutable and may not be changed once set.
+						Properties may not be added to a frozen node.
+					</li>
+				</ul>
+			</changelog:release>
 		</c:if>
 
 		<changelog:release
