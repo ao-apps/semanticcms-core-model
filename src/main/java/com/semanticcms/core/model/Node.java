@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2015, 2016  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2017  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -30,6 +30,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -95,6 +96,7 @@ abstract public class Node implements Freezable<Node> {
 	private static class Lock {}
 	protected final Lock lock = new Lock();
 	protected volatile boolean frozen; // Accessed without lock, only updated under lock
+	private Map<String,Object> properties;
 	private List<Element> childElements;
 	private Map<Long,ElementWriter> elementWriters;
 	private Set<PageRef> pageLinks;
@@ -112,6 +114,7 @@ abstract public class Node implements Freezable<Node> {
 	public Node freeze() {
 		synchronized(lock) {
 			if(!frozen) {
+				if(properties != null) properties = AoCollections.optimalUnmodifiableMap(properties);
 				if(childElements != null) childElements = AoCollections.optimalUnmodifiableList(childElements);
 				if(elementWriters != null) elementWriters = AoCollections.optimalUnmodifiableMap(elementWriters);
 				if(pageLinks != null) pageLinks = AoCollections.optimalUnmodifiableSet(pageLinks);
@@ -123,6 +126,40 @@ abstract public class Node implements Freezable<Node> {
 
 	protected void checkNotFrozen() throws FrozenException {
 		if(frozen) throw new FrozenException();
+	}
+
+	/**
+	 * Gets an unmodifiable snapshot of all properties associated with a node.
+	 * The returned map will not change, even if properties are added to the node.
+	 */
+	public Map<String,Object> getProperties() {
+		synchronized(lock) {
+			if(properties == null) return Collections.emptyMap();
+			if(frozen) return properties;
+			return AoCollections.unmodifiableCopyMap(properties);
+		}
+	}
+
+	/**
+	 * Sets a property on this node, if the property has not already been set.
+	 * Setting a property to {@code null} still marks the property as used and associates it with {@code null}.
+	 *
+	 * @return  {@code true} when the property was added or {@code false} when the property already existed
+	 *                       (including possibly with a {@code null} value).
+	 *
+	 * @throws  FrozenException  properties may not be set once the node is frozen
+	 */
+	public boolean setProperty(String name, Object value) throws FrozenException {
+		synchronized(lock) {
+			checkNotFrozen();
+			if(properties == null) {
+				properties = new LinkedHashMap<String,Object>();
+			} else if(properties.containsKey(name)) {
+				return false;
+			}
+			properties.put(name, value);
+			return true;
+		}
 	}
 
 	/**
