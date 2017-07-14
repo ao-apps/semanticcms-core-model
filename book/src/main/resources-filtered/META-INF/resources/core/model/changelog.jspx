@@ -57,7 +57,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 						<ol>
 							<li>Properties are a mapping from string name to object value.</li>
 							<li>Properties are immutable and may not be changed once set.</li>
-							<li>Properties may not be added to a frozen node.</li
+							<li>Properties may not be added to a frozen node.</li>
 						</ol>
 					</li>
 					<li>Updated dependencies.</li>
