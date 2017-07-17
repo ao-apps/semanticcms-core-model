@@ -132,7 +132,7 @@ abstract public class Node implements Freezable<Node> {
 	 * Gets an unmodifiable snapshot of all properties associated with a node.
 	 * The returned map will not change, even if properties are added to the node.
 	 */
-	public Map<String,Object> getProperties() {
+	public Map<String,Object> getProperty() {
 		synchronized(lock) {
 			if(properties == null) return Collections.emptyMap();
 			if(frozen) return properties;
