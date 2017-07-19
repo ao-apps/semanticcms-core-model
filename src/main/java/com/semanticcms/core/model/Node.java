@@ -133,6 +133,8 @@ abstract public class Node implements Freezable<Node> {
 	 * The returned map will not change, even if properties are added to the node.
 	 */
 	public Map<String,Object> getProperty() {
+		// TODO: If we have properties volatile, could do the null and frozen cases outside the synchronized block
+		// TODO: Would this be faster?
 		synchronized(lock) {
 			if(properties == null) return Collections.emptyMap();
 			if(frozen) return properties;
