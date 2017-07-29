@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2013, 2014, 2015, 2016  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -28,13 +28,18 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- * A page reference contains both a book and a path to a page or directory.
+ * A page reference contains a book, a path, and an optional domain to a page or directory.
  * Any path to a directory must end with a slash (/).
  * 
  * // TODO: Support parameters to a page, child, link, ...
  *          Parameters provided in path/page?, param.* attributes, and nested tags - matching/extending AO taglib.
  */
 public class PageRef implements PageReferrer {
+
+	/**
+	 * @see  String#intern()  always interned
+	 */
+	private final String domain;
 
 	/**
 	 * @see  String#intern()  always interned
@@ -53,24 +58,62 @@ public class PageRef implements PageReferrer {
 	 */
 	private final Book book;
 
-	private PageRef(String bookName, String path, Book book) {
+	private PageRef(String domain, String bookName, String path, Book book) {
+		assert domain == domain.intern();
 		assert book != null || bookName == bookName.intern();
+		this.domain = domain;
 		this.bookName = book != null ? book.getName() : bookName;
 		this.path = path.intern();
 		if(!path.startsWith("/")) throw new IllegalArgumentException("Path does not begin with a slash: " + path);
 		this.book = book;
 	}
 
-	public PageRef(String bookName, String path) {
+	public PageRef(String domain, String bookName, String path) {
 		this(
+			NullArgumentException.checkNotNull(domain, "domain").intern(),
 			NullArgumentException.checkNotNull(bookName, "bookName").intern(),
 			NullArgumentException.checkNotNull(path, "path"),
 			null
 		);
 	}
 
+	/**
+	 * Uses default domain of {@code ""}.
+	 *
+	 * @see  #PageRef(java.lang.String, java.lang.String, java.lang.String)
+	 *
+	 * @deprecated  Please provide domain
+	 */
+	@Deprecated
+	public PageRef(String bookName, String path) {
+		this(
+			"", // All string literals are already interned
+			NullArgumentException.checkNotNull(bookName, "bookName").intern(),
+			NullArgumentException.checkNotNull(path, "path"),
+			null
+		);
+	}
+
+	public PageRef(String domain, Book book, String path) {
+		this(
+			NullArgumentException.checkNotNull(domain, "domain").intern(),
+			null,
+			NullArgumentException.checkNotNull(path, "path"),
+			NullArgumentException.checkNotNull(book, "book")
+		);
+	}
+
+	/**
+	 * Uses default domain of {@code ""}.
+	 *
+	 * @see  #PageRef(java.lang.String, com.semanticcms.core.model.Book, java.lang.String)
+	 *
+	 * @deprecated  Please provide domain
+	 */
+	@Deprecated
 	public PageRef(Book book, String path) {
 		this(
+			"", // All string literals are already interned
 			null,
 			NullArgumentException.checkNotNull(path, "path"),
 			NullArgumentException.checkNotNull(book, "book")
@@ -83,6 +126,19 @@ public class PageRef implements PageReferrer {
 	@Override
 	public PageRef getPageRef() {
 		return this;
+	}
+
+	/**
+	 * Gets the domain of this book.  Two books are considered equal when they
+	 * are in the same domain and have the same name.
+	 * <p>
+	 * When a domain is not provided, it defaults to {@code ""}, and the usual
+	 * rules of equality still apply.  Thus, when writing content for distribution
+	 * within a single site, the domain concept may be safely ignored.
+	 * </p>
+	 */
+	public String getDomain() {
+		return domain;
 	}
 
 	/**
@@ -124,7 +180,7 @@ public class PageRef implements PageReferrer {
 		return
 			newPath.equals(path)
 			? this
-			: new PageRef(this.bookName, newPath, this.book)
+			: new PageRef(this.domain, this.bookName, newPath, this.book)
 		;
 	}
 
@@ -140,10 +196,12 @@ public class PageRef implements PageReferrer {
 		if(this == obj) return true;
 		if(!(obj instanceof PageRef)) return false;
 		PageRef other = (PageRef)obj;
-		assert bookName == bookName.intern();
-		assert path == path.intern();
+		assert domain == domain.intern() : "Interned inside constructor";
+		assert bookName == bookName.intern() : "Interned inside constructor";
+		assert path == path.intern() : "Interned inside constructor";
 		return
-			bookName == other.bookName
+			domain == other.domain
+			&& bookName == other.bookName
 			&& path == other.path
 		;
 	}
@@ -154,7 +212,8 @@ public class PageRef implements PageReferrer {
 	public int hashCode() {
 		int h = hash;
 		if(h == 0) {
-			h = bookName.hashCode();
+			h = domain.hashCode();
+			h = h * 31 + bookName.hashCode();
 			h = h * 31 + path.hashCode();
 			hash = h;
 		}
@@ -162,11 +221,13 @@ public class PageRef implements PageReferrer {
 	}
 
 	/**
-	 * Orders by servletPath.
-	 * 
+	 * Ordered by domain, servletPath.
+	 *
 	 * @see  #getServletPath()
 	 */
 	public int compareTo(PageRef o) {
+		int diff = (domain == o.domain) ? 0 : domain.compareTo(o.domain);
+		if(diff != 0) return diff;
 		return getServletPath().compareTo(o.getServletPath());
 	}
 
@@ -175,6 +236,7 @@ public class PageRef implements PageReferrer {
 		return compareTo(o.getPageRef());
 	}
 
+	// Would it be faster to just create this in the constructor and avoid volatile here? (Micro optimization here)
 	private volatile String servletPath;
 
 	/**
@@ -207,10 +269,26 @@ public class PageRef implements PageReferrer {
 
 	@Override
 	public String toString() {
-		return getServletPath();
+		String servletPath = getServletPath();
+		int domainLen = domain.length();
+		if(domainLen == 0) {
+			return servletPath;
+		} else {
+			return
+				new StringBuilder(
+					domainLen
+					+ 1 // ':'
+					+ servletPath.length()
+				)
+				.append(domain)
+				.append(':')
+				.append(servletPath)
+				.toString();
+		}
 	}
 
 	private volatile File resourceFile;
+	// TODO: Is this cached too long now that we have higher-level caching strategies?
 	private volatile Boolean exists;
 
 	/**
@@ -222,7 +300,7 @@ public class PageRef implements PageReferrer {
 	 * @return null if not access to book or File of resource path.
 	 */
 	public File getResourceFile(boolean requireBook, boolean requireFile) throws IOException {
-		if(book==null) {
+		if(book == null) {
 			if(requireBook) throw new IOException("Book not found: " + bookName);
 			return null;
 		} else {
