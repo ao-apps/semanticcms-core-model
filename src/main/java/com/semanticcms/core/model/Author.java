@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2016  AO Industries, Inc.
+ * Copyright (C) 2016, 2017  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -35,49 +35,71 @@ public class Author {
 
 	private final String name;
 	private final String href;
-	private final String bookName;
+	private final String domain;
+	private final String book;
 	private final String page;
 
 	/**
-	 * Either href may be provided, or book/page may be provided, but not both.
-	 * When page provided without book, assumes page is within current book.
-	 * When page provided, book is also required.
+	 * Either href may be provided, or domain:/book/page may be provided, but not both.
+	 * When page provided, domain and book are also required.
 	 * When name not provided, and page provided, uses page title as the author name.
 	 */
-	public Author(String name, String href, String bookName, String page) {
+	public Author(String name, String href, String domain, String book, String page) {
 		// No empty strings
 		if(name != null && name.isEmpty()) throw new IllegalArgumentException("empty name not allowed");
 		if(href != null && href.isEmpty()) throw new IllegalArgumentException("empty href not allowed");
-		if(bookName != null && bookName.isEmpty()) throw new IllegalArgumentException("empty book not allowed");
+		if(book != null && book.isEmpty()) throw new IllegalArgumentException("empty book not allowed");
 		if(page != null && page.isEmpty()) throw new IllegalArgumentException("empty page not allowed");
 		// Other checks
 		if(href != null) {
-			if(bookName != null) throw new IllegalArgumentException("book may not be provided when href provided");
+			if(domain != null) throw new IllegalArgumentException("domain may not be provided when href provided");
+			if(book != null) throw new IllegalArgumentException("book may not be provided when href provided");
 			if(page != null) throw new IllegalArgumentException("page may not be provided when href provided");
 		} else {
 			if(name == null) {
 				if(page == null) throw new IllegalArgumentException("empty author, at least one of name, href, or page required");
 			}
 			if(page != null) {
-				if(bookName == null) throw new IllegalArgumentException("page provided without book");
+				if(domain == null) throw new IllegalArgumentException("page provided without domain");
+				if(book == null) throw new IllegalArgumentException("page provided without book");
 			} else {
-				if(bookName != null) throw new IllegalArgumentException("book provided without page");
+				if(domain != null) throw new IllegalArgumentException("domain provided without page");
+				if(book != null) throw new IllegalArgumentException("book provided without page");
 			}
 		}
 		this.name = name;
 		this.href = href;
-		this.bookName = bookName;
+		this.domain = domain;
+		this.book = book;
 		this.page = page;
+	}
+
+	/**
+	 * Uses default domain of {@code ""}.
+	 *
+	 * @see  #Author(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 *
+	 * @deprecated  Please provide domain
+	 */
+	@Deprecated
+	public Author(String name, String href, String book, String page) {
+		this(name, href, page==null ? null : "", book, page);
 	}
 
 	@Override
 	public String toString() {
 		if(name != null) return name;
 		if(href != null) return href;
-		assert bookName != null;
+		assert domain != null;
+		assert book != null;
 		assert page != null;
-		if(bookName.equals("/")) return page;
-		else return bookName + page;
+		if(domain.isEmpty()) {
+			if(book.equals("/")) return page;
+			else return book + page;
+		} else {
+			if(book.equals("/")) return domain + ':' + page;
+			else return domain + ':' + book + page;
+		}
 	}
 
 	@Override
@@ -87,18 +109,20 @@ public class Author {
 		return
 			ObjectUtils.equals(name, o.name)
 			&& ObjectUtils.equals(href, o.href)
-			&& ObjectUtils.equals(bookName, o.bookName)
+			&& ObjectUtils.equals(domain, o.domain)
+			&& ObjectUtils.equals(book, o.book)
 			&& ObjectUtils.equals(page, o.page)
 		;
 	}
 
 	@Override
 	public int hashCode() {
-		// Java 1.8: Objects.hash
+		// Java 1.7: Objects.hash
 		return ObjectUtils.hash(
 			name,
 			href,
-			bookName,
+			domain,
+			book,
 			page
 		);
 	}
@@ -111,8 +135,20 @@ public class Author {
 		return href;
 	}
 
+	public String getDomain() {
+		return domain;
+	}
+
+	public String getBook() {
+		return book;
+	}
+
+	/**
+	 * @deprecated  Please use {@link #getBook()}
+	 */
+	@Deprecated
 	public String getBookName() {
-		return bookName;
+		return getBook();
 	}
 
 	public String getPage() {
