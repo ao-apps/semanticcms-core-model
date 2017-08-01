@@ -37,7 +37,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2016-10-30T17:32:26-0500"
-		dateModified="2017-07-29T09:39:10-0500"
+		dateModified="2017-07-31T20:58:59-0500"
 	>
 		<!-- The current snapshot, unreleased version -->
 		<c:set var="version" value="@{com.semanticcms:semanticcms-core-model:pom.version}" />
@@ -54,11 +54,24 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 				scmUrl="@{documented.scm.url}"
 			>
 				<ul>
-					<li>
-						Books now exist within an optional domain.
-						Two books are considered equal only when they are in the same domain
-						and have the same name.
+					<li>Books now exist within an optional domain:
+						<ol>
+							<li>
+								Two books are considered equal only when they are in the same domain
+								and have the same name.
+							</li>
+							<li>New <code>BookRef</code> class to refer to a book by both domain and name.</li>
+							<li><code>Author</code> extended to support domains.</li>
+							<li>Added "domain:" prefix to reference type <code>toString()</code> methods when using non-default domain (not <code>""</code>).</li>
+						</ol>
 					</li>
+					<li>
+						Removed the premature optimization of interning strings in references and identifiers.
+						This was as likely to hurt as to help, and in either case it is off the radar in profiling,
+						so going with the simpler implementation.
+					</li>
+					<li>Changed type of <code>Node.lock</code> to <code>Object</code> to not export private class in public API.</li>
+					<li><code>Book</code> moved to new <core:link book="/core/repository" page="/index.jspx" /> module.</li>
 				</ul>
 			</changelog:release>
 		</c:if>
