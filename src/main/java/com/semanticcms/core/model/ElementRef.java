@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2016  AO Industries, Inc.
+ * Copyright (C) 2016, 2017  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -36,14 +36,11 @@ public class ElementRef implements Comparable<ElementRef> {
 
 	private final PageRef pageRef;
 
-	/**
-	 * @see  String#intern()  always interned
-	 */
 	private final String id;
 
 	public ElementRef(PageRef pageRef, String id) {
 		this.pageRef = NullArgumentException.checkNotNull(pageRef, "pageRef");
-		this.id = NullArgumentException.checkNotNull(id, "id").intern();
+		this.id = NullArgumentException.checkNotNull(id, "id");
 		if(!Element.isValidId(id)) throw new IllegalArgumentException("Invalid id: " + id);
 	}
 
@@ -56,8 +53,6 @@ public class ElementRef implements Comparable<ElementRef> {
 
 	/**
 	 * The id of the element within the page.
-	 * 
-	 * @see  String#intern()  always interned
 	 */
 	public String getId() {
 		return id;
@@ -68,10 +63,9 @@ public class ElementRef implements Comparable<ElementRef> {
 		if(this == obj) return true;
 		if(!(obj instanceof ElementRef)) return false;
 		ElementRef other = (ElementRef)obj;
-		assert id == id.intern();
 		return
 			pageRef.equals(other.pageRef)
-			&& id == other.id
+			&& id.equals(other.id)
 		;
 	}
 
@@ -111,6 +105,7 @@ public class ElementRef implements Comparable<ElementRef> {
 	public String getServletPath() {
 		String sp = servletPath;
 		if(sp == null) {
+			// TODO: Should "id" allow all characters and automatically encode them?  Would require knowledge of response encoding here.
 			servletPath = sp = pageRef.getServletPath() + '#' + id;
 		}
 		return sp;
@@ -130,6 +125,22 @@ public class ElementRef implements Comparable<ElementRef> {
 
 	@Override
 	public String toString() {
-		return getServletPath();
+		String sp = getServletPath();
+		String domain = pageRef.getBookRef().getDomain();
+		int domainLen = domain.length();
+		if(domainLen == 0) {
+			return sp;
+		} else {
+			return
+				new StringBuilder(
+					domainLen
+					+ 1 // ':'
+					+ sp.length()
+				)
+				.append(domain)
+				.append(':')
+				.append(sp)
+				.toString();
+		}
 	}
 }
