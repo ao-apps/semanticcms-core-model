@@ -23,8 +23,6 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.lang.NullArgumentException;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -36,45 +34,14 @@ import java.io.IOException;
  */
 public class PageRef implements PageReferrer {
 
-	/**
-	 * @see  String#intern()  always interned
-	 */
-	private final String domain;
+	private final BookRef bookRef;
 
-	/**
-	 * @see  String#intern()  always interned
-	 */
-	private final String bookName;
-
-	/**
-	 * @see  String#intern()  always interned
-	 */
 	private final String path;
-	
-	/**
-	 * TODO: Consider not having reference to book here, it simplifies the book loading order issue
-	 *       (see BooksContextListener), and rules about allow missing books can be handled in more
-	 *       appropriate places.
-	 */
-	private final Book book;
 
-	private PageRef(String domain, String bookName, String path, Book book) {
-		assert domain == domain.intern();
-		assert book != null || bookName == bookName.intern();
-		this.domain = domain;
-		this.bookName = book != null ? book.getName() : bookName;
-		this.path = path.intern();
-		if(!path.startsWith("/")) throw new IllegalArgumentException("Path does not begin with a slash: " + path);
-		this.book = book;
-	}
-
-	public PageRef(String domain, String bookName, String path) {
-		this(
-			NullArgumentException.checkNotNull(domain, "domain").intern(),
-			NullArgumentException.checkNotNull(bookName, "bookName").intern(),
-			NullArgumentException.checkNotNull(path, "path"),
-			null
-		);
+	public PageRef(BookRef bookRef, String path) {
+		this.bookRef = NullArgumentException.checkNotNull(bookRef, "bookRef");
+		this.path = NullArgumentException.checkNotNull(path, "path");
+		if(!this.path.startsWith("/")) throw new IllegalArgumentException("Path does not begin with a slash: " + this.path);
 	}
 
 	/**
@@ -87,36 +54,8 @@ public class PageRef implements PageReferrer {
 	@Deprecated
 	public PageRef(String bookName, String path) {
 		this(
-			"", // All string literals are already interned
-			NullArgumentException.checkNotNull(bookName, "bookName").intern(),
-			NullArgumentException.checkNotNull(path, "path"),
-			null
-		);
-	}
-
-	public PageRef(String domain, Book book, String path) {
-		this(
-			NullArgumentException.checkNotNull(domain, "domain").intern(),
-			null,
-			NullArgumentException.checkNotNull(path, "path"),
-			NullArgumentException.checkNotNull(book, "book")
-		);
-	}
-
-	/**
-	 * Uses default domain of {@code ""}.
-	 *
-	 * @see  #PageRef(java.lang.String, com.semanticcms.core.model.Book, java.lang.String)
-	 *
-	 * @deprecated  Please provide domain
-	 */
-	@Deprecated
-	public PageRef(Book book, String path) {
-		this(
-			"", // All string literals are already interned
-			null,
-			NullArgumentException.checkNotNull(path, "path"),
-			NullArgumentException.checkNotNull(book, "book")
+			new BookRef("", bookName),
+			path
 		);
 	}
 
@@ -128,44 +67,28 @@ public class PageRef implements PageReferrer {
 		return this;
 	}
 
-	/**
-	 * Gets the domain of this book.  Two books are considered equal when they
-	 * are in the same domain and have the same name.
-	 * <p>
-	 * When a domain is not provided, it defaults to {@code ""}, and the usual
-	 * rules of equality still apply.  Thus, when writing content for distribution
-	 * within a single site, the domain concept may be safely ignored.
-	 * </p>
-	 */
-	public String getDomain() {
-		return domain;
+	public BookRef getBookRef() {
+		return bookRef;
 	}
 
 	/**
-	 * The name of the book the page is part of.
-	 * This will always begin with a slash (/).
-	 * 
-	 * @see  String#intern()  always interned
+	 * @deprecated  Please use {@link #getBookRef()}.{@link BookRef#getName()} directly.
 	 */
+	@Deprecated
 	public String getBookName() {
-		return bookName;
+		return bookRef.getName();
 	}
 
 	/**
-	 * The prefix of the book the page is part of.
-	 * This will be <code>""</code> for the root book <code>"/"</code>.
-	 * 
-	 * @see  String#intern()  always interned
+	 * @deprecated  Please use {@link #getBookRef()}.{@link BookRef#getPrefix()} directly.
 	 */
+	@Deprecated
 	public String getBookPrefix() {
-		String bn = bookName;
-		return "/".equals(bn) ? "" : bn;
+		return bookRef.getPrefix();
 	}
 
 	/**
 	 * The book-relative path to the page, always starting with a slash (/).
-	 * 
-	 * @see  String#intern()  always interned
 	 */
 	public String getPath() {
 		return path;
@@ -177,18 +100,11 @@ public class PageRef implements PageReferrer {
 	 * @return  this object if path unchanged or a new object representing the new path
 	 */
 	public PageRef setPath(String newPath) {
-		return
-			newPath.equals(path)
-			? this
-			: new PageRef(this.domain, this.bookName, newPath, this.book)
-		;
-	}
-
-	/**
-	 * the book itself, only available when have access to the referenced book.
-	 */
-	public Book getBook() {
-		return book;
+		if(newPath.equals(path)) {
+			return this;
+		} else {
+			return new PageRef(bookRef, newPath);
+		}
 	}
 
 	@Override
@@ -196,13 +112,9 @@ public class PageRef implements PageReferrer {
 		if(this == obj) return true;
 		if(!(obj instanceof PageRef)) return false;
 		PageRef other = (PageRef)obj;
-		assert domain == domain.intern() : "Interned inside constructor";
-		assert bookName == bookName.intern() : "Interned inside constructor";
-		assert path == path.intern() : "Interned inside constructor";
 		return
-			domain == other.domain
-			&& bookName == other.bookName
-			&& path == other.path
+			bookRef.equals(other.bookRef)
+			&& path.equals(other.path)
 		;
 	}
 
@@ -212,8 +124,7 @@ public class PageRef implements PageReferrer {
 	public int hashCode() {
 		int h = hash;
 		if(h == 0) {
-			h = domain.hashCode();
-			h = h * 31 + bookName.hashCode();
+			h = bookRef.hashCode();
 			h = h * 31 + path.hashCode();
 			hash = h;
 		}
@@ -221,12 +132,13 @@ public class PageRef implements PageReferrer {
 	}
 
 	/**
-	 * Ordered by domain, servletPath.
+	 * Ordered by bookRef, servletPath.
 	 *
+	 * @see  BookRef#compareTo(com.semanticcms.core.model.BookRef)
 	 * @see  #getServletPath()
 	 */
 	public int compareTo(PageRef o) {
-		int diff = (domain == o.domain) ? 0 : domain.compareTo(o.domain);
+		int diff = bookRef.compareTo(o.bookRef);
 		if(diff != 0) return diff;
 		return getServletPath().compareTo(o.getServletPath());
 	}
@@ -248,7 +160,7 @@ public class PageRef implements PageReferrer {
 	public String getServletPath() {
 		String sp = servletPath;
 		if(sp == null) {
-			String bn = bookName;
+			String bn = bookRef.getName();
 			sp = ("/".equals(bn)) ? path : (bn + path);
 			servletPath = sp;
 		}
@@ -262,80 +174,29 @@ public class PageRef implements PageReferrer {
 	 * @see #getServletPath() 
 	 */
 	public void appendServletPath(Appendable out) throws IOException {
-		String bn = bookName;
+		String bn = bookRef.getName();
 		if(!"/".equals(bn)) out.append(bn);
 		out.append(path);
 	}
 
 	@Override
 	public String toString() {
-		String servletPath = getServletPath();
+		String sp = getServletPath();
+		String domain = bookRef.getDomain();
 		int domainLen = domain.length();
 		if(domainLen == 0) {
-			return servletPath;
+			return sp;
 		} else {
 			return
 				new StringBuilder(
 					domainLen
 					+ 1 // ':'
-					+ servletPath.length()
+					+ sp.length()
 				)
 				.append(domain)
 				.append(':')
-				.append(servletPath)
+				.append(sp)
 				.toString();
-		}
-	}
-
-	private volatile File resourceFile;
-	// TODO: Is this cached too long now that we have higher-level caching strategies?
-	private volatile Boolean exists;
-
-	/**
-	 * the underlying file, only available when have access to the referenced book
-	 * 
-	 * @param requireBook when true, will always get a File object back
-	 * @param requireFile when true, any File object returned will exist on the filesystem
-	 *
-	 * @return null if not access to book or File of resource path.
-	 */
-	public File getResourceFile(boolean requireBook, boolean requireFile) throws IOException {
-		if(book == null) {
-			if(requireBook) throw new IOException("Book not found: " + bookName);
-			return null;
-		} else {
-			File rf = resourceFile;
-			if(rf == null) {
-				File cvsworkDirectory = book.getCvsworkDirectory();
-				// Skip past first slash
-				assert path.charAt(0) == '/';
-				int start = 1;
-				// Skip past any trailing slashes
-				int end = path.length();
-				while(end > start && path.charAt(end - 1) == '/') end--;
-				String subPath = path.substring(start, end);
-				// Combine paths
-				rf = subPath.isEmpty() ? cvsworkDirectory : new File(cvsworkDirectory, subPath);
-				// The canonical file must be in the cvswork directory
-				String canonicalPath = rf.getCanonicalPath();
-				if(
-					!canonicalPath.startsWith(
-						cvsworkDirectory.getCanonicalPath() + File.separatorChar
-					)
-				) {
-					throw new SecurityException();
-				}
-				this.resourceFile = rf;
-			}
-			if(requireFile) {
-				Boolean e = this.exists;
-				if(e == null) {
-					e = rf.exists();
-					this.exists = e;
-				}
-				if(!e) throw new FileNotFoundException(rf.getPath());
-			}
-			return rf;
 		}
 	}
 }
