@@ -127,20 +127,15 @@ public class ElementRef implements Comparable<ElementRef> {
 	public String toString() {
 		String sp = getServletPath();
 		String domain = pageRef.getBookRef().getDomain();
-		int domainLen = domain.length();
-		if(domainLen == 0) {
-			return sp;
-		} else {
-			return
-				new StringBuilder(
-					domainLen
-					+ 1 // ':'
-					+ sp.length()
-				)
-				.append(domain)
-				.append(':')
-				.append(sp)
-				.toString();
-		}
+		return
+			new StringBuilder(
+				domain.length()
+				+ 1 // ':'
+				+ sp.length()
+			)
+			.append(domain)
+			.append(':')
+			.append(sp)
+			.toString();
 	}
 }

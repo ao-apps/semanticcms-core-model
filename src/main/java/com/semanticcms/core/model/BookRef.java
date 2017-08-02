@@ -33,14 +33,15 @@ public class BookRef {
 
 	private final String name;
 
-	public BookRef(String domain, String bookName) {
+	public BookRef(String domain, String name) {
 		this.domain = NullArgumentException.checkNotNull(domain, "domain");
-		this.name = NullArgumentException.checkNotNull(bookName, "name");
-		if(!this.name.startsWith("/")) throw new IllegalArgumentException("Book name does not begin with a slash: " + this.name);
+		if(domain.isEmpty()) throw new IllegalArgumentException("domain may not be empty");
+		this.name = NullArgumentException.checkNotNull(name, "name");
+		if(!name.startsWith("/")) throw new IllegalArgumentException("Book name does not begin with a slash: " + this.name);
 	}
 
 	/**
-	 * Gets the domain of this book.  Two books are considered equal when they
+	 * Gets the non-empty domain of this book.  Two books are considered equal when they
 	 * are in the same domain and have the same name.
 	 */
 	public String getDomain() {
@@ -101,20 +102,15 @@ public class BookRef {
 
 	@Override
 	public String toString() {
-		int domainLen = domain.length();
-		if(domainLen == 0) {
-			return name;
-		} else {
-			return
-				new StringBuilder(
-					domainLen
-					+ 1 // ':'
-					+ name.length()
-				)
-				.append(domain)
-				.append(':')
-				.append(name)
-				.toString();
-		}
+		return
+			new StringBuilder(
+				domain.length()
+				+ 1 // ':'
+				+ name.length()
+			)
+			.append(domain)
+			.append(':')
+			.append(name)
+			.toString();
 	}
 }
