@@ -91,8 +91,6 @@ public class BookRef {
 
 	/**
 	 * Ordered by domain, name.
-	 *
-	 * @see  #getServletPath()
 	 */
 	public int compareTo(BookRef o) {
 		int diff = domain.compareTo(o.domain);

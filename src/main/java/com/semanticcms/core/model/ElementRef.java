@@ -23,7 +23,6 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.lang.NullArgumentException;
-import java.io.IOException;
 
 /**
  * An element reference contains a book, a path, and an element id.
@@ -94,48 +93,27 @@ public class ElementRef implements Comparable<ElementRef> {
 		return id.compareTo(o.id);
 	}
 
-	private volatile String servletPath;
-
-	/**
-	 * Gets the combination of the book, the path, and element anchor that refers to the
-	 * element resource within the web application.
-	 * 
-	 * @see #appendServletPath(java.lang.Appendable) 
-	 */
-	public String getServletPath() {
-		String sp = servletPath;
-		if(sp == null) {
-			// TODO: Should "id" allow all characters and automatically encode them?  Would require knowledge of response encoding here.
-			servletPath = sp = pageRef.getServletPath() + '#' + id;
-		}
-		return sp;
-	}
-
-	/**
-	 * Appends the combination of the book, the path, and element anchor that refers to the
-	 * element resource within the web application.
-	 *
-	 * @see #getServletPath() 
-	 */
-	public void appendServletPath(Appendable out) throws IOException {
-		pageRef.appendServletPath(out);
-		out.append('#');
-		out.append(id);
-	}
-
 	@Override
 	public String toString() {
-		String sp = getServletPath();
-		String domain = pageRef.getBookRef().getDomain();
+		BookRef bookRef = pageRef.getBookRef();
+		String domain = bookRef.getDomain();
+		String prefix = bookRef.getPrefix();
+		String path = pageRef.getPath();
 		return
 			new StringBuilder(
 				domain.length()
 				+ 1 // ':'
-				+ sp.length()
+				+ prefix.length()
+				+ path.length()
+				+ 1 // '#'
+				+ id.length()
 			)
 			.append(domain)
 			.append(':')
-			.append(sp)
+			.append(prefix)
+			.append(path)
+			.append('#')
+			.append(id)
 			.toString();
 	}
 }

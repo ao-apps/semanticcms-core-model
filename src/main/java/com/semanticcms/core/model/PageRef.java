@@ -23,7 +23,6 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.lang.NullArgumentException;
-import java.io.IOException;
 
 /**
  * A page reference contains a domain, a book, and a path to a page or directory.
@@ -103,15 +102,15 @@ public class PageRef implements PageReferrer {
 	}
 
 	/**
-	 * Ordered by bookRef, servletPath.
+	 * Ordered by bookRef, path.
 	 *
 	 * @see  BookRef#compareTo(com.semanticcms.core.model.BookRef)
-	 * @see  #getServletPath()
+	 * @see  #getPath()
 	 */
 	public int compareTo(PageRef o) {
 		int diff = bookRef.compareTo(o.bookRef);
 		if(diff != 0) return diff;
-		return getServletPath().compareTo(o.getServletPath());
+		return getPath().compareTo(o.getPath());
 	}
 
 	@Override
@@ -119,50 +118,21 @@ public class PageRef implements PageReferrer {
 		return compareTo(o.getPageRef());
 	}
 
-	// Would it be faster to just create this in the constructor and avoid volatile here? (Micro optimization here)
-	private volatile String servletPath;
-
-	/**
-	 * Gets the combination of the book and the path that refers to the
-	 * page resource within the web application.
-	 * 
-	 * @see #appendServletPath(java.lang.Appendable) 
-	 */
-	public String getServletPath() {
-		String sp = servletPath;
-		if(sp == null) {
-			String bn = bookRef.getName();
-			sp = ("/".equals(bn)) ? path : (bn + path);
-			servletPath = sp;
-		}
-		return sp;
-	}
-
-	/**
-	 * Appends the combination of the book and the path that refers to the
-	 * page resource within the web application.
-	 *
-	 * @see #getServletPath() 
-	 */
-	public void appendServletPath(Appendable out) throws IOException {
-		String bn = bookRef.getName();
-		if(!"/".equals(bn)) out.append(bn);
-		out.append(path);
-	}
-
 	@Override
 	public String toString() {
-		String sp = getServletPath();
 		String domain = bookRef.getDomain();
+		String prefix = bookRef.getPrefix();
 		return
 			new StringBuilder(
 				domain.length()
 				+ 1 // ':'
-				+ sp.length()
+				+ prefix.length()
+				+ path.length()
 			)
 			.append(domain)
 			.append(':')
-			.append(sp)
+			.append(prefix)
+			.append(path)
 			.toString();
 	}
 }
