@@ -48,6 +48,7 @@ public class Author {
 		// No empty strings
 		if(name != null && name.isEmpty()) throw new IllegalArgumentException("empty name not allowed");
 		if(href != null && href.isEmpty()) throw new IllegalArgumentException("empty href not allowed");
+		if(domain != null && domain.isEmpty()) throw new IllegalArgumentException("empty domain not allowed");
 		if(book != null && book.isEmpty()) throw new IllegalArgumentException("empty book not allowed");
 		if(page != null && page.isEmpty()) throw new IllegalArgumentException("empty page not allowed");
 		// Other checks
@@ -74,18 +75,6 @@ public class Author {
 		this.page = page;
 	}
 
-	/**
-	 * Uses default domain of {@code ""}.
-	 *
-	 * @see  #Author(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
-	 *
-	 * @deprecated  Please provide domain
-	 */
-	@Deprecated
-	public Author(String name, String href, String book, String page) {
-		this(name, href, page==null ? null : "", book, page);
-	}
-
 	@Override
 	public String toString() {
 		if(name != null) return name;
@@ -93,13 +82,8 @@ public class Author {
 		assert domain != null;
 		assert book != null;
 		assert page != null;
-		if(domain.isEmpty()) {
-			if(book.equals("/")) return page;
-			else return book + page;
-		} else {
-			if(book.equals("/")) return domain + ':' + page;
-			else return domain + ':' + book + page;
-		}
+		if(book.equals("/")) return domain + ':' + page;
+		else return domain + ':' + book + page;
 	}
 
 	@Override
@@ -141,14 +125,6 @@ public class Author {
 
 	public String getBook() {
 		return book;
-	}
-
-	/**
-	 * @deprecated  Please use {@link #getBook()}
-	 */
-	@Deprecated
-	public String getBookName() {
-		return getBook();
 	}
 
 	public String getPage() {

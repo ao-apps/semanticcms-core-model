@@ -26,9 +26,11 @@ import com.aoindustries.lang.NullArgumentException;
 import java.io.IOException;
 
 /**
- * A page reference contains a book, a path, and an optional domain to a page or directory.
+ * A page reference contains a domain, a book, and a path to a page or directory.
  * Any path to a directory must end with a slash (/).
- * 
+ *
+ * TODO: Separate class for ResourceRef?
+ *
  * // TODO: Support parameters to a page, child, link, ...
  *          Parameters provided in path/page?, param.* attributes, and nested tags - matching/extending AO taglib.
  */
@@ -45,21 +47,6 @@ public class PageRef implements PageReferrer {
 	}
 
 	/**
-	 * Uses default domain of {@code ""}.
-	 *
-	 * @see  #PageRef(java.lang.String, java.lang.String, java.lang.String)
-	 *
-	 * @deprecated  Please provide domain
-	 */
-	@Deprecated
-	public PageRef(String bookName, String path) {
-		this(
-			new BookRef("", bookName),
-			path
-		);
-	}
-
-	/**
 	 * A PageRef is its own referrer.
 	 */
 	@Override
@@ -69,22 +56,6 @@ public class PageRef implements PageReferrer {
 
 	public BookRef getBookRef() {
 		return bookRef;
-	}
-
-	/**
-	 * @deprecated  Please use {@link #getBookRef()}.{@link BookRef#getName()} directly.
-	 */
-	@Deprecated
-	public String getBookName() {
-		return bookRef.getName();
-	}
-
-	/**
-	 * @deprecated  Please use {@link #getBookRef()}.{@link BookRef#getPrefix()} directly.
-	 */
-	@Deprecated
-	public String getBookPrefix() {
-		return bookRef.getPrefix();
 	}
 
 	/**
@@ -183,20 +154,15 @@ public class PageRef implements PageReferrer {
 	public String toString() {
 		String sp = getServletPath();
 		String domain = bookRef.getDomain();
-		int domainLen = domain.length();
-		if(domainLen == 0) {
-			return sp;
-		} else {
-			return
-				new StringBuilder(
-					domainLen
-					+ 1 // ':'
-					+ sp.length()
-				)
-				.append(domain)
-				.append(':')
-				.append(sp)
-				.toString();
-		}
+		return
+			new StringBuilder(
+				domain.length()
+				+ 1 // ':'
+				+ sp.length()
+			)
+			.append(domain)
+			.append(':')
+			.append(sp)
+			.toString();
 	}
 }
