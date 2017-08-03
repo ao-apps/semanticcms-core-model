@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2017  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -25,31 +25,22 @@ package com.semanticcms.core.model;
 import com.aoindustries.lang.NullArgumentException;
 
 /**
- * A page reference contains a domain, a book, and a path to a page.
+ * A reference to a non-page resource within a book.
+ * A resource reference contains a domain, a book, and a path to a file or directory.
+ * Any path to a directory must end with a slash (/).
  *
- * TODO: Support parameters to a page, child, link, ...
- *       Parameters provided in path/page?, param.* attributes, and nested tags - matching/extending AO taglib.
- *
- * @see  ResourceRef  to refer to a non-page resource
+ * @see  PageRef  to refer to a page
  */
-public class PageRef implements PageReferrer {
+public class ResourceRef implements Comparable<ResourceRef> {
 
 	private final BookRef bookRef;
 
 	private final String path;
 
-	public PageRef(BookRef bookRef, String path) {
+	public ResourceRef(BookRef bookRef, String path) {
 		this.bookRef = NullArgumentException.checkNotNull(bookRef, "bookRef");
 		this.path = NullArgumentException.checkNotNull(path, "path");
 		if(!this.path.startsWith("/")) throw new IllegalArgumentException("Path does not begin with a slash: " + this.path);
-	}
-
-	/**
-	 * A PageRef is its own referrer.
-	 */
-	@Override
-	public PageRef getPageRef() {
-		return this;
 	}
 
 	public BookRef getBookRef() {
@@ -57,15 +48,7 @@ public class PageRef implements PageReferrer {
 	}
 
 	/**
-	 * The book-relative path to the page, always starting with a slash (/).
- 	 * <p>
-	 * The path is to the external, abstract name of the page, which can be independent
-	 * of the page implementation.  For example, the page at path <code>/example/page</code>
-	 * might be implemented in JSP by a file at <code>/example/page.jsp</code>, but its
-	 * path remains <code>/example/page</code>.  This allows the implementation to be
-	 * changed on a per-page basis, such as switching from JSP to JSPX, without requiring
-	 * updates to references to the page.
-	 * </p>
+	 * The book-relative path to the resource, always starting with a slash (/).
 	 */
 	public String getPath() {
 		return path;
@@ -76,19 +59,19 @@ public class PageRef implements PageReferrer {
 	 * 
 	 * @return  this object if path unchanged or a new object representing the new path
 	 */
-	public PageRef setPath(String newPath) {
+	public ResourceRef setPath(String newPath) {
 		if(newPath.equals(path)) {
 			return this;
 		} else {
-			return new PageRef(bookRef, newPath);
+			return new ResourceRef(bookRef, newPath);
 		}
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if(this == obj) return true;
-		if(!(obj instanceof PageRef)) return false;
-		PageRef other = (PageRef)obj;
+		if(!(obj instanceof ResourceRef)) return false;
+		ResourceRef other = (ResourceRef)obj;
 		return
 			bookRef.equals(other.bookRef)
 			&& path.equals(other.path)
@@ -114,15 +97,11 @@ public class PageRef implements PageReferrer {
 	 * @see  BookRef#compareTo(com.semanticcms.core.model.BookRef)
 	 * @see  #getPath()
 	 */
-	public int compareTo(PageRef o) {
+	@Override
+	public int compareTo(ResourceRef o) {
 		int diff = bookRef.compareTo(o.bookRef);
 		if(diff != 0) return diff;
 		return getPath().compareTo(o.getPath());
-	}
-
-	@Override
-	public int compareTo(PageReferrer o) {
-		return compareTo(o.getPageRef());
 	}
 
 	@Override
