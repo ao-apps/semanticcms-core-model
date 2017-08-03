@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2013, 2014, 2015, 2016  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -82,6 +82,9 @@ public class Page extends Node implements Comparable<Page> {
 		return getPageRef().hashCode();
 	}
 
+	/**
+	 * @see  PageRef#compareTo(com.semanticcms.core.model.PageRef)
+	 */
 	@Override
 	public int compareTo(Page o) {
 		return getPageRef().compareTo(o.getPageRef());
@@ -115,7 +118,7 @@ public class Page extends Node implements Comparable<Page> {
 	}
 
 	/**
-	 * The PageRef that refers to this page.
+	 * The {@link PageRef} that refers to this page.
 	 */
 	public PageRef getPageRef() {
 		return pageRef;
