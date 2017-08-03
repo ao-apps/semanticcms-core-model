@@ -134,7 +134,7 @@ abstract public class Resource implements Comparable<Resource> {
 
 	/**
 	 * Tries to get a local {@link File} for this resource.  When the resource exists locally,
-	 * this will be a direct reference to the resource.  When the resource exists remote, this
+	 * this will be a direct reference to the resource.  When the resource exists remotely, this
 	 * will return {@code null}.
 	 * <p>
 	 * Use this when having a {@link File} is a convenience or optimization, and not a hard
