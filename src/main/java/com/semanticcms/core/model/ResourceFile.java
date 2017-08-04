@@ -29,6 +29,8 @@ import java.io.IOException;
 /**
  * Access to a {@link Resource} in {@link File} form.
  *
+ * Not thread safe.
+ *
  * @see  ResourceRef
  */
 public interface ResourceFile extends Closeable {

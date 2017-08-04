@@ -76,17 +76,9 @@ public class BookRef {
 		;
 	}
 
-	private int hash;
-
 	@Override
 	public int hashCode() {
-		int h = hash;
-		if(h == 0) {
-			h = domain.hashCode();
-			h = h * 31 + name.hashCode();
-			hash = h;
-		}
-		return h;
+		return domain.hashCode() * 31 + name.hashCode();
 	}
 
 	/**

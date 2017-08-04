@@ -22,21 +22,16 @@
  */
 package com.semanticcms.core.model;
 
-import java.io.IOException;
-
 /**
- * Gets {@link Resource resources} given their {@link ResourceRef references}.
+ * Gets {@link Resource resources} given their paths.
  *
  * @see  Resource
- * @see  ResourceRef
  */
 public interface ResourceStore {
 
 	/**
-	 * Gets a {@link Resource} for the given {@link ResourceRef}.
+	 * Gets a {@link Resource} for the given path.
 	 * The resource may or may not {@link Resource#exists() exist}.
-	 *
-	 * @throws  IOException  if I/O error occurs
 	 */
-	Resource getResource(ResourceRef resourceRef) throws IOException;
+	Resource getResource(String path);
 }
