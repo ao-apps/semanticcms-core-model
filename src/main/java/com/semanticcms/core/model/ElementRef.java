@@ -68,17 +68,9 @@ public class ElementRef implements Comparable<ElementRef> {
 		;
 	}
 
-	private int hash;
-
 	@Override
 	public int hashCode() {
-		int h = hash;
-		if(h == 0) {
-			h = pageRef.hashCode();
-			h = h * 31 + id.hashCode();
-			hash = h;
-		}
-		return h;
+		return pageRef.hashCode() * 31 + id.hashCode();
 	}
 
 	/**

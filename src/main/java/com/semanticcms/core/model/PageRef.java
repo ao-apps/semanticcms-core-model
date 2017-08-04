@@ -95,17 +95,9 @@ public class PageRef implements PageReferrer {
 		;
 	}
 
-	private int hash;
-
 	@Override
 	public int hashCode() {
-		int h = hash;
-		if(h == 0) {
-			h = bookRef.hashCode();
-			h = h * 31 + path.hashCode();
-			hash = h;
-		}
-		return h;
+		return bookRef.hashCode() * 31 + path.hashCode();
 	}
 
 	/**
