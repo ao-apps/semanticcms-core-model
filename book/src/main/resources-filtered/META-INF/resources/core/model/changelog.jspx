@@ -37,7 +37,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2016-10-30T17:32:26-0500"
-		dateModified="2017-08-03T01:18:26-0500"
+		dateModified="2017-08-19T18:57:56-0500"
 	>
 		<!-- The current snapshot, unreleased version -->
 		<c:set var="version" value="@{com.semanticcms:semanticcms-core-model:pom.version}" />
@@ -71,7 +71,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 						so going with the simpler implementation.
 					</li>
 					<li>Changed type of <code>Node.lock</code> to <code>Object</code> to not export private class in public API.</li>
-					<li><code>Book</code> moved to new <core:link book="/core/repository" page="/index.jspx" /> module.</li>
+					<li><code>Book</code> moved to new <core:link book="/core/pages" page="/index.jspx" /> module.</li>
 					<li>Removed <code>servletPath</code> because model is a high level concept independent of servlet implementation.</li>
 					<li>Books now have resources to support the content portability of repositories:
 						<ol>
