@@ -37,7 +37,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2016-10-30T17:32:26-0500"
-		dateModified="2017-08-20T21:52:49-0500"
+		dateModified="2017-08-21T18:09:28-0500"
 	>
 		<!-- The current snapshot, unreleased version -->
 		<c:set var="version" value="@{com.semanticcms:semanticcms-core-model:pom.version}" />
@@ -88,6 +88,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 							<li><code>ResourceRef.path</code> changed to <code>Path</code> type</li>
 						</ol>
 					</li>
+					<li><code>Page.src</code> is now a <code>ResourceRef</code> instead of a <code>PageRef</code>.</li>
 				</ul>
 			</changelog:release>
 		</c:if>

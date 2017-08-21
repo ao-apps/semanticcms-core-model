@@ -48,7 +48,7 @@ public class Page extends Node implements Comparable<Page> {
 	public static final int DEFAULT_TOC_LEVELS = 3;
 
 	private volatile PageRef pageRef;
-	private volatile PageRef src;
+	private volatile ResourceRef src;
 	private volatile Copyright copyright;
 	private Set<Author> authors;
 	private volatile DateTime dateCreated;
@@ -130,13 +130,14 @@ public class Page extends Node implements Comparable<Page> {
 	}
 
 	/**
-	 * The PageRef of the editable source for this page, if any.
+	 * The ResourceRef of the editable source for this page, if any.
+	 * Note: Although atypical, the page source may be in a different book than the page itself.
 	 */
-	public PageRef getSrc() {
+	public ResourceRef getSrc() {
 		return src;
 	}
 
-	public void setSrc(PageRef src) {
+	public void setSrc(ResourceRef src) {
 		checkNotFrozen();
 		this.src = src;
 	}
