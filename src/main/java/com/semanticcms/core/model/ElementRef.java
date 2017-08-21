@@ -90,7 +90,7 @@ public class ElementRef implements Comparable<ElementRef> {
 		BookRef bookRef = pageRef.getBookRef();
 		String domain = bookRef.getDomain();
 		String prefix = bookRef.getPrefix();
-		String path = pageRef.getPath();
+		String path = pageRef.getPath().toString();
 		return
 			new StringBuilder(
 				domain.length()

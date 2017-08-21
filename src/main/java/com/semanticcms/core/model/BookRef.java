@@ -23,37 +23,38 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.lang.NullArgumentException;
+import com.aoindustries.net.Path;
 
 /**
- * A book reference contains a domain and a book name.
+ * A book reference contains a domain and a book path.
  */
 public class BookRef {
 
 	private final String domain;
 
-	private final String name;
+	private final Path path;
 
-	public BookRef(String domain, String name) {
+	public BookRef(String domain, Path path) {
 		this.domain = NullArgumentException.checkNotNull(domain, "domain");
 		if(domain.isEmpty()) throw new IllegalArgumentException("domain may not be empty");
-		this.name = NullArgumentException.checkNotNull(name, "name");
-		if(!name.startsWith("/")) throw new IllegalArgumentException("Book name does not begin with a slash: " + this.name);
+		this.path = NullArgumentException.checkNotNull(path, "path");
+		String pathStr = path.toString();
+		if(!pathStr.equals("/") && pathStr.endsWith("/")) throw new IllegalArgumentException("Book path may not end in a slash: " + this.path);
 	}
 
 	/**
 	 * Gets the non-empty domain of this book.  Two books are considered equal when they
-	 * are in the same domain and have the same name.
+ are in the same domain and have the same path.
 	 */
 	public String getDomain() {
 		return domain;
 	}
 
 	/**
-	 * The name of the book this refers to.
-	 * This will always begin with a slash (/).
+	 * The path of the book this refers to.
 	 */
-	public String getName() {
-		return name;
+	public Path getPath() {
+		return path;
 	}
 
 	/**
@@ -61,7 +62,7 @@ public class BookRef {
 	 * This will be <code>""</code> for the root book <code>"/"</code>.
 	 */
 	public String getPrefix() {
-		String bn = name;
+		String bn = path.toString();
 		return "/".equals(bn) ? "" : bn;
 	}
 
@@ -72,35 +73,36 @@ public class BookRef {
 		BookRef other = (BookRef)obj;
 		return
 			domain.equals(other.domain)
-			&& name.equals(other.name)
+			&& path.equals(other.path)
 		;
 	}
 
 	@Override
 	public int hashCode() {
-		return domain.hashCode() * 31 + name.hashCode();
+		return domain.hashCode() * 31 + path.hashCode();
 	}
 
 	/**
-	 * Ordered by domain, name.
+	 * Ordered by domain, path.
 	 */
 	public int compareTo(BookRef o) {
 		int diff = domain.compareTo(o.domain);
 		if(diff != 0) return diff;
-		return name.compareTo(o.name);
+		return path.compareTo(o.path);
 	}
 
 	@Override
 	public String toString() {
+		String bn = path.toString();
 		return
 			new StringBuilder(
 				domain.length()
 				+ 1 // ':'
-				+ name.length()
+				+ bn.length()
 			)
 			.append(domain)
 			.append(':')
-			.append(name)
+			.append(bn)
 			.toString();
 	}
 }
