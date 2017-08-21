@@ -23,6 +23,7 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.lang.NullArgumentException;
+import com.aoindustries.net.Path;
 
 /**
  * A page reference contains a domain, a book, and a path to a page.
@@ -36,12 +37,11 @@ public class PageRef implements PageReferrer {
 
 	private final BookRef bookRef;
 
-	private final String path;
+	private final Path path;
 
-	public PageRef(BookRef bookRef, String path) {
+	public PageRef(BookRef bookRef, Path path) {
 		this.bookRef = NullArgumentException.checkNotNull(bookRef, "bookRef");
 		this.path = NullArgumentException.checkNotNull(path, "path");
-		if(!this.path.startsWith("/")) throw new IllegalArgumentException("Path does not begin with a slash: " + this.path);
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class PageRef implements PageReferrer {
 	 * updates to references to the page.
 	 * </p>
 	 */
-	public String getPath() {
+	public Path getPath() {
 		return path;
 	}
 
@@ -76,7 +76,7 @@ public class PageRef implements PageReferrer {
 	 * 
 	 * @return  this object if path unchanged or a new object representing the new path
 	 */
-	public PageRef setPath(String newPath) {
+	public PageRef setPath(Path newPath) {
 		if(newPath.equals(path)) {
 			return this;
 		} else {
@@ -121,17 +121,18 @@ public class PageRef implements PageReferrer {
 	public String toString() {
 		String domain = bookRef.getDomain();
 		String prefix = bookRef.getPrefix();
+		String pathStr = path.toString();
 		return
 			new StringBuilder(
 				domain.length()
 				+ 1 // ':'
 				+ prefix.length()
-				+ path.length()
+				+ pathStr.length()
 			)
 			.append(domain)
 			.append(':')
 			.append(prefix)
-			.append(path)
+			.append(pathStr)
 			.toString();
 	}
 }

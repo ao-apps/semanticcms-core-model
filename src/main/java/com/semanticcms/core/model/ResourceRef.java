@@ -23,6 +23,7 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.lang.NullArgumentException;
+import com.aoindustries.net.Path;
 
 /**
  * A reference to a non-page resource within a book.
@@ -35,12 +36,11 @@ public class ResourceRef implements Comparable<ResourceRef> {
 
 	private final BookRef bookRef;
 
-	private final String path;
+	private final Path path;
 
-	public ResourceRef(BookRef bookRef, String path) {
+	public ResourceRef(BookRef bookRef, Path path) {
 		this.bookRef = NullArgumentException.checkNotNull(bookRef, "bookRef");
 		this.path = NullArgumentException.checkNotNull(path, "path");
-		if(!this.path.startsWith("/")) throw new IllegalArgumentException("Path does not begin with a slash: " + this.path);
 	}
 
 	public BookRef getBookRef() {
@@ -50,7 +50,7 @@ public class ResourceRef implements Comparable<ResourceRef> {
 	/**
 	 * The book-relative path to the resource, always starting with a slash (/).
 	 */
-	public String getPath() {
+	public Path getPath() {
 		return path;
 	}
 
@@ -59,7 +59,7 @@ public class ResourceRef implements Comparable<ResourceRef> {
 	 * 
 	 * @return  this object if path unchanged or a new object representing the new path
 	 */
-	public ResourceRef setPath(String newPath) {
+	public ResourceRef setPath(Path newPath) {
 		if(newPath.equals(path)) {
 			return this;
 		} else {
@@ -100,17 +100,18 @@ public class ResourceRef implements Comparable<ResourceRef> {
 	public String toString() {
 		String domain = bookRef.getDomain();
 		String prefix = bookRef.getPrefix();
+		String pathStr = path.toString();
 		return
 			new StringBuilder(
 				domain.length()
 				+ 1 // ':'
 				+ prefix.length()
-				+ path.length()
+				+ pathStr.length()
 			)
 			.append(domain)
 			.append(':')
 			.append(prefix)
-			.append(path)
+			.append(pathStr)
 			.toString();
 	}
 }
