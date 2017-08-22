@@ -23,6 +23,7 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.lang.ObjectUtils;
+import com.aoindustries.net.Path;
 
 /**
  * An author of a book, a page, or a set of pages.
@@ -36,21 +37,21 @@ public class Author {
 	private final String name;
 	private final String href;
 	private final String domain;
-	private final String book;
-	private final String page;
+	private final Path book;
+	private final Path page;
 
 	/**
 	 * Either href may be provided, or domain:/book/page may be provided, but not both.
 	 * When page provided, domain and book are also required.
 	 * When name not provided, and page provided, uses page title as the author name.
 	 */
-	public Author(String name, String href, String domain, String book, String page) {
+	public Author(String name, String href, String domain, Path book, Path page) {
 		// No empty strings
 		if(name != null && name.isEmpty()) throw new IllegalArgumentException("empty name not allowed");
 		if(href != null && href.isEmpty()) throw new IllegalArgumentException("empty href not allowed");
 		if(domain != null && domain.isEmpty()) throw new IllegalArgumentException("empty domain not allowed");
-		if(book != null && book.isEmpty()) throw new IllegalArgumentException("empty book not allowed");
-		if(page != null && page.isEmpty()) throw new IllegalArgumentException("empty page not allowed");
+		//if(book != null && book.isEmpty()) throw new IllegalArgumentException("empty book not allowed");
+		//if(page != null && page.isEmpty()) throw new IllegalArgumentException("empty page not allowed");
 		// Other checks
 		if(href != null) {
 			if(domain != null) throw new IllegalArgumentException("domain may not be provided when href provided");
@@ -82,7 +83,7 @@ public class Author {
 		assert domain != null;
 		assert book != null;
 		assert page != null;
-		if(book.equals("/")) return domain + ':' + page;
+		if(book.equals(Path.ROOT)) return domain + ':' + page;
 		else return domain + ':' + book + page;
 	}
 
@@ -123,11 +124,11 @@ public class Author {
 		return domain;
 	}
 
-	public String getBook() {
+	public Path getBook() {
 		return book;
 	}
 
-	public String getPage() {
+	public Path getPage() {
 		return page;
 	}
 }
