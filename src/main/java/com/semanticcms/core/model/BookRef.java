@@ -30,6 +30,14 @@ import com.aoindustries.net.Path;
  */
 public class BookRef {
 
+	/**
+	 * The domain used for backward compatibility.
+	 *
+	 * TODO: Search and use this value.
+	 */
+	public static final String DEFAULT_DOMAIN = "localhost";
+
+	// TODO: Domain self-validating type?
 	private final String domain;
 
 	private final Path path;
