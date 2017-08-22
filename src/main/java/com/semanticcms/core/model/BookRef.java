@@ -23,6 +23,7 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.lang.NullArgumentException;
+import com.aoindustries.net.DomainName;
 import com.aoindustries.net.Path;
 
 /**
@@ -32,19 +33,15 @@ public class BookRef {
 
 	/**
 	 * The domain used for backward compatibility.
-	 *
-	 * TODO: Search and use this value.
 	 */
-	public static final String DEFAULT_DOMAIN = "localhost";
+	public static final DomainName DEFAULT_DOMAIN = DomainName.LOCALHOST;
 
-	// TODO: Domain self-validating type?
-	private final String domain;
+	private final DomainName domain;
 
 	private final Path path;
 
-	public BookRef(String domain, Path path) {
+	public BookRef(DomainName domain, Path path) {
 		this.domain = NullArgumentException.checkNotNull(domain, "domain");
-		if(domain.isEmpty()) throw new IllegalArgumentException("domain may not be empty");
 		this.path = NullArgumentException.checkNotNull(path, "path");
 		String pathStr = path.toString();
 		if(!pathStr.equals("/") && pathStr.endsWith("/")) throw new IllegalArgumentException("Book path may not end in a slash: " + this.path);
@@ -52,9 +49,9 @@ public class BookRef {
 
 	/**
 	 * Gets the non-empty domain of this book.  Two books are considered equal when they
- are in the same domain and have the same path.
+	 * are in the same domain and have the same path.
 	 */
-	public String getDomain() {
+	public DomainName getDomain() {
 		return domain;
 	}
 
@@ -104,16 +101,17 @@ public class BookRef {
 
 	@Override
 	public String toString() {
-		String bn = path.toString();
+		String domainStr = domain.toString();
+		String pathStr = path.toString();
 		return
 			new StringBuilder(
-				domain.length()
+				domainStr.length()
 				+ 1 // ':'
-				+ bn.length()
+				+ pathStr.length()
 			)
-			.append(domain)
+			.append(domainStr)
 			.append(':')
-			.append(bn)
+			.append(pathStr)
 			.toString();
 	}
 }

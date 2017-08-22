@@ -119,7 +119,7 @@ public class PageRef implements PageReferrer {
 
 	@Override
 	public String toString() {
-		String domain = bookRef.getDomain();
+		String domain = bookRef.getDomain().toString();
 		String prefix = bookRef.getPrefix();
 		String pathStr = path.toString();
 		return
