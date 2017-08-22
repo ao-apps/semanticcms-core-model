@@ -98,7 +98,7 @@ public class ResourceRef implements Comparable<ResourceRef> {
 
 	@Override
 	public String toString() {
-		String domain = bookRef.getDomain();
+		String domain = bookRef.getDomain().toString();
 		String prefix = bookRef.getPrefix();
 		String pathStr = path.toString();
 		return
