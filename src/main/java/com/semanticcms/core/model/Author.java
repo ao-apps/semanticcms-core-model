@@ -23,6 +23,7 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.lang.ObjectUtils;
+import com.aoindustries.net.DomainName;
 import com.aoindustries.net.Path;
 
 /**
@@ -36,7 +37,7 @@ public class Author {
 
 	private final String name;
 	private final String href;
-	private final String domain;
+	private final DomainName domain;
 	private final Path book;
 	private final Path page;
 
@@ -45,11 +46,11 @@ public class Author {
 	 * When page provided, domain and book are also required.
 	 * When name not provided, and page provided, uses page title as the author name.
 	 */
-	public Author(String name, String href, String domain, Path book, Path page) {
+	public Author(String name, String href, DomainName domain, Path book, Path page) {
 		// No empty strings
 		if(name != null && name.isEmpty()) throw new IllegalArgumentException("empty name not allowed");
 		if(href != null && href.isEmpty()) throw new IllegalArgumentException("empty href not allowed");
-		if(domain != null && domain.isEmpty()) throw new IllegalArgumentException("empty domain not allowed");
+		//if(domain != null && domain.isEmpty()) throw new IllegalArgumentException("empty domain not allowed");
 		//if(book != null && book.isEmpty()) throw new IllegalArgumentException("empty book not allowed");
 		//if(page != null && page.isEmpty()) throw new IllegalArgumentException("empty page not allowed");
 		// Other checks
@@ -83,8 +84,8 @@ public class Author {
 		assert domain != null;
 		assert book != null;
 		assert page != null;
-		if(book.equals(Path.ROOT)) return domain + ':' + page;
-		else return domain + ':' + book + page;
+		if(book.equals(Path.ROOT)) return domain.toString() + ':' + page.toString();
+		else return domain.toString() + ':' + book.toString() + page.toString();
 	}
 
 	@Override
@@ -120,7 +121,7 @@ public class Author {
 		return href;
 	}
 
-	public String getDomain() {
+	public DomainName getDomain() {
 		return domain;
 	}
 
