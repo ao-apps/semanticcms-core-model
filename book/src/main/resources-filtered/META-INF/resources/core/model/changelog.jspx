@@ -71,7 +71,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 						so going with the simpler implementation.
 					</li>
 					<li>Changed type of <code>Node.lock</code> to <code>Object</code> to not export private class in public API.</li>
-					<li><code>Book</code> moved to new <core:link book="/core/pages" page="/index.jspx" /> module.</li>
+					<li><code>Book</code> moved to new <core:link book="/core/pages" page="/" /> module.</li>
 					<li>Removed <code>servletPath</code> because model is a high level concept independent of servlet implementation.</li>
 					<li>Books now have resources to support the content portability of repositories:
 						<ol>
@@ -125,7 +125,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 				<li>New <ao:a href="https://aoindustries.com/ao-oss-parent/">AO OSS Parent</ao:a> POM to simplify <code>pom.xml</code> files.</li>
 				<li>Added support for dateCreated, datePublished, dateModified, and dateReviewed.</li>
 				<li>Added new dates to content view. The most recent date visible and the others in meta data only.</li>
-				<li>Project documentation moved to per-project book in <core:link book="/" page="/index.jspx" /> format.</li>
+				<li>Project documentation moved to per-project book in <core:link book="/" page="/" /> format.</li>
 				<li>Added changelog as top-level project link.</li>
 			</ul>
 		</changelog:release>
