@@ -37,7 +37,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2016-10-30T17:32:26-0500"
-		dateModified="2017-08-21T18:09:28-0500"
+		dateModified="2017-08-27T09:36:03-0500"
 	>
 		<!-- The current snapshot, unreleased version -->
 		<c:set var="version" value="@{com.semanticcms:semanticcms-core-model:pom.version}" />
@@ -89,6 +89,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 						</ol>
 					</li>
 					<li><code>Page.src</code> is now a <code>ResourceRef</code> instead of a <code>PageRef</code>.</li>
+					<li><code>Link</code> is now an <code>Element</code> to support separation of model and renderer.</li>
 				</ul>
 			</changelog:release>
 		</c:if>
