@@ -28,6 +28,7 @@ import com.aoindustries.net.Path;
 import com.aoindustries.net.UnmodifiableHttpParameters;
 import static com.aoindustries.util.StringUtility.nullIfEmpty;
 
+// TODO: Support optional renderer before view, defaulting to current renderer
 public class Link extends Element {
 
 	/**
@@ -147,7 +148,7 @@ public class Link extends Element {
 		return params;
 	}
 
-	public void setClazz(HttpParameters params) {
+	public void setParams(HttpParameters params) {
 		synchronized(lock) {
 			checkNotFrozen();
 			this.params = params;
