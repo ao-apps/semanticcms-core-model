@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2013, 2014, 2015, 2016  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -36,14 +36,8 @@ import java.io.IOException;
  */
 public class PageRef implements PageReferrer {
 
-	/**
-	 * @see  String#intern()  always interned
-	 */
 	private final String bookName;
 
-	/**
-	 * @see  String#intern()  always interned
-	 */
 	private final String path;
 	
 	/**
@@ -54,16 +48,15 @@ public class PageRef implements PageReferrer {
 	private final Book book;
 
 	private PageRef(String bookName, String path, Book book) {
-		assert book != null || bookName == bookName.intern();
 		this.bookName = book != null ? book.getName() : bookName;
-		this.path = path.intern();
+		this.path = path;
 		if(!path.startsWith("/")) throw new IllegalArgumentException("Path does not begin with a slash: " + path);
 		this.book = book;
 	}
 
 	public PageRef(String bookName, String path) {
 		this(
-			NullArgumentException.checkNotNull(bookName, "bookName").intern(),
+			NullArgumentException.checkNotNull(bookName, "bookName"),
 			NullArgumentException.checkNotNull(path, "path"),
 			null
 		);
@@ -88,8 +81,6 @@ public class PageRef implements PageReferrer {
 	/**
 	 * The name of the book the page is part of.
 	 * This will always begin with a slash (/).
-	 * 
-	 * @see  String#intern()  always interned
 	 */
 	public String getBookName() {
 		return bookName;
@@ -98,8 +89,6 @@ public class PageRef implements PageReferrer {
 	/**
 	 * The prefix of the book the page is part of.
 	 * This will be <code>""</code> for the root book <code>"/"</code>.
-	 * 
-	 * @see  String#intern()  always interned
 	 */
 	public String getBookPrefix() {
 		String bn = bookName;
@@ -108,8 +97,6 @@ public class PageRef implements PageReferrer {
 
 	/**
 	 * The book-relative path to the page, always starting with a slash (/).
-	 * 
-	 * @see  String#intern()  always interned
 	 */
 	public String getPath() {
 		return path;
@@ -121,11 +108,11 @@ public class PageRef implements PageReferrer {
 	 * @return  this object if path unchanged or a new object representing the new path
 	 */
 	public PageRef setPath(String newPath) {
-		return
-			newPath.equals(path)
-			? this
-			: new PageRef(this.bookName, newPath, this.book)
-		;
+		if(newPath.equals(path)) {
+			return this;
+		} else {
+			return new PageRef(this.bookName, newPath, this.book);
+		}
 	}
 
 	/**
@@ -140,25 +127,15 @@ public class PageRef implements PageReferrer {
 		if(this == obj) return true;
 		if(!(obj instanceof PageRef)) return false;
 		PageRef other = (PageRef)obj;
-		assert bookName == bookName.intern();
-		assert path == path.intern();
 		return
-			bookName == other.bookName
-			&& path == other.path
+			bookName.equals(other.bookName)
+			&& path.equals(other.path)
 		;
 	}
 
-	private int hash;
-
 	@Override
 	public int hashCode() {
-		int h = hash;
-		if(h == 0) {
-			h = bookName.hashCode();
-			h = h * 31 + path.hashCode();
-			hash = h;
-		}
-		return h;
+		return bookName.hashCode() * 31 + path.hashCode();
 	}
 
 	/**

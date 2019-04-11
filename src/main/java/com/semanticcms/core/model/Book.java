@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2014, 2015, 2016  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -42,14 +42,8 @@ public class Book implements Comparable<Book> {
 
 	private static final String PARAM_PREFIX = "param.";
 
-	/**
-	 * @see  String#intern()  always interned
-	 */
 	private final String name;
 
-	/**
-	 * @see  String#intern()  always interned
-	 */
 	private final String pathPrefix;
 
 	private final File cvsworkDirectory;
@@ -73,7 +67,7 @@ public class Book implements Comparable<Book> {
 		// Tracks each properties key used, will throw exception if any key exists in the properties file that is not used
 		Set<Object> usedKeys = new HashSet<Object>(bookProps.size() * 4/3 + 1);
 
-		this.name = name.intern();
+		this.name = name;
 		this.pathPrefix = "/".equals(name) ? "" : this.name;
 		if(cvsworkDirectory.startsWith("~/")) {
 			this.cvsworkDirectory = new File(System.getProperty("user.home"), cvsworkDirectory.substring(2));
@@ -150,9 +144,6 @@ public class Book implements Comparable<Book> {
 		if(!unusedKeys.isEmpty()) throw new IllegalStateException(name + ": Unused keys: " + unusedKeys);
 	}
 
-	/**
-	 * @see  String#intern()  always interned
-	 */
 	@Override
 	public String toString() {
 		return name;
@@ -162,8 +153,7 @@ public class Book implements Comparable<Book> {
 	public boolean equals(Object obj) {
 		if(!(obj instanceof Book)) return false;
 		Book other = (Book)obj;
-		assert name == name.intern();
-		return name == other.name;
+		return name.equals(other.name);
 	}
 
 	@Override
@@ -173,13 +163,9 @@ public class Book implements Comparable<Book> {
 
 	@Override
 	public int compareTo(Book o) {
-		if(name == o.name) return 0;
 		return name.compareTo(o.name);
 	}
 
-	/**
-	 * @see  String#intern()  always interned
-	 */
 	public String getName() {
 		return name;
 	}
@@ -187,11 +173,8 @@ public class Book implements Comparable<Book> {
 	/**
 	 * Gets the path prefix for all pages in this book.
 	 * This will be an empty string for the root book (/).
-	 *
-	 * @see  String#intern()  always interned
 	 */
 	public String getPathPrefix() {
-		assert pathPrefix == pathPrefix.intern();
 		return pathPrefix;
 	}
 

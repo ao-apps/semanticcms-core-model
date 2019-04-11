@@ -94,7 +94,7 @@ abstract public class Node implements Freezable<Node> {
 	};
 
 	private static class Lock {}
-	protected final Lock lock = new Lock();
+	protected final Object lock = new Lock();
 	protected volatile boolean frozen; // Accessed without lock, only updated under lock
 	private Map<String,Object> properties;
 	private List<Element> childElements;

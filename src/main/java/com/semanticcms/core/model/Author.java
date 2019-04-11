@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2016  AO Industries, Inc.
+ * Copyright (C) 2016, 2017  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -94,7 +94,7 @@ public class Author {
 
 	@Override
 	public int hashCode() {
-		// Java 1.8: Objects.hash
+		// Java 1.7: Objects.hash
 		return ObjectUtils.hash(
 			name,
 			href,
