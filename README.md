@@ -1,4 +1,4 @@
-# [<img src="ao-logo.png" alt="AO Logo" width="35" height="40">](https://github.com/aoindustries) [AO Web Page](https://github.com/aoindustries/ao-web-page)
+# [<img src="ao-logo.png" alt="AO Logo" width="35" height="40">](https://github.com/aoindustries) [AO Web Page](https://github.com/aoindustries/semanticcms-core-model)
 <p>
 	<a href="https://aoindustries.com/life-cycle#project-end-of-life">
 		<img src="https://semanticcms.com/ao-badges/project-end-of-life.svg" alt="project: end of life" />
