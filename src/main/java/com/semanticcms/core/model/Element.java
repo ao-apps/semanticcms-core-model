@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2015, 2016  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -23,8 +23,8 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.lang.NullArgumentException;
-import com.aoindustries.lang.ObjectUtils;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A page may contain any number of elements (along with arbitrary textual data
@@ -160,8 +160,8 @@ abstract public class Element extends Node {
 
 	@Override
 	public int hashCode() {
-		int hash = ObjectUtils.hashCode(page);
-		hash = hash * 31 + ObjectUtils.hashCode(id);
+		int hash = Objects.hashCode(page);
+		hash = hash * 31 + Objects.hashCode(id);
 		return hash;
 	}
 

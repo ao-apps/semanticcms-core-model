@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,7 +22,7 @@
  */
 package com.semanticcms.core.model;
 
-import com.aoindustries.lang.ObjectUtils;
+import java.util.Objects;
 
 /**
  * An author of a book, a page, or a set of pages.
@@ -85,17 +85,16 @@ public class Author {
 		if(!(obj instanceof Author)) return false;
 		Author o = (Author)obj;
 		return
-			ObjectUtils.equals(name, o.name)
-			&& ObjectUtils.equals(href, o.href)
-			&& ObjectUtils.equals(bookName, o.bookName)
-			&& ObjectUtils.equals(page, o.page)
+			Objects.equals(name, o.name)
+			&& Objects.equals(href, o.href)
+			&& Objects.equals(bookName, o.bookName)
+			&& Objects.equals(page, o.page)
 		;
 	}
 
 	@Override
 	public int hashCode() {
-		// Java 1.7: Objects.hash
-		return ObjectUtils.hash(
+		return Objects.hash(
 			name,
 			href,
 			bookName,
