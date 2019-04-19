@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2015, 2016  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -103,8 +103,7 @@ public class NodeBodyWriterTest {
 			for(int off = 0; off < writeLen; off++) {
 				StringWriter out = new StringWriter(TEST_EXPECTED_RESULT.length());
 				try {
-					NodeBodyWriter writer = new NodeBodyWriter(testNode, out, nullElementContext);
-					try {
+					try (NodeBodyWriter writer = new NodeBodyWriter(testNode, out, nullElementContext)) {
 						writer.write(testNodeBodyChars, 0, off);
 						for(int pos = off; pos < testNodeBodyLen; pos += writeLen) {
 							int end = pos + writeLen;
@@ -114,8 +113,6 @@ public class NodeBodyWriterTest {
 							assertTrue((pos + len) <= testNodeBodyLen);
 							writer.write(testNodeBodyChars, pos, len);
 						}
-					} finally {
-						writer.close();
 					}
 				} finally {
 					out.close();

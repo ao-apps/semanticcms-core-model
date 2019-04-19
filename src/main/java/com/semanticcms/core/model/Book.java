@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2014, 2015, 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -65,7 +65,7 @@ public class Book implements Comparable<Book> {
 		if(!name.startsWith("/")) throw new IllegalArgumentException("Book name must begin with a slash (/): " + name);
 
 		// Tracks each properties key used, will throw exception if any key exists in the properties file that is not used
-		Set<Object> usedKeys = new HashSet<Object>(bookProps.size() * 4/3 + 1);
+		Set<Object> usedKeys = new HashSet<>(bookProps.size() * 4/3 + 1);
 
 		this.name = name;
 		this.pathPrefix = "/".equals(name) ? "" : this.name;
@@ -91,7 +91,7 @@ public class Book implements Comparable<Book> {
 		} else {
 			this.copyright = null;
 		}
-		Set<Author> authors = new LinkedHashSet<Author>();
+		Set<Author> authors = new LinkedHashSet<>();
 		for(int i=1; i<Integer.MAX_VALUE; i++) {
 			String authorName = getProperty(bookProps, usedKeys, "author." + i + ".name");
 			String authorHref = getProperty(bookProps, usedKeys, "author." + i + ".href");
@@ -115,7 +115,7 @@ public class Book implements Comparable<Book> {
 		this.unmodifiableAuthors = AoCollections.optimalUnmodifiableSet(authors);
 		this.title = getProperty(bookProps, usedKeys, "title");
 		this.allowRobots = allowRobots;
-		Map<String,String> newParam = new LinkedHashMap<String,String>();
+		Map<String,String> newParam = new LinkedHashMap<>();
 		@SuppressWarnings("unchecked")
 		Enumeration<String> propertyNames = (Enumeration)bookProps.propertyNames();
 		while(propertyNames.hasMoreElements()) {
@@ -137,7 +137,7 @@ public class Book implements Comparable<Book> {
 		this.contentRoot = new PageRef(this, getProperty(bookProps, usedKeys, "content.root"));
 
 		// Make sure all keys used
-		Set<Object> unusedKeys = new HashSet<Object>();
+		Set<Object> unusedKeys = new HashSet<>();
 		for(Object key : bookProps.keySet()) {
 			if(!usedKeys.contains(key)) unusedKeys.add(key);
 		}
