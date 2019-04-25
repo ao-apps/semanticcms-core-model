@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2015, 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -155,7 +155,7 @@ abstract public class Node implements Freezable<Node> {
 		synchronized(lock) {
 			checkNotFrozen();
 			if(properties == null) {
-				properties = new LinkedHashMap<String,Object>();
+				properties = new LinkedHashMap<>();
 			} else if(properties.containsKey(name)) {
 				return false;
 			}
@@ -181,9 +181,9 @@ abstract public class Node implements Freezable<Node> {
 	public Long addChildElement(Element childElement, ElementWriter elementWriter) {
 		synchronized(lock) {
 			checkNotFrozen();
-			if(childElements == null) childElements = new ArrayList<Element>();
+			if(childElements == null) childElements = new ArrayList<>();
 			childElements.add(childElement);
-			if(elementWriters == null) elementWriters = new HashMap<Long,ElementWriter>();
+			if(elementWriters == null) elementWriters = new HashMap<>();
 			IdGenerator idGenerator = idGenerators.get();
 			while(true) {
 				Long elementKey = idGenerator.getNextId();
@@ -219,7 +219,7 @@ abstract public class Node implements Freezable<Node> {
 	public void addPageLink(PageRef pageLink) {
 		synchronized(lock) {
 			checkNotFrozen();
-			if(pageLinks == null) pageLinks = new LinkedHashSet<PageRef>();
+			if(pageLinks == null) pageLinks = new LinkedHashSet<>();
 			pageLinks.add(pageLink);
 		}
 	}
@@ -256,10 +256,7 @@ abstract public class Node implements Freezable<Node> {
 		try {
 			appendLabel(sb);
 		} catch(IOException e) {
-			// Java 1.7: new constructor
-			AssertionError ae = new AssertionError("Should not happen because using StringBuilder");
-			ae.initCause(e);
-			throw ae;
+			throw new AssertionError("Should not happen because using StringBuilder", e);
 		}
 		return sb.toString();
 	}
@@ -303,7 +300,7 @@ abstract public class Node implements Freezable<Node> {
 		for(Element elem : node.getChildElements()) {
 			if(elementType.isInstance(elem)) {
 				// Found match
-				if(matches == null) matches = new ArrayList<E>();
+				if(matches == null) matches = new ArrayList<>();
 				matches.add(elementType.cast(elem));
 			} else {
 				// Look further down the tree

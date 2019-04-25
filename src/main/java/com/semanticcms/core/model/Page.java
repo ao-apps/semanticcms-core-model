@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -162,7 +162,7 @@ public class Page extends Node implements Comparable<Page> {
 	public void addAuthor(Author author) {
 		synchronized(lock) {
 			checkNotFrozen();
-			if(authors == null) authors = new LinkedHashSet<Author>();
+			if(authors == null) authors = new LinkedHashSet<>();
 			if(!authors.add(author)) throw new IllegalStateException("Duplicate author: " + author);
 		}
 	}
@@ -356,7 +356,7 @@ public class Page extends Node implements Comparable<Page> {
 	public void addParentRef(ParentRef parentRef) {
 		synchronized(lock) {
 			checkNotFrozen();
-			if(parentRefs == null) parentRefs = new LinkedHashSet<ParentRef>();
+			if(parentRefs == null) parentRefs = new LinkedHashSet<>();
 			if(!parentRefs.add(parentRef)) throw new IllegalStateException("Duplicate parent: " + parentRef);
 		}
 	}
@@ -381,7 +381,7 @@ public class Page extends Node implements Comparable<Page> {
 	public void addChildRef(ChildRef childRef) {
 		synchronized(lock) {
 			checkNotFrozen();
-			if(childRefs == null) childRefs = new LinkedHashSet<ChildRef>();
+			if(childRefs == null) childRefs = new LinkedHashSet<>();
 			if(!childRefs.add(childRef)) throw new IllegalStateException("Duplicate child: " + childRef);
 		}
 	}
@@ -452,7 +452,7 @@ public class Page extends Node implements Comparable<Page> {
 			checkNotFrozen();
 			element.setPage(this);
 			// elements
-			if(elements == null) elements = new ArrayList<Element>();
+			if(elements == null) elements = new ArrayList<>();
 			elements.add(element);
 			// elementsById
 			addToElementsById(element, false);
@@ -463,10 +463,10 @@ public class Page extends Node implements Comparable<Page> {
 		assert Thread.holdsLock(lock);
 		String id = element.getIdNoGen();
 		if(id != null) {
-			if(elementsById == null) elementsById = new HashMap<String,Element>();
+			if(elementsById == null) elementsById = new HashMap<>();
 			if(elementsById.put(id, element) != null) throw new AssertionError("Duplicate id: " + id);
 			if(generated) {
-				if(generatedIds == null) generatedIds = new HashSet<String>();
+				if(generatedIds == null) generatedIds = new HashSet<>();
 				if(!generatedIds.add(id)) throw new AssertionError("Duplicate id: " + id);
 			}
 		}

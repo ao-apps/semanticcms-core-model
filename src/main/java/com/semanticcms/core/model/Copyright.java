@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2016  AO Industries, Inc.
+ * Copyright (C) 2016, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,7 +22,7 @@
  */
 package com.semanticcms.core.model;
 
-import com.aoindustries.lang.ObjectUtils;
+import java.util.Objects;
 
 /**
  * The copyright info for a book, a page, or a set of pages.
@@ -92,9 +92,9 @@ public class Copyright {
 		String otherDateCopyrighted
 	) {
 		return
-			ObjectUtils.equals(rightsHolder, otherRightsHolder)
-			&& ObjectUtils.equals(rights, otherRights)
-			&& ObjectUtils.equals(dateCopyrighted, otherDateCopyrighted)
+			Objects.equals(rightsHolder, otherRightsHolder)
+			&& Objects.equals(rights, otherRights)
+			&& Objects.equals(dateCopyrighted, otherDateCopyrighted)
 		;
 	}
 
@@ -111,7 +111,7 @@ public class Copyright {
 
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hash(
+		return Objects.hash(
 			rightsHolder,
 			rights,
 			dateCopyrighted
