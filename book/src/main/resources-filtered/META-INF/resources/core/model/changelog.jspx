@@ -37,7 +37,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2016-10-30T17:32:26-0500"
-		dateModified="2017-08-27T09:36:03-0500"
+		dateModified="2019-06-04T01:13:37-0500"
 	>
 		<!-- The current snapshot, unreleased version -->
 		<c:set var="version" value="@{com.semanticcms:semanticcms-core-model:pom.version}" />
@@ -90,9 +90,34 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 					</li>
 					<li><code>Page.src</code> is now a <code>ResourceRef</code> instead of a <code>PageRef</code>.</li>
 					<li><code>Link</code> is now an <code>Element</code> to support separation of model and renderer.</li>
+					<li>Using managed dependencies:
+						<ol>
+							<li>This project uses transitive managed dependencies.</li>
+							<li>This project's managed dependencies may also be imported by other projects.</li>
+						</ol>
+					</li>
 				</ul>
 			</changelog:release>
 		</c:if>
+
+		<changelog:release
+			projectName="@{documented.name}"
+			version="1.9.0"
+			datePublished="2019-04-19T04:54:27-0500"
+			groupId="@{documented.groupId}"
+			artifactId="@{documented.artifactId}"
+			scmUrl="@{documented.scm.url}"
+		>
+			<ul>
+				<li>Minimum Java version changed from 1.6 to 1.7.</li>
+				<li>
+					Removed the premature optimization of interning strings in references and identifiers.
+					This was as likely to hurt as to help, and in either case it is off the radar in profiling,
+					so going with the simpler implementation.
+				</li>
+				<li>Changed type of <code>Node.lock</code> to <code>Object</code> to not export private class in public API.</li>
+			</ul>
+		</changelog:release>
 
 		<changelog:release
 			projectName="@{documented.name}"
