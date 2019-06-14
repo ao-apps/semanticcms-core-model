@@ -169,6 +169,7 @@ public class Page extends Node implements Comparable<Page> {
 	 * @see  #getDatePublished()  When created and published are the same date, prefer
 	 *                            published because it seems to have more use overall than created.
 	 */
+	// Matches com.aoindustries.tld.parser.Dates.getCreated()
 	public DateTime getDateCreated() {
 		return dateCreated;
 	}
@@ -185,6 +186,7 @@ public class Page extends Node implements Comparable<Page> {
 	 * @see  #getDateCreated()  When created and published are the same date, prefer
 	 *                          published because it seems to have more use overall than created.
 	 */
+	// Matches com.aoindustries.tld.parser.Dates.getPublished()
 	public DateTime getDatePublished() {
 		return datePublished;
 	}
@@ -198,6 +200,7 @@ public class Page extends Node implements Comparable<Page> {
 	/**
 	 * <a href="https://schema.org/dateModified">https://schema.org/dateModified</a>
 	 */
+	// Matches com.aoindustries.tld.parser.Dates.getModified()
 	public DateTime getDateModified() {
 		return dateModified;
 	}
@@ -213,6 +216,7 @@ public class Page extends Node implements Comparable<Page> {
 	 * we feel it is important to actively review content to ensure its accuracy, even when it
 	 * has not been modified.
 	 */
+	// Matches com.aoindustries.tld.parser.Dates.getReviewed()
 	public DateTime getDateReviewed() {
 		return dateReviewed;
 	}
