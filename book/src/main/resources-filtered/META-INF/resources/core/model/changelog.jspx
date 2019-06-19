@@ -36,7 +36,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2016-10-30T17:32:26-0500"
-		dateModified="2019-06-04T01:13:37-0500"
+		dateModified="2019-06-19T09:48:11-0500"
 	>
 		<!-- The current snapshot, unreleased version -->
 		<c:set var="version" value="@{com.semanticcms:semanticcms-core-model:pom.version}" />
@@ -91,7 +91,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 					<li><code>Link</code> is now an <code>Element</code> to support separation of model and renderer.</li>
 					<li>Using managed dependencies:
 						<ol>
-							<li>This project uses transitive managed dependencies.</li>
+							<li>This project uses managed dependencies.</li>
 							<li>This project's managed dependencies may also be imported by other projects.</li>
 						</ol>
 					</li>
