@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -23,9 +23,9 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.net.DomainName;
-import com.aoindustries.net.HttpParameters;
 import com.aoindustries.net.Path;
-import com.aoindustries.net.UnmodifiableHttpParameters;
+import com.aoindustries.net.URIParameters;
+import com.aoindustries.net.UnmodifiableURIParameters;
 import static com.aoindustries.util.StringUtility.nullIfEmpty;
 
 // TODO: Support optional renderer before view, defaulting to current renderer
@@ -44,14 +44,14 @@ public class Link extends Element {
 	private volatile String anchor;
 	private volatile String view = DEFAULT_VIEW_NAME;
 	private volatile boolean small;
-	private volatile HttpParameters params;
+	private volatile URIParameters params;
 	private volatile String clazz;
 
 	@Override
 	public Link freeze() throws IllegalStateException {
 		synchronized(lock) {
 			if(!frozen) {
-				params = UnmodifiableHttpParameters.wrap(params);
+				params = UnmodifiableURIParameters.wrap(params);
 				super.freeze();
 			}
 		}
@@ -144,11 +144,11 @@ public class Link extends Element {
 		this.small = small;
 	}
 
-	public HttpParameters getParams() {
+	public URIParameters getParams() {
 		return params;
 	}
 
-	public void setParams(HttpParameters params) {
+	public void setParams(URIParameters params) {
 		synchronized(lock) {
 			checkNotFrozen();
 			this.params = params;
