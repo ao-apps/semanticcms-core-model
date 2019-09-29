@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -23,6 +23,7 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.lang.NullArgumentException;
+import com.aoindustries.xml.XmlUtils;
 
 /**
  * An element reference contains a book, a path, and an element id.
@@ -40,7 +41,7 @@ public class ElementRef implements Comparable<ElementRef> {
 	public ElementRef(PageRef pageRef, String id) {
 		this.pageRef = NullArgumentException.checkNotNull(pageRef, "pageRef");
 		this.id = NullArgumentException.checkNotNull(id, "id");
-		if(!Element.isValidId(id)) throw new IllegalArgumentException("Invalid id: " + id);
+		if(!XmlUtils.isValidId(id)) throw new IllegalArgumentException("Invalid id: " + id);
 	}
 
 	/**
@@ -85,27 +86,34 @@ public class ElementRef implements Comparable<ElementRef> {
 		return id.compareTo(o.id);
 	}
 
+	/**
+	 * Gets the combination of the domain, book, the path, and element anchor that refers to the
+	 * element resource within the web application.
+	 * <p>
+	 * The element anchor is not URL-encoded - Unicode characters are verbatim.
+	 * </p>
+	 */
 	@Override
 	public String toString() {
 		BookRef bookRef = pageRef.getBookRef();
 		String domain = bookRef.getDomain().toString();
 		String prefix = bookRef.getPrefix();
 		String path = pageRef.getPath().toString();
-		return
-			new StringBuilder(
-				domain.length()
-				+ 1 // ':'
-				+ prefix.length()
-				+ path.length()
-				+ 1 // '#'
-				+ id.length()
-			)
+		int sbLen =
+			domain.length()
+			+ 1 // ':'
+			+ prefix.length()
+			+ path.length()
+			+ 1 // '#'
+			+ id.length();
+		StringBuilder sb = new StringBuilder(sbLen)
 			.append(domain)
 			.append(':')
 			.append(prefix)
 			.append(path)
 			.append('#')
-			.append(id)
-			.toString();
+			.append(id);
+		assert sb.length() == sbLen;
+		return sb.toString();
 	}
 }
