@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -23,6 +23,7 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.lang.NullArgumentException;
+import com.aoindustries.xml.XmlUtils;
 import java.io.IOException;
 
 /**
@@ -41,7 +42,7 @@ public class ElementRef implements Comparable<ElementRef> {
 	public ElementRef(PageRef pageRef, String id) {
 		this.pageRef = NullArgumentException.checkNotNull(pageRef, "pageRef");
 		this.id = NullArgumentException.checkNotNull(id, "id");
-		if(!Element.isValidId(id)) throw new IllegalArgumentException("Invalid id: " + id);
+		if(!XmlUtils.isValidId(id)) throw new IllegalArgumentException("Invalid id: " + id);
 	}
 
 	/**
@@ -72,7 +73,7 @@ public class ElementRef implements Comparable<ElementRef> {
 	@Override
 	public int hashCode() {
 		return pageRef.hashCode() * 31 + id.hashCode();
-		}
+	}
 
 	/**
 	 * Orders by page then id.
@@ -91,13 +92,26 @@ public class ElementRef implements Comparable<ElementRef> {
 	/**
 	 * Gets the combination of the book, the path, and element anchor that refers to the
 	 * element resource within the web application.
+	 * <p>
+	 * The element anchor is not URL-encoded - Unicode characters are verbatim.
+	 * </p>
 	 * 
 	 * @see #appendServletPath(java.lang.Appendable) 
 	 */
 	public String getServletPath() {
 		String sp = servletPath;
 		if(sp == null) {
-			servletPath = sp = pageRef.getServletPath() + '#' + id;
+			String page = pageRef.getServletPath();
+			int sbLen =
+				page.length()
+				+ 1 // '#'
+				+ id.length();
+			StringBuilder sb = new StringBuilder(sbLen)
+				.append(page)
+				.append('#')
+				.append(id);
+			assert sb.length() == sbLen;
+			servletPath = sp = sb.toString();
 		}
 		return sp;
 	}
@@ -105,15 +119,22 @@ public class ElementRef implements Comparable<ElementRef> {
 	/**
 	 * Appends the combination of the book, the path, and element anchor that refers to the
 	 * element resource within the web application.
+	 * <p>
+	 * The element anchor is not URL-encoded - Unicode characters are verbatim.
+	 * </p>
 	 *
 	 * @see #getServletPath() 
 	 */
+	// TODO: Encoder variant, other classes, too, see which uses of getServletPath can be streamed
 	public void appendServletPath(Appendable out) throws IOException {
 		pageRef.appendServletPath(out);
 		out.append('#');
 		out.append(id);
 	}
 
+	/**
+	 * @see  #getServletPath()
+	 */
 	@Override
 	public String toString() {
 		return getServletPath();
