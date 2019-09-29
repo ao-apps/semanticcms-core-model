@@ -22,7 +22,7 @@
  */
 package com.semanticcms.core.model;
 
-import com.aoindustries.lang.NullArgumentException;
+import com.aoindustries.xml.XmlUtils;
 import java.util.Map;
 import java.util.Objects;
 
@@ -31,109 +31,6 @@ import java.util.Objects;
  * and other content).  Each element may also contain other elements.
  */
 abstract public class Element extends Node {
-
-	/**
-	 * Makes sure an ID is valid.
-	 * Must match [A-Za-z][A-Za-z0-9:_.-]*
-	 *
-	 * @see <a href="http://www.w3.org/TR/2002/REC-xhtml1-20020801/#C_8">http://www.w3.org/TR/2002/REC-xhtml1-20020801/#C_8</a>
-	 */
-	public static boolean isValidId(String id) {
-		if(id == null) return false;
-		int len = id.length();
-		if(len == 0) return false;
-		// First character must be [A-Za-z]
-		char ch = id.charAt(0);
-		if(
-			(ch<'A' || ch>'Z')
-			&& (ch<'a' || ch>'z')
-		) {
-			return false;
-		}
-		// Remaining characters must match [A-Za-z0-9:_.-]
-		for(int i = 1; i < len; i++) {
-			if(
-				(ch < 'A' || ch > 'Z')
-				&& (ch < 'a' || ch > 'z')
-				&& (ch < '0' || ch > '9')
-				&& ch != ':'
-				&& ch != '_'
-				&& ch != '.'
-				&& ch != '-'
-			) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * Generates a valid ID from an arbitrary string.
-	 *
-	 * Strip all character not matching [A-Za-z][A-Za-z0-9:_.-]*
-	 *
-	 * Also converts characters to lower case.
-	 *
-	 * @param  template The preferred text to base the id on
-	 * @param  prefix   The base used when template is unusable (must be a valid id or invalid ID's may be generated)
-	 *
-	 * @see <a href="http://www.w3.org/TR/2002/REC-xhtml1-20020801/#C_8">http://www.w3.org/TR/2002/REC-xhtml1-20020801/#C_8</a>
-	 */
-	public static StringBuilder generateIdPrefix(String template, String prefix) {
-		NullArgumentException.checkNotNull(template, "template");
-		NullArgumentException.checkNotNull(prefix, "prefix");
-		assert isValidId(prefix);
-		final int len = template.length();
-		// First character must be [A-Za-z]
-		int pos = 0;
-		while(pos < len) {
-			char ch = template.charAt(pos);
-			if(
-				(ch >= 'A' && ch <= 'Z')
-				|| (ch >= 'a' && ch <= 'z')
-			) {
-				break;
-			}
-			pos++;
-		}
-		StringBuilder idPrefix;
-		if(pos == len) {
-			// No usable characters from label
-			idPrefix = new StringBuilder(prefix);
-		} else {
-			// Get remaining usable characters from label
-			idPrefix = new StringBuilder(len - pos);
-			//idPrefix.append(template.charAt(pos));
-			//pos++;
-			// Remaining must match [A-Za-z0-9:_.-]
-			while(pos < len) {
-				char ch = template.charAt(pos);
-				pos++;
-				// Convert space to '-'
-				if(ch == ' ') {
-					idPrefix.append('-');
-				} else if(
-					(ch >= 'A' && ch <= 'Z')
-					|| (ch >= 'a' && ch <= 'z')
-					|| (ch >= '0' && ch <= '9')
-					|| ch == ':'
-					|| ch == '_'
-					|| ch == '.'
-					|| ch == '-'
-				) {
-					if(ch >= 'A' && ch <= 'Z') {
-						// Works since we're only using ASCII range:
-						ch = (char)(ch + ('a' - 'A'));
-						// Would support Unicode, but id's don't have Unicode:
-						// ch = Character.toLowerCase(ch);
-					}
-					idPrefix.append(ch);
-				}
-			}
-		}
-		assert isValidId(idPrefix.toString());
-		return idPrefix;
-	}
 
 	private volatile Page page;
 	private volatile String id;
@@ -222,7 +119,7 @@ abstract public class Element extends Node {
 						if(template == null) {
 							throw new IllegalStateException("null from getElementIdTemplate");
 						}
-						StringBuilder possId = Element.generateIdPrefix(template, getDefaultIdPrefix());
+						StringBuilder possId = XmlUtils.generateId(template, getDefaultIdPrefix());
 						int possIdLen = possId.length();
 						// Find an unused identifier
 						for(int i=1; i<=Integer.MAX_VALUE; i++) {
@@ -255,7 +152,7 @@ abstract public class Element extends Node {
 			checkNotFrozen();
 			if(this.id != null) throw new IllegalStateException("id already set");
 			if(id != null && !id.isEmpty()) {
-				if(!isValidId(id)) throw new IllegalArgumentException("Invalid id: " + id);
+				if(!XmlUtils.isValidId(id)) throw new IllegalArgumentException("Invalid id: " + id);
 				this.id = id;
 				if(page != null) page.onElementIdSet(this, generated);
 			}
