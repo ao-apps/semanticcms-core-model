@@ -23,6 +23,8 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.lang.NullArgumentException;
+import com.aoindustries.net.URIDecoder;
+import com.aoindustries.net.URIEncoder;
 import com.aoindustries.xml.XmlUtils;
 
 /**
@@ -99,20 +101,22 @@ public class ElementRef implements Comparable<ElementRef> {
 		String domain = bookRef.getDomain().toString();
 		String prefix = bookRef.getPrefix();
 		String path = pageRef.getPath().toString();
+		// TODO: encodeIRIComponent to do this in one shot?
+		String idIri = URIDecoder.decodeURI(URIEncoder.encodeURIComponent(id));
 		int sbLen =
 			domain.length()
 			+ 1 // ':'
 			+ prefix.length()
 			+ path.length()
 			+ 1 // '#'
-			+ id.length();
+			+ idIri.length();
 		StringBuilder sb = new StringBuilder(sbLen)
 			.append(domain)
 			.append(':')
 			.append(prefix)
 			.append(path)
 			.append('#')
-			.append(id);
+			.append(idIri);
 		assert sb.length() == sbLen;
 		return sb.toString();
 	}
