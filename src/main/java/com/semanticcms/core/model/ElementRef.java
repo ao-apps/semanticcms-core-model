@@ -23,6 +23,8 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.lang.NullArgumentException;
+import com.aoindustries.net.URIDecoder;
+import com.aoindustries.net.URIEncoder;
 import com.aoindustries.xml.XmlUtils;
 import java.io.IOException;
 
@@ -102,14 +104,16 @@ public class ElementRef implements Comparable<ElementRef> {
 		String sp = servletPath;
 		if(sp == null) {
 			String page = pageRef.getServletPath();
+			// TODO: encodeIRIComponent to do this in one shot?
+			String idIri = URIDecoder.decodeURI(URIEncoder.encodeURIComponent(id));
 			int sbLen =
 				page.length()
 				+ 1 // '#'
-				+ id.length();
+				+ idIri.length();
 			StringBuilder sb = new StringBuilder(sbLen)
 				.append(page)
 				.append('#')
-				.append(id);
+				.append(idIri);
 			assert sb.length() == sbLen;
 			servletPath = sp = sb.toString();
 		}
@@ -129,7 +133,11 @@ public class ElementRef implements Comparable<ElementRef> {
 	public void appendServletPath(Appendable out) throws IOException {
 		pageRef.appendServletPath(out);
 		out.append('#');
-		out.append(id);
+		// TODO: encodeIRIComponent to do this in one shot?
+		URIDecoder.decodeURI(
+			URIEncoder.encodeURIComponent(id),
+			out
+		);
 	}
 
 	/**
