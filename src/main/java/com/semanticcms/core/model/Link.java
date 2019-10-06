@@ -45,6 +45,8 @@ public class Link extends Element {
 	private volatile String view = DEFAULT_VIEW_NAME;
 	private volatile boolean small;
 	private volatile URIParameters params;
+	private volatile boolean absolute;
+	private volatile boolean canonical;
 	private volatile String clazz;
 
 	@Override
@@ -153,6 +155,24 @@ public class Link extends Element {
 			checkNotFrozen();
 			this.params = params;
 		}
+	}
+
+	public boolean getAbsolute() {
+		return absolute;
+	}
+
+	public void setAbsolute(boolean absolute) {
+		checkNotFrozen();
+		this.absolute = absolute;
+	}
+
+	public boolean getCanonical() {
+		return canonical;
+	}
+
+	public void setCanonical(boolean canonical) {
+		checkNotFrozen();
+		this.canonical = canonical;
 	}
 
 	public String getClazz() {
