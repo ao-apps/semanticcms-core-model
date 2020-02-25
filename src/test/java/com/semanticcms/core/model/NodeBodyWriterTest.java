@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2015, 2016, 2019  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -46,12 +46,8 @@ public class NodeBodyWriterTest {
 	private static Node testNode;
 	private static String testNodeBody;
 
-	// Java 1.8: Use lambda
-	private static final ElementContext nullElementContext = new ElementContext() {
-		@Override
-		public void include(String resource, Writer out, Map<String,?> args) {
-			// Do nothing
-		}
+	private static final ElementContext nullElementContext = (String resource, Writer out, Map<String,?> args) -> {
+		// Do nothing
 	};
 
 	@BeforeClass
@@ -73,13 +69,7 @@ public class NodeBodyWriterTest {
 					return "test";
 				}
 			},
-			// Java 1.8: (out, context) -> out.write(TEST_ELEMENT_BODY)
-			new ElementWriter() {
-				@Override
-				public void writeTo(Writer out, ElementContext context) throws IOException {
-					out.write(TEST_ELEMENT_BODY);
-				}
-			}
+			(out, context) -> out.write(TEST_ELEMENT_BODY)
 		);
 		StringBuilder SB = new StringBuilder();
 		SB.append(TEST_BODY_PREFIX);
