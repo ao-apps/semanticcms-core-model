@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2015, 2016, 2017, 2019  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2017, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -245,33 +245,8 @@ abstract public class Node implements Freezable<Node> {
 
 	/**
 	 * Gets a short description, useful for links and lists, for this node.
-	 * 
-	 * This default implementation calls {@link #appendLabel(java.lang.Appendable)}, thus you *must*
-	 * override at least this method or {@link #appendLabel(java.lang.Appendable)}.
-	 * 
-	 * @throws StackOverflowError if {@link #appendLabel(java.lang.Appendable)} not overridden.
 	 */
-	public String getLabel() {
-		StringBuilder sb = new StringBuilder();
-		try {
-			appendLabel(sb);
-		} catch(IOException e) {
-			throw new AssertionError("Should not happen because using StringBuilder", e);
-		}
-		return sb.toString();
-	}
-
-	/**
-	 * Appends a short description, useful for links and lists, for this node.
-	 *
-	 * This default implementation calls {@link #getLabel()}, thus you *must*
-	 * override at least this method or {@link #getLabel()}.
-	 * 
-	 * @throws StackOverflowError if {@link #getLabel()} not overridden.
-	 */
-	public void appendLabel(Appendable out) throws IOException {
-		out.append(getLabel());
-	}
+	abstract public String getLabel();
 
 	/**
 	 * <p>
