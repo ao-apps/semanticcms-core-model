@@ -37,7 +37,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2016-10-30T17:32:26-0500"
-		dateModified="2020-03-01T14:40:44-0600"
+		dateModified="2020-03-06T19:06:43-0600"
 	>
 		<!-- The current snapshot, unreleased version -->
 		<c:set var="version" value="@{com.semanticcms:semanticcms-core-model:pom.version}" />
@@ -59,6 +59,10 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 						No more <code>appendLabel(Appendable out)</code>.
 						It is a premature optimization and hinders the in-context translation
 						ability to identify strings for mark-up.
+					</li>
+					<li>
+						Pages now contain per-page <ao:a href="https://aoindustries.com/ao-web-resources/registry/">Web Resource Registries</ao:a>,
+						which allows the declaration of per-page styles and scripts, along with their dependencies and ordering.
 					</li>
 				</ul>
 			</changelog:release>
