@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -23,6 +23,7 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.util.AoCollections;
+import com.aoindustries.web.resources.registry.Registry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -60,6 +61,7 @@ public class Page extends Node implements Comparable<Page> {
 	private volatile String description;
 	private volatile String keywords;
 	private volatile Boolean allowRobots;
+	private volatile Registry registry;
 	private volatile Boolean toc;
 	private volatile int tocLevels = DEFAULT_TOC_LEVELS;
 	private Set<ParentRef> parentRefs;
@@ -95,6 +97,13 @@ public class Page extends Node implements Comparable<Page> {
 		synchronized(lock) {
 			if(!frozen) {
 				if(authors != null) authors = AoCollections.optimalUnmodifiableSet(authors);
+				if(registry != null) {
+					if(registry.isEmpty()) {
+						registry = null;
+					} else {
+						// TOOD: registry.freeze(); // Or unmodifiable wrapper
+					}
+				}
 				if(parentRefs != null) parentRefs = AoCollections.optimalUnmodifiableSet(parentRefs);
 				if(childRefs != null) childRefs = AoCollections.optimalUnmodifiableSet(childRefs);
 				if(elements != null) {
@@ -316,6 +325,23 @@ public class Page extends Node implements Comparable<Page> {
 	public void setAllowRobots(Boolean allowRobots) {
 		checkNotFrozen();
 		this.allowRobots = allowRobots;
+	}
+
+	/**
+	 * Gets the page-scope web resource registry for this page or {@code null} if the page
+	 * has not configured any resources.
+	 */
+	public Registry getRegistry() {
+		return registry;
+	}
+
+	/**
+	 * Sets the page-scope web resource registry for this page or {@code null} if the page
+	 * has not configured any resources.
+	 */
+	public void setRegistry(Registry registry) {
+		checkNotFrozen();
+		this.registry = registry;
 	}
 
 	/**
