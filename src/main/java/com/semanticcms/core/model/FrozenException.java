@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2015, 2016  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -25,6 +25,7 @@ package com.semanticcms.core.model;
 /**
  * Indicates an attempt was made to modify a frozen object.
  */
+// TODO: Move to ao-lang Freezable.FrozenException
 public class FrozenException extends IllegalStateException {
 
 	private static final long serialVersionUID = 1L;

@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2015, 2016  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -24,10 +24,12 @@ package com.semanticcms.core.model;
 
 /**
  * An object that is freezable begins life as mutable, but once frozen becomes
- * unmodifiable.  The object may internally block additional changes, and return
+ * unmodifiable.  The object may internally block additional changes and return
  * itself, or may return a different object instance representing its immutable
  * form.
  */
+// TODO: Move to ao-lang
+@FunctionalInterface
 public interface Freezable<F> {
 	
 	F freeze();
