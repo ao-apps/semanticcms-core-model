@@ -124,6 +124,8 @@ abstract public class Node implements Freezable<Node> {
 		return this;
 	}
 
+	// TODO: Should all uses of checkNotFrozen be synchronized on lock?
+	// TODO: As-is, there are many small race conditions between checkNotFrozen and setting the value.
 	protected void checkNotFrozen() throws FrozenException {
 		if(frozen) throw new FrozenException();
 	}
