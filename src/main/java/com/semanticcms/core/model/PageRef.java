@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -216,13 +216,14 @@ public class PageRef implements PageReferrer {
 				// Combine paths
 				rf = subPath.isEmpty() ? cvsworkDirectory : new File(cvsworkDirectory, subPath);
 				// The canonical file must be in the cvswork directory
+				String cvsworkCanonical = cvsworkDirectory.getCanonicalPath();
+				String cvsworkCanonicalPrefix = cvsworkCanonical + File.separatorChar;
 				String canonicalPath = rf.getCanonicalPath();
 				if(
-					!canonicalPath.startsWith(
-						cvsworkDirectory.getCanonicalPath() + File.separatorChar
-					)
+					!canonicalPath.equals(cvsworkCanonical)
+					&& !canonicalPath.startsWith(cvsworkCanonicalPrefix)
 				) {
-					throw new SecurityException();
+					throw new SecurityException('"' + canonicalPath + "\" is not in \"" + cvsworkCanonicalPrefix);
 				}
 				this.resourceFile = rf;
 			}
