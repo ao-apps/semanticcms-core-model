@@ -37,7 +37,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2016-10-30T17:32:26-0500"
-		dateModified="2020-03-07T06:01:29-0600"
+		dateModified="2020-03-14T02:55:35-05:00"
 	>
 		<!-- The current snapshot, unreleased version -->
 		<c:set var="version" value="@{com.semanticcms:semanticcms-core-model:pom.version}" />
@@ -68,6 +68,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 						Pages now contain per-page <ao:a href="https://aoindustries.com/ao-web-resources/registry/">Web Resource Registries</ao:a>,
 						which allows the declaration of per-page styles and scripts, along with their dependencies and ordering.
 					</li>
+					<li>Fixed bug in <code>PageRef</code> to root folder of book throwing <code>SecurityException</code>.</li>
 				</ul>
 			</changelog:release>
 		</c:if>
