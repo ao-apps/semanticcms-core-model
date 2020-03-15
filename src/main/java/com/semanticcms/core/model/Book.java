@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2014, 2015, 2016, 2017, 2019  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -23,7 +23,7 @@
 package com.semanticcms.core.model;
 
 import com.aoindustries.util.AoCollections;
-import com.aoindustries.util.StringUtility;
+import com.aoindustries.lang.Strings;
 import java.io.File;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -128,9 +128,9 @@ public class Book implements Comparable<Book> {
 			}
 		}
 		this.unmodifiableParam = AoCollections.optimalUnmodifiableMap(newParam);
-		String cb = StringUtility.nullIfEmpty(getProperty(bookProps, usedKeys, "canonicalBase"));
+		String cb = Strings.nullIfEmpty(getProperty(bookProps, usedKeys, "canonicalBase"));
 		while(cb != null && cb.endsWith("/")) {
-			cb = StringUtility.nullIfEmpty(cb.substring(0, cb.length() - 1));
+			cb = Strings.nullIfEmpty(cb.substring(0, cb.length() - 1));
 		}
 		this.canonicalBase = cb;
 		// Create the page refs once other aspects of the book have already been setup, since we'll be leaking "this"

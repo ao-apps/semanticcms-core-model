@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2015, 2016, 2019  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,7 +22,7 @@
  */
 package com.semanticcms.core.model;
 
-import com.aoindustries.util.StringUtility;
+import com.aoindustries.lang.Strings;
 import com.aoindustries.util.WrappedException;
 import java.io.IOException;
 import java.io.Writer;
@@ -52,7 +52,7 @@ public class NodeBodyWriter extends Writer {
 	
 	public static void writeElementMarker(long elementKey, Appendable out) throws IOException {
 		out.append(MARKER_PREFIX);
-		StringUtility.convertToHex(elementKey, out);
+		Strings.convertToHex(elementKey, out);
 		out.append(MARKER_SUFFIX);
 	}
 
@@ -125,7 +125,7 @@ public class NodeBodyWriter extends Writer {
 					markerPos++;
 					if(markerPos == (MARKER_PREFIX_LEN + ELEMENT_KEY_LEN + MARKER_SUFFIX_LEN)) {
 						// Entire marker found
-						long elementKey = StringUtility.convertLongArrayFromHex(elementKeyBuffer);
+						long elementKey = Strings.convertLongArrayFromHex(elementKeyBuffer);
 						ElementWriter elementWriter = node.getElementWriter(elementKey);
 						if(elementWriter != null) {
 							// Substitute child element
