@@ -22,7 +22,7 @@
  */
 package com.semanticcms.core.model;
 
-import com.aoindustries.util.AoCollections;
+import com.aoindustries.collections.AoCollections;
 import com.aoindustries.web.resources.registry.Registry;
 import java.util.ArrayList;
 import java.util.Collections;

@@ -22,9 +22,9 @@
  */
 package com.semanticcms.core.model;
 
+import com.aoindustries.collections.AoCollections;
 import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.io.buffer.EmptyResult;
-import com.aoindustries.util.AoCollections;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
