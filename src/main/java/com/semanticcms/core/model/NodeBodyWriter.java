@@ -22,8 +22,8 @@
  */
 package com.semanticcms.core.model;
 
+import com.aoindustries.exception.WrappedException;
 import com.aoindustries.lang.Strings;
-import com.aoindustries.util.WrappedException;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.logging.Level;
