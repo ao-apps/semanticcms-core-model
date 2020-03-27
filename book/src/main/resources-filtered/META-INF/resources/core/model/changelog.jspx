@@ -37,7 +37,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2016-10-30T17:32:26-0500"
-		dateModified="2019-11-03T02:12:52-0600"
+		dateModified="2020-03-27T02:57:48-05:00"
 	>
 		<!-- The current snapshot, unreleased version -->
 		<c:set var="version" value="@{com.semanticcms:semanticcms-core-model:pom.version}" />
@@ -65,12 +65,6 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 							<li>Added "domain:" prefix to reference type <code>toString()</code> methods.</li>
 						</ol>
 					</li>
-					<li>
-						Removed the premature optimization of interning strings in references and identifiers.
-						This was as likely to hurt as to help, and in either case it is off the radar in profiling,
-						so going with the simpler implementation.
-					</li>
-					<li>Changed type of <code>Node.lock</code> to <code>Object</code> to not export private class in public API.</li>
 					<li><code>Book</code> moved to new <core:link book="/core/pages" page="/" /> module.</li>
 					<li>Removed <code>servletPath</code> because model is a high level concept independent of servlet implementation.</li>
 					<li>Books now have resources to support the content portability of repositories:
@@ -91,10 +85,37 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 					<li><code>Page.src</code> is now a <code>ResourceRef</code> instead of a <code>PageRef</code>.</li>
 					<li><code>Link</code> is now an <code>Element</code> to support separation of model and renderer.</li>
 					<li>Added absolute URL and <ao:a href="https://aoindustries.com/ao-servlet-util/apidocs/com/aoindustries/servlet/http/Canonical.html">Canonical URL</ao:a> support.</li>
-					<li>Minimum Java version changed from 1.7 to 1.8.</li>
 				</ul>
 			</changelog:release>
 		</c:if>
+
+		<changelog:release
+			projectName="@{documented.name}"
+			version="1.11.0"
+			datePublished="2020-03-27T02:57:48-05:00"
+			groupId="@{project.groupId}"
+			artifactId="@{documented.artifactId}"
+			scmUrl="@{project.scm.url}"
+		>
+			<ul>
+				<li>Minimum Java version changed from 1.7 to 1.8.</li>
+				<li>
+					Reduced use of property substitutions in <code>pom.xml</code>.
+					This is to help 3rd-party parsers that fail to perform full Maven-compatible substitutions.
+				</li>
+				<li>
+					No more <code>appendLabel(Appendable out)</code>.
+					It is a premature optimization and hinders the in-context translation
+					ability to identify strings for mark-up.
+				</li>
+				<li>
+					Pages now contain per-page <ao:a href="https://aoindustries.com/ao-web-resources/registry/">Web Resource Registries</ao:a>,
+					which allows the declaration of per-page styles and scripts, along with their dependencies and ordering.
+				</li>
+				<li>Fixed bug in <code>PageRef</code> to root folder of book throwing <code>SecurityException</code>.</li>
+				<li>Updated dependencies.</li>
+			</ul>
+		</changelog:release>
 
 		<changelog:release
 			projectName="@{documented.name}"
