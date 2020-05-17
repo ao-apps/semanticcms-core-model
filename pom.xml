@@ -73,6 +73,8 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 								<link>https://aoindustries.com/ao-net-types/apidocs/</link>
 								<link>https://aoindustries.com/ao-web-resources/registry/apidocs/</link>
 								<link>https://www.joda.org/joda-time/apidocs/</link>
+								<!-- Test Direct -->
+								<link>https://junit.org/junit4/javadoc/latest/</link>
 							</links>
 						</configuration>
 					</plugin>
