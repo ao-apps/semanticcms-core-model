@@ -95,6 +95,7 @@ public class Link extends Element {
 		return page;
 	}
 
+	// TODO: Path page?
 	public void setPagePath(String page) {
 		checkNotFrozen();
 		this.page = nullIfEmpty(page);
