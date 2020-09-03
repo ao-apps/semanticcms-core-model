@@ -186,6 +186,7 @@ public class Book implements Comparable<Book> {
 	 * Gets the parent pages for this book in the context of the current overall
 	 * content.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Set<ParentRef> getParentRefs() {
 		return unmodifiableParentRefs;
 	}
@@ -219,6 +220,7 @@ public class Book implements Comparable<Book> {
 	 * Gets the authors of the book.  Any page without more specific authors
 	 * in itself or a parent (within the book) will use these authors.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Set<Author> getAuthors() {
 		return unmodifiableAuthors;
 	}
@@ -235,6 +237,7 @@ public class Book implements Comparable<Book> {
 		return allowRobots;
 	}
 
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Map<String,String> getParam() {
 		return unmodifiableParam;
 	}

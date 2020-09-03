@@ -211,7 +211,9 @@ public class PageRef implements PageReferrer {
 				int start = 1;
 				// Skip past any trailing slashes
 				int end = path.length();
-				while(end > start && path.charAt(end - 1) == '/') end--;
+				while(end > start && path.charAt(end - 1) == '/') {
+					end--;
+				}
 				String subPath = path.substring(start, end);
 				// Combine paths
 				rf = subPath.isEmpty() ? cvsworkDirectory : new File(cvsworkDirectory, subPath);

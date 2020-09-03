@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -44,7 +44,7 @@ public class ElementRef implements Comparable<ElementRef> {
 	public ElementRef(PageRef pageRef, String id) {
 		this.pageRef = NullArgumentException.checkNotNull(pageRef, "pageRef");
 		this.id = NullArgumentException.checkNotNull(id, "id");
-		if(!XmlUtils.isValidId(id)) throw new IllegalArgumentException("Invalid id: " + id);
+		if(!XmlUtils.isValidName(id)) throw new IllegalArgumentException("Invalid id: " + id);
 	}
 
 	/**
@@ -100,6 +100,7 @@ public class ElementRef implements Comparable<ElementRef> {
 	 * 
 	 * @see #appendServletPath(java.lang.Appendable) 
 	 */
+	@SuppressWarnings("ReplaceStringBufferByString")
 	public String getServletPath() {
 		String sp = servletPath;
 		if(sp == null) {
