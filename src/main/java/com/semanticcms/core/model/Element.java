@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2015, 2016, 2019  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -108,6 +108,7 @@ abstract public class Element extends Node {
 	 * When inside a page, every element must have a per-page unique ID, when one is not provided, it will be generated.
 	 * When not inside a page, no missing ID is generated and it will remain null.
 	 */
+	@SuppressWarnings("DoubleCheckedLocking") // Safe: id is volatile
 	public String getId() {
 		if(id == null) {
 			synchronized(lock) {
@@ -152,7 +153,7 @@ abstract public class Element extends Node {
 			checkNotFrozen();
 			if(this.id != null) throw new IllegalStateException("id already set");
 			if(id != null && !id.isEmpty()) {
-				if(!XmlUtils.isValidId(id)) throw new IllegalArgumentException("Invalid id: " + id);
+				if(!XmlUtils.isValidName(id)) throw new IllegalArgumentException("Invalid id: " + id);
 				this.id = id;
 				if(page != null) page.onElementIdSet(this, generated);
 			}

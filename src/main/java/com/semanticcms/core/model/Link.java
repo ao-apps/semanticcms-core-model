@@ -22,11 +22,11 @@
  */
 package com.semanticcms.core.model;
 
+import static com.aoindustries.lang.Strings.nullIfEmpty;
 import com.aoindustries.net.DomainName;
 import com.aoindustries.net.Path;
 import com.aoindustries.net.URIParameters;
 import com.aoindustries.net.UnmodifiableURIParameters;
-import static com.aoindustries.lang.Strings.nullIfEmpty;
 
 // TODO: Support optional renderer before view, defaulting to current renderer
 public class Link extends Element {

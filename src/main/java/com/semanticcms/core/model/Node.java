@@ -136,6 +136,7 @@ abstract public class Node implements Freezable<Node> {
 	 * Gets an unmodifiable snapshot of all properties associated with a node.
 	 * The returned map will not change, even if properties are added to the node.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Map<String,Object> getProperty() {
 		// TODO: If we have properties volatile, could do the null and frozen cases outside the synchronized block
 		// TODO: Would this be faster?
@@ -171,6 +172,7 @@ abstract public class Node implements Freezable<Node> {
 	/**
 	 * Every node may potentially have child elements.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public List<Element> getChildElements() {
 		synchronized(lock) {
 			if(childElements == null) return Collections.emptyList();
@@ -212,6 +214,7 @@ abstract public class Node implements Freezable<Node> {
 	 * Gets the set of all pages this node directly links to; this does not
 	 * include pages linked to by child elements.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Set<PageRef> getPageLinks() {
 		synchronized(lock) {
 			if(pageLinks == null) return Collections.emptySet();
