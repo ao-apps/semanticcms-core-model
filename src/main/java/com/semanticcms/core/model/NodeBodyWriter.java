@@ -131,10 +131,10 @@ public class NodeBodyWriter extends Writer {
 							// Substitute child element
 							try {
 								elementWriter.writeTo(out, context);
-							} catch(IOException | RuntimeException e) {
+							} catch(Error | RuntimeException | IOException e) {
 								throw e;
-							} catch(Exception e) {
-								throw new WrappedException(e);
+							} catch(Throwable t) {
+								throw new WrappedException(t);
 							}
 						} else {
 							if(logger.isLoggable(Level.WARNING)) {
