@@ -65,7 +65,7 @@ public class Book implements Comparable<Book> {
 		if(!name.startsWith("/")) throw new IllegalArgumentException("Book name must begin with a slash (/): " + name);
 
 		// Tracks each properties key used, will throw exception if any key exists in the properties file that is not used
-		Set<Object> usedKeys = new HashSet<>(bookProps.size() * 4/3 + 1);
+		Set<Object> usedKeys = AoCollections.newHashSet(bookProps.size());
 
 		this.name = name;
 		this.pathPrefix = "/".equals(name) ? "" : this.name;
