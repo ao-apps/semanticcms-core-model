@@ -258,8 +258,8 @@ abstract public class Node implements Freezable<Node> {
 	/**
 	 * <p>
 	 * Looks for the nearest nested elements of the given class.  These elements
-	 * may be direct descendents or descendents further down the tree, but only
-	 * the top-most descendents are returned.
+	 * may be direct descendants or descendants further down the tree, but only
+	 * the top-most descendants are returned.
 	 * </p>
 	 * <p>
 	 * If the node is a page, its elements are checked, but the elements of its child pages are not.
