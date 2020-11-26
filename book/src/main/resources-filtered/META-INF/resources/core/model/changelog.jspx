@@ -37,7 +37,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2016-10-30T17:32:26-0500"
-		dateModified="2020-11-25T02:53:25-06:00"
+		dateModified="2020-11-26T00:19:41-06:00"
 	>
 		<!-- The current snapshot, unreleased version -->
 		<c:set var="version" value="@{com.semanticcms:semanticcms-core-model:pom.version}" />
@@ -85,6 +85,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 					<li><code>Page.src</code> is now a <code>ResourceRef</code> instead of a <code>PageRef</code>.</li>
 					<li><code>Link</code> is now an <code>Element</code> to support separation of model and renderer.</li>
 					<li>Added absolute URL and <ao:a href="https://aoindustries.com/ao-servlet-util/apidocs/com/aoindustries/servlet/http/Canonical.html">Canonical URL</ao:a> support.</li>
+					<li>New methods for finding the first child element by class or interface, with optional additional filter.</li>
 				</ul>
 			</changelog:release>
 		</c:if>
