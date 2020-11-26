@@ -36,7 +36,10 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * A node contains elements, but is not necessarily an element itself.
@@ -277,6 +280,7 @@ abstract public class Node implements Freezable<Node> {
 	 *
 	 * @return   The unmodifiable list of top-level matches, in the order they were declared in the page, or empty list if none found.
 	 */
+	// TODO: Change E to allow any type, so can match interfaces, too.
 	public <E extends Element> List<E> findTopLevelElements(Class<E> elementType) {
 		List<E> matches = findTopLevelElementsRecurse(elementType, this, null);
 		if(matches == null) return Collections.emptyList();
@@ -286,8 +290,9 @@ abstract public class Node implements Freezable<Node> {
 	/**
 	 * Recursive component of findTopLevelElements.
 	 * 
-	 * @see  #findTopLevelElements
+	 * @see  #findTopLevelElements(java.lang.Class)
 	 */
+	// TODO: Change E to allow any type, so can match interfaces, too.
 	private static <E extends Element> List<E> findTopLevelElementsRecurse(Class<E> elementType, Node node, List<E> matches) {
 		for(Element elem : node.getChildElements()) {
 			if(elementType.isInstance(elem)) {
@@ -300,5 +305,93 @@ abstract public class Node implements Freezable<Node> {
 			}
 		}
 		return matches;
+	}
+
+	/**
+	 * <p>
+	 * Finds the first descendant element of the given class or interface and matching the given {@link Predicate},
+	 * with a depth-first traversal.
+	 * </p>
+	 * <p>
+	 * If the node is a page, its elements are checked, but the elements of its child pages are not.
+	 * </p>
+	 *
+	 * @return   The element or {@link Optional#empty()} when not found.
+	 */
+	public <E> Optional<E> findChildElement(Class<E> elementType, Predicate<? super E> filter) {
+		return Optional.ofNullable(findChildElementRecurse(elementType, filter, this));
+	}
+
+	/**
+	 * Recursive component of findChild.
+	 *
+	 * @see  #findChildElement(java.lang.Class, java.util.function.Predicate)
+	 */
+	private static <E> E findChildElementRecurse(Class<E> elementType, Predicate<? super E> filter, Node node) {
+		for(Element elem : node.getChildElements()) {
+			if(elementType.isInstance(elem)) {
+				// Found matching type
+				E e = elementType.cast(elem);
+				if(filter.test(e)) {
+					// Found match
+					return e;
+				}
+			}
+			// Look further down the tree
+			E match = findChildElementRecurse(elementType, filter, elem);
+			if(match != null) return match;
+		}
+		return null;
+	}
+
+	/**
+	 * <p>
+	 * Finds the first descendant element of the given class or interface,
+	 * with a depth-first traversal.
+	 * </p>
+	 * <p>
+	 * If the node is a page, its elements are checked, but the elements of its child pages are not.
+	 * </p>
+	 *
+	 * @return   The element or {@link Optional#empty()} when not found.
+	 */
+	public <E> Optional<E> findChildElement(Class<E> elementType) {
+		return findChildElement(elementType, elem -> true);
+	}
+
+	/**
+	 * <p>
+	 * Finds the first descendant element of the given class or interface and matching the given {@link Predicate},
+	 * with a depth-first traversal.
+	 * </p>
+	 * <p>
+	 * If the node is a page, its elements are checked, but the elements of its child pages are not.
+	 * </p>
+	 *
+	 * @return   The element.
+	 *
+	 * @throws  NoSuchElementException  when not found.
+	 */
+	public <E> E requireChildElement(Class<E> elementType, Predicate<? super E> filter) throws NoSuchElementException {
+		return findChildElement(elementType, filter).orElseThrow(
+			() -> new NoSuchElementException(elementType.toGenericString())
+		);
+	}
+
+	/**
+	 * <p>
+	 * Finds the first descendant element of the given class or interface,
+	 * with a depth-first traversal.
+	 * </p>
+	 * <p>
+	 * If the node is a page, its elements are checked, but the elements of its child pages are not.
+	 * </p>
+	 *
+	 * @return   The element.
+	 *
+	 * @throws  NoSuchElementException  when not found.
+	 */
+	public <E> E requireChildElement(Class<E> elementType) throws NoSuchElementException {
+		return requireChildElement(elementType, elem -> true);
 	}
 }
