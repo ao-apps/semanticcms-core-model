@@ -280,8 +280,7 @@ abstract public class Node implements Freezable<Node> {
 	 *
 	 * @return   The unmodifiable list of top-level matches, in the order they were declared in the page, or empty list if none found.
 	 */
-	// TODO: Change E to allow any type, so can match interfaces, too.
-	public <E extends Element> List<E> findTopLevelElements(Class<E> elementType) {
+	public <E> List<E> findTopLevelElements(Class<E> elementType) {
 		List<E> matches = findTopLevelElementsRecurse(elementType, this, null);
 		if(matches == null) return Collections.emptyList();
 		return Collections.unmodifiableList(matches);
@@ -292,8 +291,7 @@ abstract public class Node implements Freezable<Node> {
 	 * 
 	 * @see  #findTopLevelElements(java.lang.Class)
 	 */
-	// TODO: Change E to allow any type, so can match interfaces, too.
-	private static <E extends Element> List<E> findTopLevelElementsRecurse(Class<E> elementType, Node node, List<E> matches) {
+	private static <E> List<E> findTopLevelElementsRecurse(Class<E> elementType, Node node, List<E> matches) {
 		for(Element elem : node.getChildElements()) {
 			if(elementType.isInstance(elem)) {
 				// Found match
