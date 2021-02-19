@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2015, 2016, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -50,6 +50,7 @@ public class NodeBodyWriter extends Writer {
 	/** The number of hex characters in the 64-bit element key */
 	private static final int ELEMENT_KEY_LEN = 16;
 	
+	@SuppressWarnings("deprecation")
 	public static void writeElementMarker(long elementKey, Appendable out) throws IOException {
 		out.append(MARKER_PREFIX);
 		Strings.convertToHex(elementKey, out);
@@ -82,6 +83,7 @@ public class NodeBodyWriter extends Writer {
 	}
 
 	@Override
+	@SuppressWarnings({"UseSpecificCatch", "BroadCatchBlock"})
 	public void write(final int c) throws IOException {
 		while(true) {
 			if(markerPos < MARKER_PREFIX_LEN) {
@@ -125,6 +127,7 @@ public class NodeBodyWriter extends Writer {
 					markerPos++;
 					if(markerPos == (MARKER_PREFIX_LEN + ELEMENT_KEY_LEN + MARKER_SUFFIX_LEN)) {
 						// Entire marker found
+						@SuppressWarnings("deprecation")
 						long elementKey = Strings.convertLongArrayFromHex(elementKeyBuffer);
 						ElementWriter elementWriter = node.getElementWriter(elementKey);
 						if(elementWriter != null) {
