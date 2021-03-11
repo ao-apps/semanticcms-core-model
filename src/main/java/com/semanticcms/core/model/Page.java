@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -69,7 +69,7 @@ public class Page extends Node implements Comparable<Page> {
 	private Set<ChildRef> childRefs;
 	private volatile boolean allowChildMismatch;
 	private List<Element> elements;
-	private Map<String,Element> elementsById;
+	private Map<String, Element> elementsById;
 	// Keeps track of which element Ids are system generated
 	private Set<String> generatedIds;
 
@@ -455,7 +455,7 @@ public class Page extends Node implements Comparable<Page> {
 	 * 
 	 * @see  #freeze()
 	 */
-	public Map<String,Element> getElementsById() {
+	public Map<String, Element> getElementsById() {
 		synchronized(lock) {
 			if(elementsById == null) return Collections.emptyMap();
 			if(frozen) return elementsById;

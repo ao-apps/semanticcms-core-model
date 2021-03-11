@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2015, 2016, 2017, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2017, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -101,9 +101,9 @@ abstract public class Node implements Freezable<Node> {
 	private static class Lock {}
 	protected final Object lock = new Lock();
 	protected volatile boolean frozen; // Accessed without lock, only updated under lock
-	private Map<String,Object> properties;
+	private Map<String, Object> properties;
 	private List<Element> childElements;
-	private Map<Long,ElementWriter> elementWriters;
+	private Map<Long, ElementWriter> elementWriters;
 	private Set<PageRef> pageLinks;
 	private volatile BufferResult body;
 
@@ -140,7 +140,7 @@ abstract public class Node implements Freezable<Node> {
 	 * The returned map will not change, even if properties are added to the node.
 	 */
 	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
-	public Map<String,Object> getProperty() {
+	public Map<String, Object> getProperty() {
 		// TODO: If we have properties volatile, could do the null and frozen cases outside the synchronized block
 		// TODO: Would this be faster?
 		synchronized(lock) {
