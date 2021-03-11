@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2015, 2016, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -134,7 +134,7 @@ abstract public class Element extends Node {
 			synchronized(lock) {
 				if(id == null) {
 					if(page != null) {
-						Map<String,Element> elementsById = page.getElementsById();
+						Map<String, Element> elementsById = page.getElementsById();
 						// Generate the ID now
 						String template = getElementIdTemplate();
 						if(template == null) {

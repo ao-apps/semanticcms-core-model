@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2015, 2016, 2019  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2019, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -34,5 +34,5 @@ public interface ElementContext {
 	/**
 	 * Includes the given resource into the given writer with the provided arguments.
 	 */
-	void include(String resource, Writer out, Map<String,?> args) throws Exception;
+	void include(String resource, Writer out, Map<String, ?> args) throws Exception;
 }

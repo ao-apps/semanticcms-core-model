@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2014, 2015, 2016, 2017, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -54,7 +54,7 @@ public class Book implements Comparable<Book> {
 	private final Set<Author> unmodifiableAuthors;
 	private final String title;
 	private final boolean allowRobots;
-	private final Map<String,String> unmodifiableParam;
+	private final Map<String, String> unmodifiableParam;
 
 	private static String getProperty(Properties bookProps, Set<Object> usedKeys, String key) {
 		usedKeys.add(key);
@@ -115,7 +115,7 @@ public class Book implements Comparable<Book> {
 		this.unmodifiableAuthors = AoCollections.optimalUnmodifiableSet(authors);
 		this.title = getProperty(bookProps, usedKeys, "title");
 		this.allowRobots = allowRobots;
-		Map<String,String> newParam = new LinkedHashMap<>();
+		Map<String, String> newParam = new LinkedHashMap<>();
 		@SuppressWarnings("unchecked")
 		Enumeration<String> propertyNames = (Enumeration)bookProps.propertyNames();
 		while(propertyNames.hasMoreElements()) {
@@ -238,7 +238,7 @@ public class Book implements Comparable<Book> {
 	}
 
 	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
-	public Map<String,String> getParam() {
+	public Map<String, String> getParam() {
 		return unmodifiableParam;
 	}
 }
