@@ -22,7 +22,7 @@
  */
 package com.semanticcms.core.model;
 
-import com.aoindustries.xml.XmlUtils;
+import com.aoapps.lang.xml.XmlUtils;
 import java.util.Map;
 import java.util.Objects;
 

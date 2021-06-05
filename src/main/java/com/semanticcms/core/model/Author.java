@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,8 +22,8 @@
  */
 package com.semanticcms.core.model;
 
-import com.aoindustries.net.DomainName;
-import com.aoindustries.net.Path;
+import com.aoapps.net.DomainName;
+import com.aoapps.net.Path;
 import java.util.Objects;
 
 /**
