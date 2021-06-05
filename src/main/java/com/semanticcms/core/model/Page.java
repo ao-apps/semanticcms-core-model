@@ -22,8 +22,8 @@
  */
 package com.semanticcms.core.model;
 
-import com.aoindustries.collections.AoCollections;
-import com.aoindustries.web.resources.registry.Registry;
+import com.aoapps.collections.AoCollections;
+import com.aoapps.web.resources.registry.Registry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -183,7 +183,7 @@ public class Page extends Node implements Comparable<Page> {
 	 * @see  #getDatePublished()  When created and published are the same date, prefer
 	 *                            published because it seems to have more use overall than created.
 	 */
-	// Matches com.aoindustries.tld.parser.Dates.getCreated()
+	// Matches com.aoapps.tldparser.Dates.getCreated()
 	public DateTime getDateCreated() {
 		return dateCreated;
 	}
@@ -200,7 +200,7 @@ public class Page extends Node implements Comparable<Page> {
 	 * @see  #getDateCreated()  When created and published are the same date, prefer
 	 *                          published because it seems to have more use overall than created.
 	 */
-	// Matches com.aoindustries.tld.parser.Dates.getPublished()
+	// Matches com.aoapps.tldparser.Dates.getPublished()
 	public DateTime getDatePublished() {
 		return datePublished;
 	}
@@ -214,7 +214,7 @@ public class Page extends Node implements Comparable<Page> {
 	/**
 	 * <a href="https://schema.org/dateModified">https://schema.org/dateModified</a>
 	 */
-	// Matches com.aoindustries.tld.parser.Dates.getModified()
+	// Matches com.aoapps.tldparser.Dates.getModified()
 	public DateTime getDateModified() {
 		return dateModified;
 	}
@@ -230,7 +230,7 @@ public class Page extends Node implements Comparable<Page> {
 	 * we feel it is important to actively review content to ensure its accuracy, even when it
 	 * has not been modified.
 	 */
-	// Matches com.aoindustries.tld.parser.Dates.getReviewed()
+	// Matches com.aoapps.tldparser.Dates.getReviewed()
 	public DateTime getDateReviewed() {
 		return dateReviewed;
 	}

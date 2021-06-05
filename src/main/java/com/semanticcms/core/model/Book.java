@@ -22,8 +22,8 @@
  */
 package com.semanticcms.core.model;
 
-import com.aoindustries.collections.AoCollections;
-import com.aoindustries.lang.Strings;
+import com.aoapps.collections.AoCollections;
+import com.aoapps.lang.Strings;
 import java.io.File;
 import java.util.Enumeration;
 import java.util.HashSet;
