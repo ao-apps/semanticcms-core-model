@@ -37,7 +37,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2016-10-30T17:32:26-05:00"
-		dateModified="2021-06-03T22:53:21-05:00"
+		dateModified="2021-06-27T16:13:41-05:00"
 	>
 		<c:if test="${fn:endsWith('@{project.version}', '-SNAPSHOT') and !fn:endsWith('@{project.version}', '-POST-SNAPSHOT')}">
 			<changelog:release
@@ -79,8 +79,9 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 					</li>
 					<li><code>Page.src</code> is now a <code>ResourceRef</code> instead of a <code>PageRef</code>.</li>
 					<li><code>Link</code> is now an <code>Element</code> to support separation of model and renderer.</li>
-					<li>Added absolute URL and <ao:a href="https://oss.aoapps.com/servlet-util/apidocs/com/aoapps/servlet/http/Canonical.html">Canonical URL</ao:a> support.</li>
+					<li>Added absolute URL and <ao:a href="https://oss.aoapps.com/servlet-util/apidocs/com.aoapps.servlet.util/com/aoapps/servlet/http/Canonical.html">Canonical URL</ao:a> support.</li>
 					<li>Minimum Java version changed from 1.8 to 11.</li>
+					<li>Now supports Java 9+ modules with included <code>module-info.class</code>.</li>
 				</ul>
 			</changelog:release>
 		</c:if>
