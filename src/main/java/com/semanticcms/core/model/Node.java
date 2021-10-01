@@ -119,10 +119,10 @@ abstract public class Node implements Freezable<Node> {
 	public Node freeze() {
 		synchronized(lock) {
 			if(!frozen) {
-				if(properties != null) properties = AoCollections.optimalUnmodifiableMap(properties);
-				if(childElements != null) childElements = AoCollections.optimalUnmodifiableList(childElements);
-				if(elementWriters != null) elementWriters = AoCollections.optimalUnmodifiableMap(elementWriters);
-				if(pageLinks != null) pageLinks = AoCollections.optimalUnmodifiableSet(pageLinks);
+				properties = AoCollections.optimalUnmodifiableMap(properties);
+				childElements = AoCollections.optimalUnmodifiableList(childElements);
+				elementWriters = AoCollections.optimalUnmodifiableMap(elementWriters);
+				pageLinks = AoCollections.optimalUnmodifiableSet(pageLinks);
 				frozen = true;
 			}
 		}
@@ -278,7 +278,7 @@ abstract public class Node implements Freezable<Node> {
 
 	/**
 	 * Recursive component of findTopLevelElements.
-	 * 
+	 *
 	 * @see  #findTopLevelElements(java.lang.Class)
 	 */
 	private static <E> List<E> findTopLevelElementsRecurse(Class<E> elementType, Node node, List<E> matches) {
