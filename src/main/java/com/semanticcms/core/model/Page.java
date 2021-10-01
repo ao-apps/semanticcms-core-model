@@ -96,7 +96,7 @@ public class Page extends Node implements Comparable<Page> {
 	public Page freeze() {
 		synchronized(lock) {
 			if(!frozen) {
-				if(authors != null) authors = AoCollections.optimalUnmodifiableSet(authors);
+				authors = AoCollections.optimalUnmodifiableSet(authors);
 				if(registry != null) {
 					if(registry.isEmpty()) {
 						registry = null;
@@ -104,8 +104,8 @@ public class Page extends Node implements Comparable<Page> {
 						// TOOD: registry.freeze(); // Or unmodifiable wrapper
 					}
 				}
-				if(parentRefs != null) parentRefs = AoCollections.optimalUnmodifiableSet(parentRefs);
-				if(childRefs != null) childRefs = AoCollections.optimalUnmodifiableSet(childRefs);
+				parentRefs = AoCollections.optimalUnmodifiableSet(parentRefs);
+				childRefs = AoCollections.optimalUnmodifiableSet(childRefs);
 				if(elements != null) {
 					// Generate any missing IDs and freeze all elements
 					for(Element element : elements) {
@@ -119,7 +119,7 @@ public class Page extends Node implements Comparable<Page> {
 					elements = AoCollections.optimalUnmodifiableList(elements);
 					elementsById = AoCollections.optimalUnmodifiableMap(elementsById);
 				}
-				if(generatedIds != null) generatedIds = AoCollections.optimalUnmodifiableSet(generatedIds);
+				generatedIds = AoCollections.optimalUnmodifiableSet(generatedIds);
 				super.freeze();
 			}
 		}
@@ -456,7 +456,7 @@ public class Page extends Node implements Comparable<Page> {
 	 * Gets the elements indexed by id, in no particular order.
 	 * Note, while the page is being created, elements with automatic IDs will not be in
 	 * this map.  However, once frozen, every element will have an ID.
-	 * 
+	 *
 	 * @see  #freeze()
 	 */
 	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
