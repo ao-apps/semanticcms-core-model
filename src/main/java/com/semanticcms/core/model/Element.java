@@ -30,7 +30,7 @@ import java.util.Objects;
  * A page may contain any number of elements (along with arbitrary textual data
  * and other content).  Each element may also contain other elements.
  */
-abstract public class Element extends Node {
+public abstract class Element extends Node {
 
 	private volatile Page page;
 	private volatile String id;
@@ -74,7 +74,7 @@ abstract public class Element extends Node {
 	/**
 	 * Gets the default element ID prefix for this type of element.
 	 */
-	abstract protected String getDefaultIdPrefix();
+	protected abstract String getDefaultIdPrefix();
 
 	/**
 	 * Every element may (and usually will) exist within a page.
