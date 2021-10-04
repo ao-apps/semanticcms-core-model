@@ -46,7 +46,7 @@ import java.util.function.Predicate;
  * A node can also have references to pages.
  * A node can have a captured body.
  */
-abstract public class Node implements Freezable<Node> {
+public abstract class Node implements Freezable<Node> {
 
 	/**
 	 * Should be kept as a thread-local, is not thread safe.
@@ -256,7 +256,7 @@ abstract public class Node implements Freezable<Node> {
 	/**
 	 * Gets a short description, useful for links and lists, for this node.
 	 */
-	abstract public String getLabel();
+	public abstract String getLabel();
 
 	/**
 	 * Appends a short description, useful for links and lists, for this node.
@@ -264,7 +264,7 @@ abstract public class Node implements Freezable<Node> {
 	 * @deprecated  Please use {@link #getLabel()}
 	 */
 	@Deprecated
-	final public void appendLabel(Appendable out) throws IOException {
+	public final void appendLabel(Appendable out) throws IOException {
 		out.append(getLabel());
 	}
 
