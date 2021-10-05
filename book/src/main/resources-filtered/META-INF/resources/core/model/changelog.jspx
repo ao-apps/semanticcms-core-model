@@ -329,7 +329,7 @@ along with semanticcms-core-model.  If not, see <http://www.gnu.org/licenses />.
 					the page. This fixes bug where IDs were missing from elements.</li>
 				<li>To avoid easily making broken links, may no longer link to generated element ids.</li>
 				<li>Headings moved to own projects and renamed to "Section".</li>
-				<li><![CDATA[Passing args as Map&lt;String,?&gt; instead of forcing Map&lt;String,Object&gt;]]></li>
+				<li>Passing args as <code><![CDATA[Map&lt;String, ?&gt;]]></code> instead of forcing <code><![CDATA[Map&lt;String, Object&gt;]]></code></li>
 				<li>Pulled files out of core and made files be elements.</li>
 			</ul>
 		</changelog:release>
