@@ -91,12 +91,7 @@ public abstract class Node implements Freezable<Node> {
 		}
 	}
 
-	private static final ThreadLocal<IdGenerator> idGenerators = new ThreadLocal<IdGenerator>() {
-		@Override
-		protected IdGenerator initialValue() {
-			return new IdGenerator();
-		}
-	};
+	private static final ThreadLocal<IdGenerator> idGenerators = ThreadLocal.withInitial(IdGenerator::new);
 
 	private static class Lock {}
 	protected final Object lock = new Lock();
