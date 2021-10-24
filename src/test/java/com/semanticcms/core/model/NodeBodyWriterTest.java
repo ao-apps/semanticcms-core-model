@@ -71,11 +71,11 @@ public class NodeBodyWriterTest {
 			},
 			(out, context) -> out.write(TEST_ELEMENT_BODY)
 		);
-		StringBuilder SB = new StringBuilder();
-		SB.append(TEST_BODY_PREFIX);
-		NodeBodyWriter.writeElementMarker(elementKey, SB);
-		SB.append(TEST_BODY_SUFFIX);
-		testNodeBody = SB.toString();
+		StringBuilder sb = new StringBuilder();
+		sb.append(TEST_BODY_PREFIX);
+		NodeBodyWriter.writeElementMarker(elementKey, sb);
+		sb.append(TEST_BODY_SUFFIX);
+		testNodeBody = sb.toString();
 	}
 
 	@AfterClass
