@@ -55,6 +55,9 @@ public abstract class Node implements Freezable<Node> {
 
 		/**
 		 * Random numbers for node keys.
+		 * <p>
+		 * Note: This is not a {@linkplain SecureRandom#getInstanceStrong() strong instance} to avoid blocking.
+		 * </p>
 		 */
 		private static final SecureRandom secureRandom = new SecureRandom();
 
