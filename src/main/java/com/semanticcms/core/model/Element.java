@@ -37,7 +37,7 @@ public abstract class Element extends Node {
 	 *
 	 * @deprecated  Please use {@link XmlUtils#isValidId(java.lang.String)} directly.
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true)
 	public static boolean isValidId(String id) {
 		return XmlUtils.isValidId(id);
 	}
@@ -47,7 +47,7 @@ public abstract class Element extends Node {
 	 *
 	 * @deprecated  Please use {@link XmlUtils#generateId(java.lang.String, java.lang.String)} directly.
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true)
 	public static StringBuilder generateIdPrefix(String template, String prefix) {
 		return XmlUtils.generateId(template, prefix);
 	}
@@ -84,7 +84,7 @@ public abstract class Element extends Node {
 
 	/**
 	 * Gets the element ID template for generating IDs.
-	 * 
+	 *
 	 * @see  #getLabel()  Defaults to getLabel()
 	 */
 	protected String getElementIdTemplate() {

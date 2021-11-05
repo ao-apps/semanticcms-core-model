@@ -261,7 +261,7 @@ public abstract class Node implements Freezable<Node> {
 	 *
 	 * @deprecated  Please use {@link #getLabel()}
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true)
 	public final void appendLabel(Appendable out) throws IOException {
 		out.append(getLabel());
 	}
