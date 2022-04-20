@@ -32,8 +32,8 @@ import java.util.Map;
 @FunctionalInterface
 public interface ElementContext {
 
-	/**
-	 * Includes the given resource into the given writer with the provided arguments.
-	 */
-	void include(String resource, Writer out, Map<String, ?> args) throws Exception;
+  /**
+   * Includes the given resource into the given writer with the provided arguments.
+   */
+  void include(String resource, Writer out, Map<String, ?> args) throws Exception;
 }

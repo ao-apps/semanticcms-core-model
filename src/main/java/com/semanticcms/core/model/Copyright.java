@@ -37,136 +37,148 @@ import java.util.Objects;
  */
 public class Copyright {
 
-	private final String rightsHolder;
-	private final String rights;
-	private final String dateCopyrighted;
+  private final String rightsHolder;
+  private final String rights;
+  private final String dateCopyrighted;
 
-	/**
-	 * @param rightsHolder  The rights holder, "" means none and null will inherit.
-	 * @param rights  The rights, "" means none and null will inherit.
-	 * @param dateCopyrighted  The date copyrighted, "" means none and null will inherit.
-	 */
-	public Copyright(
-		String rightsHolder,
-		String rights,
-		String dateCopyrighted
-	) {
-		// Other checks
-		if(
-			rightsHolder == null
-			&& rights == null
-			&& dateCopyrighted == null
-		) {
-			throw new IllegalArgumentException("At least one of rightsHolder, rights, or dateCopyrighted required");
-		}
-		this.rightsHolder = rightsHolder;
-		this.rights = rights;
-		this.dateCopyrighted = dateCopyrighted;
-	}
+  /**
+   * @param rightsHolder  The rights holder, "" means none and null will inherit.
+   * @param rights  The rights, "" means none and null will inherit.
+   * @param dateCopyrighted  The date copyrighted, "" means none and null will inherit.
+   */
+  public Copyright(
+    String rightsHolder,
+    String rights,
+    String dateCopyrighted
+  ) {
+    // Other checks
+    if (
+      rightsHolder == null
+      && rights == null
+      && dateCopyrighted == null
+    ) {
+      throw new IllegalArgumentException("At least one of rightsHolder, rights, or dateCopyrighted required");
+    }
+    this.rightsHolder = rightsHolder;
+    this.rights = rights;
+    this.dateCopyrighted = dateCopyrighted;
+  }
 
-	@Override
-	public String toString() {
-		if(isEmpty()) {
-			return "No copyright";
-		} else {
-			StringBuilder copy = new StringBuilder();
-			copy.append("Copyright ©");
-			if(dateCopyrighted != null && !dateCopyrighted.isEmpty()) {
-				copy.append(' ').append(dateCopyrighted);
-				if(!dateCopyrighted.endsWith(".")) copy.append('.');
-			}
-			if(rightsHolder != null && !rightsHolder.isEmpty()) {
-				copy.append(' ').append(rightsHolder);
-				if(!rightsHolder.endsWith(".")) copy.append('.');
-			}
-			if(rights != null && !rights.isEmpty()) {
-				copy.append(' ').append(rights);
-				if(!rights.endsWith(".")) copy.append('.');
-			}
-			return copy.toString();
-		}
-	}
+  @Override
+  public String toString() {
+    if (isEmpty()) {
+      return "No copyright";
+    } else {
+      StringBuilder copy = new StringBuilder();
+      copy.append("Copyright ©");
+      if (dateCopyrighted != null && !dateCopyrighted.isEmpty()) {
+        copy.append(' ').append(dateCopyrighted);
+        if (!dateCopyrighted.endsWith(".")) {
+          copy.append('.');
+        }
+      }
+      if (rightsHolder != null && !rightsHolder.isEmpty()) {
+        copy.append(' ').append(rightsHolder);
+        if (!rightsHolder.endsWith(".")) {
+          copy.append('.');
+        }
+      }
+      if (rights != null && !rights.isEmpty()) {
+        copy.append(' ').append(rights);
+        if (!rights.endsWith(".")) {
+          copy.append('.');
+        }
+      }
+      return copy.toString();
+    }
+  }
 
-	private boolean equals(
-		String otherRightsHolder,
-		String otherRights,
-		String otherDateCopyrighted
-	) {
-		return
-			Objects.equals(rightsHolder, otherRightsHolder)
-			&& Objects.equals(rights, otherRights)
-			&& Objects.equals(dateCopyrighted, otherDateCopyrighted)
-		;
-	}
+  private boolean equals(
+    String otherRightsHolder,
+    String otherRights,
+    String otherDateCopyrighted
+  ) {
+    return
+      Objects.equals(rightsHolder, otherRightsHolder)
+      && Objects.equals(rights, otherRights)
+      && Objects.equals(dateCopyrighted, otherDateCopyrighted)
+    ;
+  }
 
-	@Override
-	public boolean equals(Object obj) {
-		if(!(obj instanceof Copyright)) return false;
-		Copyright o = (Copyright)obj;
-		return equals(
-			o.rightsHolder,
-			o.rights,
-			o.dateCopyrighted
-		);
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof Copyright)) {
+      return false;
+    }
+    Copyright o = (Copyright)obj;
+    return equals(
+      o.rightsHolder,
+      o.rights,
+      o.dateCopyrighted
+    );
+  }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(
-			rightsHolder,
-			rights,
-			dateCopyrighted
-		);
-	}
+  @Override
+  public int hashCode() {
+    return Objects.hash(
+      rightsHolder,
+      rights,
+      dateCopyrighted
+    );
+  }
 
-	public String getRightsHolder() {
-		return rightsHolder;
-	}
+  public String getRightsHolder() {
+    return rightsHolder;
+  }
 
-	public String getRights() {
-		return rights;
-	}
+  public String getRights() {
+    return rights;
+  }
 
-	public String getDateCopyrighted() {
-		return dateCopyrighted;
-	}
+  public String getDateCopyrighted() {
+    return dateCopyrighted;
+  }
 
-	/**
-	 * Checks if has all fields (none need inherited).
-	 */
-	public boolean hasAllFields() {
-		return
-			rightsHolder != null
-			&& rights != null
-			&& dateCopyrighted != null
-		;
-	}
+  /**
+   * Checks if has all fields (none need inherited).
+   */
+  public boolean hasAllFields() {
+    return
+      rightsHolder != null
+      && rights != null
+      && dateCopyrighted != null
+    ;
+  }
 
-	/**
-	 * Checks if the copyright is empty (has all null or blank fields)
-	 */
-	public boolean isEmpty() {
-		return
-			(rightsHolder == null || rightsHolder.isEmpty())
-			&& (rights == null || rights.isEmpty())
-			&& (dateCopyrighted == null || dateCopyrighted.isEmpty())
-		;
-	}
+  /**
+   * Checks if the copyright is empty (has all null or blank fields)
+   */
+  public boolean isEmpty() {
+    return
+      (rightsHolder == null || rightsHolder.isEmpty())
+      && (rights == null || rights.isEmpty())
+      && (dateCopyrighted == null || dateCopyrighted.isEmpty())
+    ;
+  }
 
-	/*
-	 * Inherits missing fields from the given parent.
-	 */
-	/*
-	public Copyright inheritFieldsFrom(Copyright parent) {
-		String newRightsHolder    = this.rightsHolder    != null ? this.rightsHolder    : parent.rightsHolder;
-		String newRights          = this.rights          != null ? this.rights          : parent.rights;
-		String newDateCopyrighted = this.dateCopyrighted != null ? this.dateCopyrighted : parent.dateCopyrighted;
-		// Use "this" if matches
-		if(this.equals(newRightsHolder, newRights, newDateCopyrighted)) return this;
-		// Use "parent" if matches
-		if(parent.equals(newRightsHolder, newRights, newDateCopyrighted)) return parent;
-		// Create a new object
-		return new Copyright(newRightsHolder, newRights, newDateCopyrighted);
-	}
-	 */
+  /*
+   * Inherits missing fields from the given parent.
+   */
+  /*
+  public Copyright inheritFieldsFrom(Copyright parent) {
+    String newRightsHolder    = this.rightsHolder    != null ? this.rightsHolder    : parent.rightsHolder;
+    String newRights          = this.rights          != null ? this.rights          : parent.rights;
+    String newDateCopyrighted = this.dateCopyrighted != null ? this.dateCopyrighted : parent.dateCopyrighted;
+    // Use "this" if matches
+    if (this.equals(newRightsHolder, newRights, newDateCopyrighted)) {
+      return this;
+    }
+    // Use "parent" if matches
+    if (parent.equals(newRightsHolder, newRights, newDateCopyrighted)) {
+      return parent;
+    }
+    // Create a new object
+    return new Copyright(newRightsHolder, newRights, newDateCopyrighted);
+  }
+   */
 }

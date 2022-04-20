@@ -31,71 +31,75 @@ import com.aoapps.lang.NullArgumentException;
  */
 public class ParentRef implements PageReferrer {
 
-	private final PageRef pageRef;
+  private final PageRef pageRef;
 
-	private final String shortTitle;
+  private final String shortTitle;
 
-	public ParentRef(PageRef pageRef, String shortTitle) {
-		this.pageRef = NullArgumentException.checkNotNull(pageRef, "pageRef");
-		this.shortTitle = shortTitle;
-	}
+  public ParentRef(PageRef pageRef, String shortTitle) {
+    this.pageRef = NullArgumentException.checkNotNull(pageRef, "pageRef");
+    this.shortTitle = shortTitle;
+  }
 
-	/**
-	 * The reference to the parent page.
-	 */
-	@Override
-	public PageRef getPageRef() {
-		return pageRef;
-	}
+  /**
+   * The reference to the parent page.
+   */
+  @Override
+  public PageRef getPageRef() {
+    return pageRef;
+  }
 
-	/**
-	 * A short title is used when the context of a page is well established, such as when
-	 * showing a path to the current location in the site.
-	 * 
-	 * @return  the short page title for the page when in the context of this parent.
-	 *
-	 * @see  Page#getShortTitle()  When the shortTitle of this ParentRef is null,
-	 *                             the shortTitle of the page itself is used.
-	 */
-	public String getShortTitle() {
-		return shortTitle;
-	}
+  /**
+   * A short title is used when the context of a page is well established, such as when
+   * showing a path to the current location in the site.
+   *
+   * @return  the short page title for the page when in the context of this parent.
+   *
+   * @see  Page#getShortTitle()  When the shortTitle of this ParentRef is null,
+   *                             the shortTitle of the page itself is used.
+   */
+  public String getShortTitle() {
+    return shortTitle;
+  }
 
-	/**
-	 * Equality is determined by pageRef only, short title not a factor.
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if(this == obj) return true;
-		if(!(obj instanceof ParentRef)) return false;
-		ParentRef other = (ParentRef)obj;
-		return pageRef.equals(other.pageRef);
-	}
+  /**
+   * Equality is determined by pageRef only, short title not a factor.
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof ParentRef)) {
+      return false;
+    }
+    ParentRef other = (ParentRef)obj;
+    return pageRef.equals(other.pageRef);
+  }
 
-	/**
-	 * Hash is based on pageRef only, short title is not a factor.
-	 */
-	@Override
-	public int hashCode() {
-		return pageRef.hashCode();
-	}
+  /**
+   * Hash is based on pageRef only, short title is not a factor.
+   */
+  @Override
+  public int hashCode() {
+    return pageRef.hashCode();
+  }
 
-	/**
-	 * Orders by pageRef only.
-	 * 
-	 * @see  #getPageRef()
-	 */
-	@Override
-	public int compareTo(PageReferrer o) {
-		return getPageRef().compareTo(o.getPageRef());
-	}
+  /**
+   * Orders by pageRef only.
+   *
+   * @see  #getPageRef()
+   */
+  @Override
+  public int compareTo(PageReferrer o) {
+    return getPageRef().compareTo(o.getPageRef());
+  }
 
-	@Override
-	public String toString() {
-		if(shortTitle == null) {
-			return pageRef.toString();
-		} else {
-			return shortTitle + " -> " + pageRef.toString();
-		}
-	}
+  @Override
+  public String toString() {
+    if (shortTitle == null) {
+      return pageRef.toString();
+    } else {
+      return shortTitle + " -> " + pageRef.toString();
+    }
+  }
 }

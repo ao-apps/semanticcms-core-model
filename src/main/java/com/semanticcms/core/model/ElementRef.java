@@ -31,95 +31,103 @@ import com.aoapps.net.URIEncoder;
 /**
  * An element reference contains a book, a path, and an element id.
  * Any path to a directory must end with a slash (/).
- * 
+ *
  * // TODO: Support parameters to a page, child, link, ...
  *          Parameters provided in path/page?, param.* attributes, and nested tags - matching/extending AO taglib.
  */
 public class ElementRef implements Comparable<ElementRef> {
 
-	private final PageRef pageRef;
+  private final PageRef pageRef;
 
-	private final String id;
+  private final String id;
 
-	public ElementRef(PageRef pageRef, String id) {
-		this.pageRef = NullArgumentException.checkNotNull(pageRef, "pageRef");
-		this.id = NullArgumentException.checkNotNull(id, "id");
-		if(!XmlUtils.isValidName(id)) throw new IllegalArgumentException("Invalid id: " + id);
-	}
+  public ElementRef(PageRef pageRef, String id) {
+    this.pageRef = NullArgumentException.checkNotNull(pageRef, "pageRef");
+    this.id = NullArgumentException.checkNotNull(id, "id");
+    if (!XmlUtils.isValidName(id)) {
+      throw new IllegalArgumentException("Invalid id: " + id);
+    }
+  }
 
-	/**
-	 * The reference to the page this element is part of.
-	 */
-	public PageRef getPageRef() {
-		return pageRef;
-	}
+  /**
+   * The reference to the page this element is part of.
+   */
+  public PageRef getPageRef() {
+    return pageRef;
+  }
 
-	/**
-	 * The id of the element within the page.
-	 */
-	public String getId() {
-		return id;
-	}
+  /**
+   * The id of the element within the page.
+   */
+  public String getId() {
+    return id;
+  }
 
-	@Override
-	public boolean equals(Object obj) {
-		if(this == obj) return true;
-		if(!(obj instanceof ElementRef)) return false;
-		ElementRef other = (ElementRef)obj;
-		return
-			pageRef.equals(other.pageRef)
-			&& id.equals(other.id)
-		;
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof ElementRef)) {
+      return false;
+    }
+    ElementRef other = (ElementRef)obj;
+    return
+      pageRef.equals(other.pageRef)
+      && id.equals(other.id)
+    ;
+  }
 
-	@Override
-	public int hashCode() {
-		return pageRef.hashCode() * 31 + id.hashCode();
-	}
+  @Override
+  public int hashCode() {
+    return pageRef.hashCode() * 31 + id.hashCode();
+  }
 
-	/**
-	 * Orders by page then id.
-	 * 
-	 * @see  PageRef#compareTo(com.semanticcms.core.model.PageRef)
-	 */
-	@Override
-	public int compareTo(ElementRef o) {
-		int diff = pageRef.compareTo(o.pageRef);
-		if(diff != 0) return diff;
-		return id.compareTo(o.id);
-	}
+  /**
+   * Orders by page then id.
+   *
+   * @see  PageRef#compareTo(com.semanticcms.core.model.PageRef)
+   */
+  @Override
+  public int compareTo(ElementRef o) {
+    int diff = pageRef.compareTo(o.pageRef);
+    if (diff != 0) {
+      return diff;
+    }
+    return id.compareTo(o.id);
+  }
 
-	/**
-	 * Gets the combination of the domain, book, the path, and element anchor that refers to the
-	 * element resource within the web application.
-	 * <p>
-	 * The element anchor is not URL-encoded - Unicode characters are verbatim.
-	 * </p>
-	 */
-	@Override
-	@SuppressWarnings("ReplaceStringBufferByString")
-	public String toString() {
-		BookRef bookRef = pageRef.getBookRef();
-		String domain = bookRef.getDomain().toString();
-		String prefix = bookRef.getPrefix();
-		String path = pageRef.getPath().toString();
-		// TODO: encodeIRIComponent to do this in one shot?
-		String idIri = URIDecoder.decodeURI(URIEncoder.encodeURIComponent(id));
-		int sbLen =
-			domain.length()
-			+ 1 // ':'
-			+ prefix.length()
-			+ path.length()
-			+ 1 // '#'
-			+ idIri.length();
-		StringBuilder sb = new StringBuilder(sbLen)
-			.append(domain)
-			.append(':')
-			.append(prefix)
-			.append(path)
-			.append('#')
-			.append(idIri);
-		assert sb.length() == sbLen;
-		return sb.toString();
-	}
+  /**
+   * Gets the combination of the domain, book, the path, and element anchor that refers to the
+   * element resource within the web application.
+   * <p>
+   * The element anchor is not URL-encoded - Unicode characters are verbatim.
+   * </p>
+   */
+  @Override
+  @SuppressWarnings("ReplaceStringBufferByString")
+  public String toString() {
+    BookRef bookRef = pageRef.getBookRef();
+    String domain = bookRef.getDomain().toString();
+    String prefix = bookRef.getPrefix();
+    String path = pageRef.getPath().toString();
+    // TODO: encodeIRIComponent to do this in one shot?
+    String idIri = URIDecoder.decodeURI(URIEncoder.encodeURIComponent(id));
+    int sbLen =
+      domain.length()
+      + 1 // ':'
+      + prefix.length()
+      + path.length()
+      + 1 // '#'
+      + idIri.length();
+    StringBuilder sb = new StringBuilder(sbLen)
+      .append(domain)
+      .append(':')
+      .append(prefix)
+      .append(path)
+      .append('#')
+      .append(idIri);
+    assert sb.length() == sbLen;
+    return sb.toString();
+  }
 }

@@ -28,18 +28,18 @@ package com.semanticcms.core.model;
  */
 public interface PageReferrer extends Comparable<PageReferrer> {
 
-	/**
-	 * Gets the page reference.
-	 */
-	PageRef getPageRef();
+  /**
+   * Gets the page reference.
+   */
+  PageRef getPageRef();
 
-	/**
-	 * @see  PageRef#compareTo(com.semanticcms.core.model.PageRef)
-	 *
-	 * Java 1.8: Implement this as a default method
-	 */
-	@Override
-	int compareTo(PageReferrer o);
-	//	return getPageRef().compareTo(o.getPageRef());
-	//}
+  /**
+   * @see  PageRef#compareTo(com.semanticcms.core.model.PageRef)
+   *
+   * Java 1.8: Implement this as a default method
+   */
+  @Override
+  int compareTo(PageReferrer o);
+  //  return getPageRef().compareTo(o.getPageRef());
+  //}
 }

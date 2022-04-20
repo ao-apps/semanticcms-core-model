@@ -32,162 +32,162 @@ import com.aoapps.net.UnmodifiableURIParameters;
 // TODO: Support optional renderer before view, defaulting to current renderer
 public class Link extends Element {
 
-	/**
-	 * The default view is the content view and will have the empty view name.
-	 */
-	public static final String DEFAULT_VIEW_NAME = "content";
+  /**
+   * The default view is the content view and will have the empty view name.
+   */
+  public static final String DEFAULT_VIEW_NAME = "content";
 
-	private volatile DomainName domain;
-	private volatile Path book;
-	private volatile String page;
-	private volatile String element;
-	private volatile boolean allowGeneratedElement;
-	private volatile String anchor;
-	private volatile String view = DEFAULT_VIEW_NAME;
-	private volatile boolean small;
-	private volatile URIParameters params;
-	private volatile boolean absolute;
-	private volatile boolean canonical;
-	private volatile String clazz;
+  private volatile DomainName domain;
+  private volatile Path book;
+  private volatile String page;
+  private volatile String element;
+  private volatile boolean allowGeneratedElement;
+  private volatile String anchor;
+  private volatile String view = DEFAULT_VIEW_NAME;
+  private volatile boolean small;
+  private volatile URIParameters params;
+  private volatile boolean absolute;
+  private volatile boolean canonical;
+  private volatile String clazz;
 
-	@Override
-	public Link freeze() throws IllegalStateException {
-		synchronized(lock) {
-			if(!frozen) {
-				params = UnmodifiableURIParameters.wrap(params);
-				super.freeze();
-			}
-		}
-		return this;
-	}
+  @Override
+  public Link freeze() throws IllegalStateException {
+    synchronized (lock) {
+      if (!frozen) {
+        params = UnmodifiableURIParameters.wrap(params);
+        super.freeze();
+      }
+    }
+    return this;
+  }
 
-	@Override
-	public String getLabel() {
-		return "Link";
-	}
+  @Override
+  public String getLabel() {
+    return "Link";
+  }
 
-	/**
-	 * Link elements are hidden from tree views.
-	 */
-	@Override
-	public boolean isHidden() {
-		return true;
-	}
+  /**
+   * Link elements are hidden from tree views.
+   */
+  @Override
+  public boolean isHidden() {
+    return true;
+  }
 
-	public DomainName getDomain() {
-		return domain;
-	}
+  public DomainName getDomain() {
+    return domain;
+  }
 
-	public void setDomain(DomainName domain) {
-		checkNotFrozen();
-		this.domain = domain;
-	}
+  public void setDomain(DomainName domain) {
+    checkNotFrozen();
+    this.domain = domain;
+  }
 
-	public Path getBook() {
-		return book;
-	}
+  public Path getBook() {
+    return book;
+  }
 
-	public void setBook(Path book) {
-		checkNotFrozen();
-		this.book = book;
-	}
+  public void setBook(Path book) {
+    checkNotFrozen();
+    this.book = book;
+  }
 
-	public String getPagePath() {
-		return page;
-	}
+  public String getPagePath() {
+    return page;
+  }
 
-	// TODO: Path page?
-	public void setPagePath(String page) {
-		checkNotFrozen();
-		this.page = nullIfEmpty(page);
-	}
+  // TODO: Path page?
+  public void setPagePath(String page) {
+    checkNotFrozen();
+    this.page = nullIfEmpty(page);
+  }
 
-	public String getElement() {
-		return element;
-	}
+  public String getElement() {
+    return element;
+  }
 
-	public void setElement(String element) {
-		checkNotFrozen();
-		this.element = nullIfEmpty(element);
-	}
+  public void setElement(String element) {
+    checkNotFrozen();
+    this.element = nullIfEmpty(element);
+  }
 
-	public boolean getAllowGeneratedElement() {
-		return allowGeneratedElement;
-	}
+  public boolean getAllowGeneratedElement() {
+    return allowGeneratedElement;
+  }
 
-	public void setAllowGeneratedElement(boolean allowGeneratedElement) {
-		checkNotFrozen();
-		this.allowGeneratedElement = allowGeneratedElement;
-	}
+  public void setAllowGeneratedElement(boolean allowGeneratedElement) {
+    checkNotFrozen();
+    this.allowGeneratedElement = allowGeneratedElement;
+  }
 
-	public String getAnchor() {
-		return anchor;
-	}
+  public String getAnchor() {
+    return anchor;
+  }
 
-	public void setAnchor(String anchor) {
-		checkNotFrozen();
-		this.anchor = nullIfEmpty(anchor);
-	}
+  public void setAnchor(String anchor) {
+    checkNotFrozen();
+    this.anchor = nullIfEmpty(anchor);
+  }
 
-	public String getView() {
-		return view;
-	}
+  public String getView() {
+    return view;
+  }
 
-	public void setView(String view) {
-		checkNotFrozen();
-		view = nullIfEmpty(view);
-		this.view = view == null ? DEFAULT_VIEW_NAME : view;
-	}
+  public void setView(String view) {
+    checkNotFrozen();
+    view = nullIfEmpty(view);
+    this.view = view == null ? DEFAULT_VIEW_NAME : view;
+  }
 
-	public boolean getSmall() {
-		return small;
-	}
+  public boolean getSmall() {
+    return small;
+  }
 
-	public void setSmall(boolean small) {
-		checkNotFrozen();
-		this.small = small;
-	}
+  public void setSmall(boolean small) {
+    checkNotFrozen();
+    this.small = small;
+  }
 
-	public URIParameters getParams() {
-		return params;
-	}
+  public URIParameters getParams() {
+    return params;
+  }
 
-	public void setParams(URIParameters params) {
-		synchronized(lock) {
-			checkNotFrozen();
-			this.params = params;
-		}
-	}
+  public void setParams(URIParameters params) {
+    synchronized (lock) {
+      checkNotFrozen();
+      this.params = params;
+    }
+  }
 
-	public boolean getAbsolute() {
-		return absolute;
-	}
+  public boolean getAbsolute() {
+    return absolute;
+  }
 
-	public void setAbsolute(boolean absolute) {
-		checkNotFrozen();
-		this.absolute = absolute;
-	}
+  public void setAbsolute(boolean absolute) {
+    checkNotFrozen();
+    this.absolute = absolute;
+  }
 
-	public boolean getCanonical() {
-		return canonical;
-	}
+  public boolean getCanonical() {
+    return canonical;
+  }
 
-	public void setCanonical(boolean canonical) {
-		checkNotFrozen();
-		this.canonical = canonical;
-	}
+  public void setCanonical(boolean canonical) {
+    checkNotFrozen();
+    this.canonical = canonical;
+  }
 
-	public String getClazz() {
-		return clazz;
-	}
+  public String getClazz() {
+    return clazz;
+  }
 
-	public void setClazz(String clazz) {
-		checkNotFrozen();
-		this.clazz = nullIfEmpty(clazz);
-	}
+  public void setClazz(String clazz) {
+    checkNotFrozen();
+    this.clazz = nullIfEmpty(clazz);
+  }
 
-	@Override
-	protected String getDefaultIdPrefix() {
-		return "link";
-	}
+  @Override
+  protected String getDefaultIdPrefix() {
+    return "link";
+  }
 }

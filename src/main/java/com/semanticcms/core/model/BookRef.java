@@ -32,87 +32,95 @@ import com.aoapps.net.Path;
  */
 public class BookRef {
 
-	/**
-	 * The domain used for backward compatibility.
-	 */
-	public static final DomainName DEFAULT_DOMAIN = DomainName.LOCALHOST;
+  /**
+   * The domain used for backward compatibility.
+   */
+  public static final DomainName DEFAULT_DOMAIN = DomainName.LOCALHOST;
 
-	private final DomainName domain;
+  private final DomainName domain;
 
-	private final Path path;
+  private final Path path;
 
-	public BookRef(DomainName domain, Path path) {
-		this.domain = NullArgumentException.checkNotNull(domain, "domain");
-		this.path = NullArgumentException.checkNotNull(path, "path");
-		String pathStr = path.toString();
-		if(!pathStr.equals("/") && pathStr.endsWith("/")) throw new IllegalArgumentException("Book path may not end in a slash: " + this.path);
-	}
+  public BookRef(DomainName domain, Path path) {
+    this.domain = NullArgumentException.checkNotNull(domain, "domain");
+    this.path = NullArgumentException.checkNotNull(path, "path");
+    String pathStr = path.toString();
+    if (!pathStr.equals("/") && pathStr.endsWith("/")) {
+      throw new IllegalArgumentException("Book path may not end in a slash: " + this.path);
+    }
+  }
 
-	/**
-	 * Gets the non-empty domain of this book.  Two books are considered equal when they
-	 * are in the same domain and have the same path.
-	 */
-	public DomainName getDomain() {
-		return domain;
-	}
+  /**
+   * Gets the non-empty domain of this book.  Two books are considered equal when they
+   * are in the same domain and have the same path.
+   */
+  public DomainName getDomain() {
+    return domain;
+  }
 
-	/**
-	 * The path of the book this refers to.
-	 * This will be <code>"/"</code> for the root book,
-	 * otherwise matches {@link #getPrefix()}.
-	 */
-	public Path getPath() {
-		return path;
-	}
+  /**
+   * The path of the book this refers to.
+   * This will be <code>"/"</code> for the root book,
+   * otherwise matches {@link #getPrefix()}.
+   */
+  public Path getPath() {
+    return path;
+  }
 
-	/**
-	 * The prefix of the book this refers to, useful for direct path concatenation.
-	 * This will be <code>""</code> for the root book <code>"/"</code>,
-	 * otherwise matches {@link #getPath()}.
-	 */
-	public String getPrefix() {
-		String bn = path.toString();
-		return "/".equals(bn) ? "" : bn;
-	}
+  /**
+   * The prefix of the book this refers to, useful for direct path concatenation.
+   * This will be <code>""</code> for the root book <code>"/"</code>,
+   * otherwise matches {@link #getPath()}.
+   */
+  public String getPrefix() {
+    String bn = path.toString();
+    return "/".equals(bn) ? "" : bn;
+  }
 
-	@Override
-	public boolean equals(Object obj) {
-		if(this == obj) return true;
-		if(!(obj instanceof BookRef)) return false;
-		BookRef other = (BookRef)obj;
-		return
-			domain.equals(other.domain)
-			&& path.equals(other.path)
-		;
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof BookRef)) {
+      return false;
+    }
+    BookRef other = (BookRef)obj;
+    return
+      domain.equals(other.domain)
+      && path.equals(other.path)
+    ;
+  }
 
-	@Override
-	public int hashCode() {
-		return domain.hashCode() * 31 + path.hashCode();
-	}
+  @Override
+  public int hashCode() {
+    return domain.hashCode() * 31 + path.hashCode();
+  }
 
-	/**
-	 * Ordered by domain, path.
-	 */
-	public int compareTo(BookRef o) {
-		int diff = domain.compareTo(o.domain);
-		if(diff != 0) return diff;
-		return path.compareTo(o.path);
-	}
+  /**
+   * Ordered by domain, path.
+   */
+  public int compareTo(BookRef o) {
+    int diff = domain.compareTo(o.domain);
+    if (diff != 0) {
+      return diff;
+    }
+    return path.compareTo(o.path);
+  }
 
-	@Override
-	public String toString() {
-		String domainStr = domain.toString();
-		String pathStr = path.toString();
-		return
-			new StringBuilder(
-				domainStr.length()
-				+ 1 // ':'
-				+ pathStr.length()
-			)
-			.append(domainStr)
-			.append(':')
-			.append(pathStr)
-			.toString();
-	}
+  @Override
+  public String toString() {
+    String domainStr = domain.toString();
+    String pathStr = path.toString();
+    return
+      new StringBuilder(
+        domainStr.length()
+        + 1 // ':'
+        + pathStr.length()
+      )
+      .append(domainStr)
+      .append(':')
+      .append(pathStr)
+      .toString();
+  }
 }

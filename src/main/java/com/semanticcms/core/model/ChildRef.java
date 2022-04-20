@@ -30,51 +30,55 @@ import com.aoapps.lang.NullArgumentException;
  */
 public class ChildRef implements PageReferrer {
 
-	private final PageRef pageRef;
+  private final PageRef pageRef;
 
-	public ChildRef(PageRef pageRef) {
-		this.pageRef = NullArgumentException.checkNotNull(pageRef, "pageRef");
-	}
+  public ChildRef(PageRef pageRef) {
+    this.pageRef = NullArgumentException.checkNotNull(pageRef, "pageRef");
+  }
 
-	/**
-	 * The reference to the child page.
-	 */
-	@Override
-	public PageRef getPageRef() {
-		return pageRef;
-	}
+  /**
+   * The reference to the child page.
+   */
+  @Override
+  public PageRef getPageRef() {
+    return pageRef;
+  }
 
-	/**
-	 * Equality is determined by pageRef only.
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if(this == obj) return true;
-		if(!(obj instanceof ChildRef)) return false;
-		ChildRef other = (ChildRef)obj;
-		return pageRef.equals(other.pageRef);
-	}
+  /**
+   * Equality is determined by pageRef only.
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof ChildRef)) {
+      return false;
+    }
+    ChildRef other = (ChildRef)obj;
+    return pageRef.equals(other.pageRef);
+  }
 
-	/**
-	 * Hash is based on pageRef only.
-	 */
-	@Override
-	public int hashCode() {
-		return pageRef.hashCode();
-	}
+  /**
+   * Hash is based on pageRef only.
+   */
+  @Override
+  public int hashCode() {
+    return pageRef.hashCode();
+  }
 
-	/**
-	 * Orders by pageRef only.
-	 * 
-	 * @see  #getPageRef()
-	 */
-	@Override
-	public int compareTo(PageReferrer o) {
-		return getPageRef().compareTo(o.getPageRef());
-	}
+  /**
+   * Orders by pageRef only.
+   *
+   * @see  #getPageRef()
+   */
+  @Override
+  public int compareTo(PageReferrer o) {
+    return getPageRef().compareTo(o.getPageRef());
+  }
 
-	@Override
-	public String toString() {
-		return pageRef.toString();
-	}
+  @Override
+  public String toString() {
+    return pageRef.toString();
+  }
 }
