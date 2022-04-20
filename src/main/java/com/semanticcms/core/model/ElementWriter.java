@@ -31,15 +31,15 @@ import java.io.Writer;
 @FunctionalInterface
 public interface ElementWriter {
 
-	/**
-	 * <p>
-	 * Writes the element into the given writer.
-	 * This should include everything added before the body, the body itself,
-	 * and everything after after the body.
-	 * </p>
-	 * <p>
-	 * For efficiency, this should not be called when the output would otherwise be discarded.
-	 * </p>
-	 */
-	void writeTo(Writer out, ElementContext context) throws Exception;
+  /**
+   * <p>
+   * Writes the element into the given writer.
+   * This should include everything added before the body, the body itself,
+   * and everything after after the body.
+   * </p>
+   * <p>
+   * For efficiency, this should not be called when the output would otherwise be discarded.
+   * </p>
+   */
+  void writeTo(Writer out, ElementContext context) throws Exception;
 }

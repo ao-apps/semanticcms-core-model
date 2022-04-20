@@ -39,154 +39,154 @@ import java.util.logging.Logger;
  */
 public class NodeBodyWriter extends Writer {
 
-	private static final Logger logger = Logger.getLogger(NodeBodyWriter.class.getName());
+  private static final Logger logger = Logger.getLogger(NodeBodyWriter.class.getName());
 
-	static final String MARKER_PREFIX        = "<A<O<ELEMENT ";
-	private static final int    MARKER_PREFIX_LEN    = MARKER_PREFIX.length();
-	private static final char[] MARKER_PREFIX_CHARS  = MARKER_PREFIX.toCharArray();
-	static final String MARKER_SUFFIX        = ">O>A>";
-	private static final int    MARKER_SUFFIX_LEN    = MARKER_SUFFIX.length();
-	private static final char[] MARKER_SUFFIX_CHARS  = MARKER_SUFFIX.toCharArray();
+  static final String MARKER_PREFIX        = "<A<O<ELEMENT ";
+  private static final int    MARKER_PREFIX_LEN    = MARKER_PREFIX.length();
+  private static final char[] MARKER_PREFIX_CHARS  = MARKER_PREFIX.toCharArray();
+  static final String MARKER_SUFFIX        = ">O>A>";
+  private static final int    MARKER_SUFFIX_LEN    = MARKER_SUFFIX.length();
+  private static final char[] MARKER_SUFFIX_CHARS  = MARKER_SUFFIX.toCharArray();
 
-	/** The number of hex characters in the 64-bit element key */
-	private static final int ELEMENT_KEY_LEN = 16;
-	
-	@SuppressWarnings("deprecation")
-	public static void writeElementMarker(long elementKey, Appendable out) throws IOException {
-		out.append(MARKER_PREFIX);
-		Strings.convertToHex(elementKey, out);
-		out.append(MARKER_SUFFIX);
-	}
+  /** The number of hex characters in the 64-bit element key */
+  private static final int ELEMENT_KEY_LEN = 16;
 
-	private final Node node;
-	private final Writer out;
-	private final ElementContext context;
-	private final char[] elementKeyBuffer = new char[ELEMENT_KEY_LEN];
-	private int markerPos = 0;
+  @SuppressWarnings("deprecation")
+  public static void writeElementMarker(long elementKey, Appendable out) throws IOException {
+    out.append(MARKER_PREFIX);
+    Strings.convertToHex(elementKey, out);
+    out.append(MARKER_SUFFIX);
+  }
 
-	public NodeBodyWriter(Node node, Writer out, ElementContext context) {
-		this.node = node;
-		this.out = out;
-		this.context = context;
-	}
+  private final Node node;
+  private final Writer out;
+  private final ElementContext context;
+  private final char[] elementKeyBuffer = new char[ELEMENT_KEY_LEN];
+  private int markerPos = 0;
 
-	/**
-	 * Writes characters, ignores calls with {@code len < 0}
-	 */
-	private void writeCharsToOut(char[] cbuf, int len) throws IOException {
-		if(len > 0) {
-			if(len == 1) {
-				out.write(cbuf[0]);
-			} else {
-				out.write(cbuf, 0, len);
-			}
-		}
-	}
+  public NodeBodyWriter(Node node, Writer out, ElementContext context) {
+    this.node = node;
+    this.out = out;
+    this.context = context;
+  }
 
-	@Override
-	@SuppressWarnings({"UseSpecificCatch", "BroadCatchBlock"})
-	public void write(final int c) throws IOException {
-		while(true) {
-			if(markerPos < MARKER_PREFIX_LEN) {
-				// Is in marker prefix
-				if((char)c == MARKER_PREFIX_CHARS[markerPos]) {
-					// Matches
-					markerPos++;
-					return;
-				} else {
-					// Mismatch
-					if(markerPos > 0) {
-						writeCharsToOut(MARKER_PREFIX_CHARS, markerPos);
-						markerPos = 0;
-					} else {
-						out.write(c);
-						return;
-					}
-				}
-			} else if(markerPos < (MARKER_PREFIX_LEN + ELEMENT_KEY_LEN)) {
-				// Is in element key
-				int elementKeyPos = markerPos - MARKER_PREFIX_LEN;
-				if(
-					(c >= '0' && c <= '9')
-					|| (c >= 'a' && c <= 'f')
-				) {
-					// Matches potential element key
-					elementKeyBuffer[elementKeyPos] = (char)c;
-					markerPos++;
-					return;
-				} else {
-					// Mismatch
-					out.write(MARKER_PREFIX_CHARS, 0, MARKER_PREFIX_LEN);
-					writeCharsToOut(elementKeyBuffer, elementKeyPos);
-					markerPos = 0;
-				}
-			} else {
-				// Is in marker suffix
-				int markerSuffixPos = markerPos - (MARKER_PREFIX_LEN + ELEMENT_KEY_LEN);
-				if((char)c == MARKER_SUFFIX_CHARS[markerSuffixPos]) {
-					// Matches
-					markerPos++;
-					if(markerPos == (MARKER_PREFIX_LEN + ELEMENT_KEY_LEN + MARKER_SUFFIX_LEN)) {
-						// Entire marker found
-						@SuppressWarnings("deprecation")
-						long elementKey = Strings.convertLongArrayFromHex(elementKeyBuffer);
-						ElementWriter elementWriter = node.getElementWriter(elementKey);
-						if(elementWriter != null) {
-							// Substitute child element
-							try {
-								elementWriter.writeTo(out, context);
-							} catch(Error | RuntimeException | IOException e) {
-								throw e;
-							} catch(Throwable t) {
-								throw new WrappedException(t);
-							}
-						} else {
-							if(logger.isLoggable(Level.WARNING)) {
-								logger.warning("ElementWriter not found by key: " + String.valueOf(elementKeyBuffer) + " in " + node);
-							}
-							// Mismatch
-							out.write(MARKER_PREFIX_CHARS, 0, MARKER_PREFIX_LEN);
-							out.write(elementKeyBuffer, 0, ELEMENT_KEY_LEN);
-							out.write(MARKER_SUFFIX_CHARS, 0, MARKER_SUFFIX_LEN);
-						}
-						markerPos = 0;
-					}
-					return;
-				} else {
-					// Mismatch
-					out.write(MARKER_PREFIX_CHARS, 0, MARKER_PREFIX_LEN);
-					out.write(elementKeyBuffer, 0, ELEMENT_KEY_LEN);
-					writeCharsToOut(elementKeyBuffer, markerSuffixPos);
-					markerPos = 0;
-				}
-			}
-		}
-	}
+  /**
+   * Writes characters, ignores calls with {@code len < 0}
+   */
+  private void writeCharsToOut(char[] cbuf, int len) throws IOException {
+    if (len > 0) {
+      if (len == 1) {
+        out.write(cbuf[0]);
+      } else {
+        out.write(cbuf, 0, len);
+      }
+    }
+  }
 
-	@Override
-	public void write(char[] cbuf, int off, int len) throws IOException {
-		while(len > 0) {
-			write(cbuf[off]);
-			off++;
-			len--;
-		}
+  @Override
+  @SuppressWarnings({"UseSpecificCatch", "BroadCatchBlock"})
+  public void write(final int c) throws IOException {
+    while (true) {
+      if (markerPos < MARKER_PREFIX_LEN) {
+        // Is in marker prefix
+        if ((char)c == MARKER_PREFIX_CHARS[markerPos]) {
+          // Matches
+          markerPos++;
+          return;
+        } else {
+          // Mismatch
+          if (markerPos > 0) {
+            writeCharsToOut(MARKER_PREFIX_CHARS, markerPos);
+            markerPos = 0;
+          } else {
+            out.write(c);
+            return;
+          }
+        }
+      } else if (markerPos < (MARKER_PREFIX_LEN + ELEMENT_KEY_LEN)) {
+        // Is in element key
+        int elementKeyPos = markerPos - MARKER_PREFIX_LEN;
+        if (
+          (c >= '0' && c <= '9')
+          || (c >= 'a' && c <= 'f')
+        ) {
+          // Matches potential element key
+          elementKeyBuffer[elementKeyPos] = (char)c;
+          markerPos++;
+          return;
+        } else {
+          // Mismatch
+          out.write(MARKER_PREFIX_CHARS, 0, MARKER_PREFIX_LEN);
+          writeCharsToOut(elementKeyBuffer, elementKeyPos);
+          markerPos = 0;
+        }
+      } else {
+        // Is in marker suffix
+        int markerSuffixPos = markerPos - (MARKER_PREFIX_LEN + ELEMENT_KEY_LEN);
+        if ((char)c == MARKER_SUFFIX_CHARS[markerSuffixPos]) {
+          // Matches
+          markerPos++;
+          if (markerPos == (MARKER_PREFIX_LEN + ELEMENT_KEY_LEN + MARKER_SUFFIX_LEN)) {
+            // Entire marker found
+            @SuppressWarnings("deprecation")
+            long elementKey = Strings.convertLongArrayFromHex(elementKeyBuffer);
+            ElementWriter elementWriter = node.getElementWriter(elementKey);
+            if (elementWriter != null) {
+              // Substitute child element
+              try {
+                elementWriter.writeTo(out, context);
+              } catch (Error | RuntimeException | IOException e) {
+                throw e;
+              } catch (Throwable t) {
+                throw new WrappedException(t);
+              }
+            } else {
+              if (logger.isLoggable(Level.WARNING)) {
+                logger.warning("ElementWriter not found by key: " + String.valueOf(elementKeyBuffer) + " in " + node);
+              }
+              // Mismatch
+              out.write(MARKER_PREFIX_CHARS, 0, MARKER_PREFIX_LEN);
+              out.write(elementKeyBuffer, 0, ELEMENT_KEY_LEN);
+              out.write(MARKER_SUFFIX_CHARS, 0, MARKER_SUFFIX_LEN);
+            }
+            markerPos = 0;
+          }
+          return;
+        } else {
+          // Mismatch
+          out.write(MARKER_PREFIX_CHARS, 0, MARKER_PREFIX_LEN);
+          out.write(elementKeyBuffer, 0, ELEMENT_KEY_LEN);
+          writeCharsToOut(elementKeyBuffer, markerSuffixPos);
+          markerPos = 0;
+        }
+      }
+    }
+  }
+
+  @Override
+  public void write(char[] cbuf, int off, int len) throws IOException {
+    while (len > 0) {
+      write(cbuf[off]);
+      off++;
+      len--;
+    }
 }
 
-	@Override
-	public void flush() throws IOException {
-		out.flush();
-	}
+  @Override
+  public void flush() throws IOException {
+    out.flush();
+  }
 
-	@Override
-	public void close() throws IOException {
-		if(markerPos > 0) {
-			// Flush any unwritten
-			writeCharsToOut(MARKER_PREFIX_CHARS, Math.min(markerPos, MARKER_PREFIX_LEN));
-			writeCharsToOut(elementKeyBuffer,    Math.min(markerPos - MARKER_PREFIX_LEN, ELEMENT_KEY_LEN));
-			writeCharsToOut(MARKER_SUFFIX_CHARS,          markerPos - (MARKER_PREFIX_LEN + ELEMENT_KEY_LEN));
-			markerPos = 0;
-			out.flush();
-		}
-		out.close();
-	}
+  @Override
+  public void close() throws IOException {
+    if (markerPos > 0) {
+      // Flush any unwritten
+      writeCharsToOut(MARKER_PREFIX_CHARS, Math.min(markerPos, MARKER_PREFIX_LEN));
+      writeCharsToOut(elementKeyBuffer,    Math.min(markerPos - MARKER_PREFIX_LEN, ELEMENT_KEY_LEN));
+      writeCharsToOut(MARKER_SUFFIX_CHARS,          markerPos - (MARKER_PREFIX_LEN + ELEMENT_KEY_LEN));
+      markerPos = 0;
+      out.flush();
+    }
+    out.close();
+  }
 }

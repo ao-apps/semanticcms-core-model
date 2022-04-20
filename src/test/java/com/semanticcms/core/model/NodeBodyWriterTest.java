@@ -35,81 +35,83 @@ import org.junit.Test;
 
 public class NodeBodyWriterTest {
 
-	private static final String TEST_BODY_PREFIX = "<TestNode>Test body <";
-	private static final String TEST_ELEMENT_BODY = "<TestElement />";
-	private static final String TEST_BODY_SUFFIX =
-		//"<" + NodeBodyWriter.MARKER_PREFIX + "ffffffffffffffff" + NodeBodyWriter.MARKER_SUFFIX
-		"</TestNode>"
-		+ NodeBodyWriter.MARKER_PREFIX + "ffffffff";
+  private static final String TEST_BODY_PREFIX = "<TestNode>Test body <";
+  private static final String TEST_ELEMENT_BODY = "<TestElement />";
+  private static final String TEST_BODY_SUFFIX =
+    //"<" + NodeBodyWriter.MARKER_PREFIX + "ffffffffffffffff" + NodeBodyWriter.MARKER_SUFFIX
+    "</TestNode>"
+    + NodeBodyWriter.MARKER_PREFIX + "ffffffff";
 
-	private static final String TEST_EXPECTED_RESULT = TEST_BODY_PREFIX + TEST_ELEMENT_BODY + TEST_BODY_SUFFIX;
+  private static final String TEST_EXPECTED_RESULT = TEST_BODY_PREFIX + TEST_ELEMENT_BODY + TEST_BODY_SUFFIX;
 
-	private static Node testNode;
-	private static String testNodeBody;
+  private static Node testNode;
+  private static String testNodeBody;
 
-	private static final ElementContext nullElementContext = (String resource, Writer out, Map<String, ?> args) -> {
-		// Do nothing
-	};
+  private static final ElementContext nullElementContext = (String resource, Writer out, Map<String, ?> args) -> {
+    // Do nothing
+  };
 
-	@BeforeClass
-	public static void setUpClass() throws IOException {
-		testNode = new Node() {
-			@Override
-			public String getLabel() {
-				return "Test Node";
-			}
-		};
-		Long elementKey = testNode.addChildElement(
-			new Element() {
-				@Override
-				public String getLabel() {
-					return "Test Element";
-				}
-				@Override
-				protected String getDefaultIdPrefix() {
-					return "test";
-				}
-			},
-			(out, context) -> out.write(TEST_ELEMENT_BODY)
-		);
-		StringBuilder sb = new StringBuilder();
-		sb.append(TEST_BODY_PREFIX);
-		NodeBodyWriter.writeElementMarker(elementKey, sb);
-		sb.append(TEST_BODY_SUFFIX);
-		testNodeBody = sb.toString();
-	}
+  @BeforeClass
+  public static void setUpClass() throws IOException {
+    testNode = new Node() {
+      @Override
+      public String getLabel() {
+        return "Test Node";
+      }
+    };
+    Long elementKey = testNode.addChildElement(
+      new Element() {
+        @Override
+        public String getLabel() {
+          return "Test Element";
+        }
+        @Override
+        protected String getDefaultIdPrefix() {
+          return "test";
+        }
+      },
+      (out, context) -> out.write(TEST_ELEMENT_BODY)
+    );
+    StringBuilder sb = new StringBuilder();
+    sb.append(TEST_BODY_PREFIX);
+    NodeBodyWriter.writeElementMarker(elementKey, sb);
+    sb.append(TEST_BODY_SUFFIX);
+    testNodeBody = sb.toString();
+  }
 
-	@AfterClass
-	public static void tearDownClass() {
-		testNode = null;
-	}
+  @AfterClass
+  public static void tearDownClass() {
+    testNode = null;
+  }
 
-	@Test
-	public void testWriteElementMarker() throws Exception {
-		//System.out.println(testNodeBody);
-		//System.out.flush();
-		final char[] testNodeBodyChars = testNodeBody.toCharArray();
-		final int testNodeBodyLen = testNodeBody.length();
-		for(int writeLen = 1; writeLen <= testNodeBodyLen; writeLen++) {
-			for(int off = 0; off < writeLen; off++) {
-				StringWriter out = new StringWriter(TEST_EXPECTED_RESULT.length());
-				try {
-					try (NodeBodyWriter writer = new NodeBodyWriter(testNode, out, nullElementContext)) {
-						writer.write(testNodeBodyChars, 0, off);
-						for(int pos = off; pos < testNodeBodyLen; pos += writeLen) {
-							int end = pos + writeLen;
-							if(end > testNodeBodyLen) end = testNodeBodyLen;
-							int len = end - pos;
-							assertTrue(len >= 0);
-							assertTrue((pos + len) <= testNodeBodyLen);
-							writer.write(testNodeBodyChars, pos, len);
-						}
-					}
-				} finally {
-					out.close();
-				}
-				assertEquals(TEST_EXPECTED_RESULT, out.toString());
-			}
-		}
-	}
+  @Test
+  public void testWriteElementMarker() throws Exception {
+    //System.out.println(testNodeBody);
+    //System.out.flush();
+    final char[] testNodeBodyChars = testNodeBody.toCharArray();
+    final int testNodeBodyLen = testNodeBody.length();
+    for (int writeLen = 1; writeLen <= testNodeBodyLen; writeLen++) {
+      for (int off = 0; off < writeLen; off++) {
+        StringWriter out = new StringWriter(TEST_EXPECTED_RESULT.length());
+        try {
+          try (NodeBodyWriter writer = new NodeBodyWriter(testNode, out, nullElementContext)) {
+            writer.write(testNodeBodyChars, 0, off);
+            for (int pos = off; pos < testNodeBodyLen; pos += writeLen) {
+              int end = pos + writeLen;
+              if (end > testNodeBodyLen) {
+                end = testNodeBodyLen;
+              }
+              int len = end - pos;
+              assertTrue(len >= 0);
+              assertTrue((pos + len) <= testNodeBodyLen);
+              writer.write(testNodeBodyChars, pos, len);
+            }
+          }
+        } finally {
+          out.close();
+        }
+        assertEquals(TEST_EXPECTED_RESULT, out.toString());
+      }
+    }
+  }
 }

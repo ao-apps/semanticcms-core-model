@@ -34,88 +34,115 @@ import java.util.Objects;
  */
 public class Author {
 
-	private final String name;
-	private final String href;
-	private final String bookName;
-	private final String page;
+  private final String name;
+  private final String href;
+  private final String bookName;
+  private final String page;
 
-	/**
-	 * Either href may be provided, or book/page may be provided, but not both.
-	 * When page provided without book, assumes page is within current book.
-	 * When page provided, book is also required.
-	 * When name not provided, and page provided, uses page title as the author name.
-	 */
-	public Author(String name, String href, String bookName, String page) {
-		// No empty strings
-		if(name != null && name.isEmpty()) throw new IllegalArgumentException("empty name not allowed");
-		if(href != null && href.isEmpty()) throw new IllegalArgumentException("empty href not allowed");
-		if(bookName != null && bookName.isEmpty()) throw new IllegalArgumentException("empty book not allowed");
-		if(page != null && page.isEmpty()) throw new IllegalArgumentException("empty page not allowed");
-		// Other checks
-		if(href != null) {
-			if(bookName != null) throw new IllegalArgumentException("book may not be provided when href provided");
-			if(page != null) throw new IllegalArgumentException("page may not be provided when href provided");
-		} else {
-			if(name == null) {
-				if(page == null) throw new IllegalArgumentException("empty author, at least one of name, href, or page required");
-			}
-			if(page != null) {
-				if(bookName == null) throw new IllegalArgumentException("page provided without book");
-			} else {
-				if(bookName != null) throw new IllegalArgumentException("book provided without page");
-			}
-		}
-		this.name = name;
-		this.href = href;
-		this.bookName = bookName;
-		this.page = page;
-	}
+  /**
+   * Either href may be provided, or book/page may be provided, but not both.
+   * When page provided without book, assumes page is within current book.
+   * When page provided, book is also required.
+   * When name not provided, and page provided, uses page title as the author name.
+   */
+  public Author(String name, String href, String bookName, String page) {
+    // No empty strings
+    if (name != null && name.isEmpty()) {
+      throw new IllegalArgumentException("empty name not allowed");
+    }
+    if (href != null && href.isEmpty()) {
+      throw new IllegalArgumentException("empty href not allowed");
+    }
+    if (bookName != null && bookName.isEmpty()) {
+      throw new IllegalArgumentException("empty book not allowed");
+    }
+    if (page != null && page.isEmpty()) {
+      throw new IllegalArgumentException("empty page not allowed");
+    }
+    // Other checks
+    if (href != null) {
+      if (bookName != null) {
+        throw new IllegalArgumentException("book may not be provided when href provided");
+      }
+      if (page != null) {
+        throw new IllegalArgumentException("page may not be provided when href provided");
+      }
+    } else {
+      if (name == null) {
+        if (page == null) {
+          throw new IllegalArgumentException("empty author, at least one of name, href, or page required");
+        }
+      }
+      if (page != null) {
+        if (bookName == null) {
+          throw new IllegalArgumentException("page provided without book");
+        }
+      } else {
+        if (bookName != null) {
+          throw new IllegalArgumentException("book provided without page");
+        }
+      }
+    }
+    this.name = name;
+    this.href = href;
+    this.bookName = bookName;
+    this.page = page;
+  }
 
-	@Override
-	public String toString() {
-		if(name != null) return name;
-		if(href != null) return href;
-		assert bookName != null;
-		assert page != null;
-		if(bookName.equals("/")) return page;
-		else return bookName + page;
-	}
+  @Override
+  public String toString() {
+    if (name != null) {
+      return name;
+    }
+    if (href != null) {
+      return href;
+    }
+    assert bookName != null;
+    assert page != null;
+    if (bookName.equals("/")) {
+      return page;
+    } else {
+      return bookName + page;
+    }
+  }
 
-	@Override
-	public boolean equals(Object obj) {
-		if(!(obj instanceof Author)) return false;
-		Author o = (Author)obj;
-		return
-			Objects.equals(name, o.name)
-			&& Objects.equals(href, o.href)
-			&& Objects.equals(bookName, o.bookName)
-			&& Objects.equals(page, o.page)
-		;
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof Author)) {
+      return false;
+    }
+    Author o = (Author)obj;
+    return
+      Objects.equals(name, o.name)
+      && Objects.equals(href, o.href)
+      && Objects.equals(bookName, o.bookName)
+      && Objects.equals(page, o.page)
+    ;
+  }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(
-			name,
-			href,
-			bookName,
-			page
-		);
-	}
+  @Override
+  public int hashCode() {
+    return Objects.hash(
+      name,
+      href,
+      bookName,
+      page
+    );
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public String getHref() {
-		return href;
-	}
+  public String getHref() {
+    return href;
+  }
 
-	public String getBookName() {
-		return bookName;
-	}
+  public String getBookName() {
+    return bookName;
+  }
 
-	public String getPage() {
-		return page;
-	}
+  public String getPage() {
+    return page;
+  }
 }
