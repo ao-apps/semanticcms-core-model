@@ -127,24 +127,24 @@ public class Author {
     if (!(obj instanceof Author)) {
       return false;
     }
-    Author o = (Author)obj;
+    Author o = (Author) obj;
     return
-      Objects.equals(name, o.name)
-      && Objects.equals(href, o.href)
-      && Objects.equals(domain, o.domain)
-      && Objects.equals(book, o.book)
-      && Objects.equals(page, o.page)
+        Objects.equals(name, o.name)
+            && Objects.equals(href, o.href)
+            && Objects.equals(domain, o.domain)
+            && Objects.equals(book, o.book)
+            && Objects.equals(page, o.page)
     ;
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-      name,
-      href,
-      domain,
-      book,
-      page
+        name,
+        href,
+        domain,
+        book,
+        page
     );
   }
 

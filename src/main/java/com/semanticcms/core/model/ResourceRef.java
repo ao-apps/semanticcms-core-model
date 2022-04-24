@@ -76,10 +76,10 @@ public class ResourceRef implements Comparable<ResourceRef> {
     if (!(obj instanceof ResourceRef)) {
       return false;
     }
-    ResourceRef other = (ResourceRef)obj;
+    ResourceRef other = (ResourceRef) obj;
     return
-      bookRef.equals(other.bookRef)
-      && path.equals(other.path)
+        bookRef.equals(other.bookRef)
+            && path.equals(other.path)
     ;
   }
 
@@ -109,16 +109,16 @@ public class ResourceRef implements Comparable<ResourceRef> {
     String prefix = bookRef.getPrefix();
     String pathStr = path.toString();
     return
-      new StringBuilder(
-        domain.length()
-        + 1 // ':'
-        + prefix.length()
-        + pathStr.length()
-      )
-      .append(domain)
-      .append(':')
-      .append(prefix)
-      .append(pathStr)
-      .toString();
+        new StringBuilder(
+            domain.length()
+                + 1 // ':'
+                + prefix.length()
+                + pathStr.length()
+        )
+            .append(domain)
+            .append(':')
+            .append(prefix)
+            .append(pathStr)
+            .toString();
   }
 }

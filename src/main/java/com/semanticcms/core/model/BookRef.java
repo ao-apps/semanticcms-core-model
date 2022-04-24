@@ -85,10 +85,10 @@ public class BookRef {
     if (!(obj instanceof BookRef)) {
       return false;
     }
-    BookRef other = (BookRef)obj;
+    BookRef other = (BookRef) obj;
     return
-      domain.equals(other.domain)
-      && path.equals(other.path)
+        domain.equals(other.domain)
+            && path.equals(other.path)
     ;
   }
 
@@ -113,14 +113,14 @@ public class BookRef {
     String domainStr = domain.toString();
     String pathStr = path.toString();
     return
-      new StringBuilder(
-        domainStr.length()
-        + 1 // ':'
-        + pathStr.length()
-      )
-      .append(domainStr)
-      .append(':')
-      .append(pathStr)
-      .toString();
+        new StringBuilder(
+            domainStr.length()
+                + 1 // ':'
+                + pathStr.length()
+        )
+            .append(domainStr)
+            .append(':')
+            .append(pathStr)
+            .toString();
   }
 }

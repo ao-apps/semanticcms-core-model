@@ -93,10 +93,10 @@ public class PageRef implements PageReferrer {
     if (!(obj instanceof PageRef)) {
       return false;
     }
-    PageRef other = (PageRef)obj;
+    PageRef other = (PageRef) obj;
     return
-      bookRef.equals(other.bookRef)
-      && path.equals(other.path)
+        bookRef.equals(other.bookRef)
+            && path.equals(other.path)
     ;
   }
 
@@ -130,16 +130,16 @@ public class PageRef implements PageReferrer {
     String prefix = bookRef.getPrefix();
     String pathStr = path.toString();
     return
-      new StringBuilder(
-        domain.length()
-        + 1 // ':'
-        + prefix.length()
-        + pathStr.length()
-      )
-      .append(domain)
-      .append(':')
-      .append(prefix)
-      .append(pathStr)
-      .toString();
+        new StringBuilder(
+            domain.length()
+                + 1 // ':'
+                + prefix.length()
+                + pathStr.length()
+        )
+            .append(domain)
+            .append(':')
+            .append(prefix)
+            .append(pathStr)
+            .toString();
   }
 }

@@ -71,10 +71,10 @@ public class ElementRef implements Comparable<ElementRef> {
     if (!(obj instanceof ElementRef)) {
       return false;
     }
-    ElementRef other = (ElementRef)obj;
+    ElementRef other = (ElementRef) obj;
     return
-      pageRef.equals(other.pageRef)
-      && id.equals(other.id)
+        pageRef.equals(other.pageRef)
+            && id.equals(other.id)
     ;
   }
 
@@ -114,19 +114,19 @@ public class ElementRef implements Comparable<ElementRef> {
     // TODO: encodeIRIComponent to do this in one shot?
     String idIri = URIDecoder.decodeURI(URIEncoder.encodeURIComponent(id));
     int sbLen =
-      domain.length()
-      + 1 // ':'
-      + prefix.length()
-      + path.length()
-      + 1 // '#'
-      + idIri.length();
+        domain.length()
+            + 1 // ':'
+            + prefix.length()
+            + path.length()
+            + 1 // '#'
+            + idIri.length();
     StringBuilder sb = new StringBuilder(sbLen)
-      .append(domain)
-      .append(':')
-      .append(prefix)
-      .append(path)
-      .append('#')
-      .append(idIri);
+        .append(domain)
+        .append(':')
+        .append(prefix)
+        .append(path)
+        .append('#')
+        .append(idIri);
     assert sb.length() == sbLen;
     return sb.toString();
   }
