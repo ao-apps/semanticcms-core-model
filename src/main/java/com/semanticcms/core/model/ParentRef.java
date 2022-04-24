@@ -72,7 +72,7 @@ public class ParentRef implements PageReferrer {
     if (!(obj instanceof ParentRef)) {
       return false;
     }
-    ParentRef other = (ParentRef)obj;
+    ParentRef other = (ParentRef) obj;
     return pageRef.equals(other.pageRef);
   }
 

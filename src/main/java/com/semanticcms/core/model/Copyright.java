@@ -47,15 +47,15 @@ public class Copyright {
    * @param dateCopyrighted  The date copyrighted, "" means none and null will inherit.
    */
   public Copyright(
-    String rightsHolder,
-    String rights,
-    String dateCopyrighted
+      String rightsHolder,
+      String rights,
+      String dateCopyrighted
   ) {
     // Other checks
     if (
-      rightsHolder == null
-      && rights == null
-      && dateCopyrighted == null
+        rightsHolder == null
+            && rights == null
+            && dateCopyrighted == null
     ) {
       throw new IllegalArgumentException("At least one of rightsHolder, rights, or dateCopyrighted required");
     }
@@ -94,14 +94,14 @@ public class Copyright {
   }
 
   private boolean equals(
-    String otherRightsHolder,
-    String otherRights,
-    String otherDateCopyrighted
+      String otherRightsHolder,
+      String otherRights,
+      String otherDateCopyrighted
   ) {
     return
-      Objects.equals(rightsHolder, otherRightsHolder)
-      && Objects.equals(rights, otherRights)
-      && Objects.equals(dateCopyrighted, otherDateCopyrighted)
+        Objects.equals(rightsHolder, otherRightsHolder)
+            && Objects.equals(rights, otherRights)
+            && Objects.equals(dateCopyrighted, otherDateCopyrighted)
     ;
   }
 
@@ -110,20 +110,20 @@ public class Copyright {
     if (!(obj instanceof Copyright)) {
       return false;
     }
-    Copyright o = (Copyright)obj;
+    Copyright o = (Copyright) obj;
     return equals(
-      o.rightsHolder,
-      o.rights,
-      o.dateCopyrighted
+        o.rightsHolder,
+        o.rights,
+        o.dateCopyrighted
     );
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-      rightsHolder,
-      rights,
-      dateCopyrighted
+        rightsHolder,
+        rights,
+        dateCopyrighted
     );
   }
 
@@ -144,9 +144,9 @@ public class Copyright {
    */
   public boolean hasAllFields() {
     return
-      rightsHolder != null
-      && rights != null
-      && dateCopyrighted != null
+        rightsHolder != null
+            && rights != null
+            && dateCopyrighted != null
     ;
   }
 
@@ -155,9 +155,9 @@ public class Copyright {
    */
   public boolean isEmpty() {
     return
-      (rightsHolder == null || rightsHolder.isEmpty())
-      && (rights == null || rights.isEmpty())
-      && (dateCopyrighted == null || dateCopyrighted.isEmpty())
+        (rightsHolder == null || rightsHolder.isEmpty())
+            && (rights == null || rights.isEmpty())
+            && (dateCopyrighted == null || dateCopyrighted.isEmpty())
     ;
   }
 

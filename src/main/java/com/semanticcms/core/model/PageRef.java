@@ -59,17 +59,17 @@ public class PageRef implements PageReferrer {
 
   public PageRef(String bookName, String path) {
     this(
-      NullArgumentException.checkNotNull(bookName, "bookName"),
-      NullArgumentException.checkNotNull(path, "path"),
-      null
+        NullArgumentException.checkNotNull(bookName, "bookName"),
+        NullArgumentException.checkNotNull(path, "path"),
+        null
     );
   }
 
   public PageRef(Book book, String path) {
     this(
-      null,
-      NullArgumentException.checkNotNull(path, "path"),
-      NullArgumentException.checkNotNull(book, "book")
+        null,
+        NullArgumentException.checkNotNull(path, "path"),
+        NullArgumentException.checkNotNull(book, "book")
     );
   }
 
@@ -133,10 +133,10 @@ public class PageRef implements PageReferrer {
     if (!(obj instanceof PageRef)) {
       return false;
     }
-    PageRef other = (PageRef)obj;
+    PageRef other = (PageRef) obj;
     return
-      bookName.equals(other.bookName)
-      && path.equals(other.path)
+        bookName.equals(other.bookName)
+            && path.equals(other.path)
     ;
   }
 
@@ -233,8 +233,8 @@ public class PageRef implements PageReferrer {
         String cvsworkCanonicalPrefix = cvsworkCanonical + File.separatorChar;
         String canonicalPath = rf.getCanonicalPath();
         if (
-          !canonicalPath.equals(cvsworkCanonical)
-          && !canonicalPath.startsWith(cvsworkCanonicalPrefix)
+            !canonicalPath.equals(cvsworkCanonical)
+                && !canonicalPath.startsWith(cvsworkCanonicalPrefix)
         ) {
           throw new SecurityException('"' + canonicalPath + "\" is not in \"" + cvsworkCanonicalPrefix);
         }

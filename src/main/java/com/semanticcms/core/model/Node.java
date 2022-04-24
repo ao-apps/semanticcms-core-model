@@ -99,7 +99,9 @@ public abstract class Node implements Freezable<Node> {
 
   private static final ThreadLocal<IdGenerator> idGenerators = ThreadLocal.withInitial(IdGenerator::new);
 
-  private static class Lock {/* Empty lock class to help heap profile */}
+  private static class Lock {
+    // Empty lock class to help heap profile
+  }
   protected final Object lock = new Lock();
   protected volatile boolean frozen; // Accessed without lock, only updated under lock
   private Map<String, Object> properties;
@@ -401,7 +403,7 @@ public abstract class Node implements Freezable<Node> {
    */
   public <E> E requireChildElement(Class<E> elementType, Predicate<? super E> filter) throws NoSuchElementException {
     return findChildElement(elementType, filter).orElseThrow(
-      () -> new NoSuchElementException(elementType.toGenericString())
+        () -> new NoSuchElementException(elementType.toGenericString())
     );
   }
 

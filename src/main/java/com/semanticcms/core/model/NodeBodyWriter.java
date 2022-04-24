@@ -89,7 +89,7 @@ public class NodeBodyWriter extends Writer {
     while (true) {
       if (markerPos < MARKER_PREFIX_LEN) {
         // Is in marker prefix
-        if ((char)c == MARKER_PREFIX_CHARS[markerPos]) {
+        if ((char) c == MARKER_PREFIX_CHARS[markerPos]) {
           // Matches
           markerPos++;
           return;
@@ -107,11 +107,11 @@ public class NodeBodyWriter extends Writer {
         // Is in element key
         int elementKeyPos = markerPos - MARKER_PREFIX_LEN;
         if (
-          (c >= '0' && c <= '9')
-          || (c >= 'a' && c <= 'f')
+            (c >= '0' && c <= '9')
+                || (c >= 'a' && c <= 'f')
         ) {
           // Matches potential element key
-          elementKeyBuffer[elementKeyPos] = (char)c;
+          elementKeyBuffer[elementKeyPos] = (char) c;
           markerPos++;
           return;
         } else {
@@ -123,7 +123,7 @@ public class NodeBodyWriter extends Writer {
       } else {
         // Is in marker suffix
         int markerSuffixPos = markerPos - (MARKER_PREFIX_LEN + ELEMENT_KEY_LEN);
-        if ((char)c == MARKER_SUFFIX_CHARS[markerSuffixPos]) {
+        if ((char) c == MARKER_SUFFIX_CHARS[markerSuffixPos]) {
           // Matches
           markerPos++;
           if (markerPos == (MARKER_PREFIX_LEN + ELEMENT_KEY_LEN + MARKER_SUFFIX_LEN)) {
@@ -170,7 +170,7 @@ public class NodeBodyWriter extends Writer {
       off++;
       len--;
     }
-}
+  }
 
   @Override
   public void flush() throws IOException {

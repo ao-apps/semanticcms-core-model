@@ -75,10 +75,10 @@ public abstract class Element extends Node {
     if (p == null || i == null) {
       return false;
     }
-    Element other = (Element)obj;
+    Element other = (Element) obj;
     return
-      p.equals(other.page)
-      && i.equals(other.id)
+        p.equals(other.page)
+            && i.equals(other.id)
     ;
   }
 
@@ -152,17 +152,17 @@ public abstract class Element extends Node {
             StringBuilder possId = XmlUtils.generateId(template, getDefaultIdPrefix());
             int possIdLen = possId.length();
             // Find an unused identifier
-            for (int i=1; i <= Integer.MAX_VALUE; i++) {
+            for (int i = 1; i <= Integer.MAX_VALUE; i++) {
               if (i == Integer.MAX_VALUE) {
                 throw new IllegalStateException("ID not generated");
               }
-              if (i>1) {
+              if (i > 1) {
                 possId.append('-').append(i);
               }
               String newId = possId.toString();
               if (
-                elementsById == null
-                || !elementsById.containsKey(newId)
+                  elementsById == null
+                      || !elementsById.containsKey(newId)
               ) {
                 setId(newId, true);
                 break;
@@ -220,10 +220,10 @@ public abstract class Element extends Node {
     }
     ElementRef er = elementRef;
     if (
-      er == null
-      // Make sure object still valid
-      || !er.getPageRef().equals(pageRef)
-      || !er.getId().equals(i)
+        er == null
+            // Make sure object still valid
+            || !er.getPageRef().equals(pageRef)
+            || !er.getId().equals(i)
     ) {
       er = new ElementRef(pageRef, i);
       elementRef = er;
@@ -258,8 +258,8 @@ public abstract class Element extends Node {
     Page p = this.page;
     Element pe = this.parentElement;
     if (
-      p != null
-      && pe != null
+        p != null
+            && pe != null
     ) {
       if (!p.equals(pe.getPage())) {
         throw new IllegalArgumentException("parentElement is not on the same page");

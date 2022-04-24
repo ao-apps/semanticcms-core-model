@@ -55,7 +55,7 @@ public class ChildRef implements PageReferrer {
     if (!(obj instanceof ChildRef)) {
       return false;
     }
-    ChildRef other = (ChildRef)obj;
+    ChildRef other = (ChildRef) obj;
     return pageRef.equals(other.pageRef);
   }
 

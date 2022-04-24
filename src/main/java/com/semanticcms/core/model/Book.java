@@ -82,20 +82,20 @@ public class Book implements Comparable<Book> {
     String copyrightRights = getProperty(bookProps, usedKeys, "copyright.rights");
     String copyrightDateCopyrighted = getProperty(bookProps, usedKeys, "copyright.dateCopyrighted");
     if (
-      copyrightRightsHolder != null
-      || copyrightRights != null
-      || copyrightDateCopyrighted != null
+        copyrightRightsHolder != null
+            || copyrightRights != null
+            || copyrightDateCopyrighted != null
     ) {
       this.copyright = new Copyright(
-        copyrightRightsHolder    != null ? copyrightRightsHolder    : "",
-        copyrightRights          != null ? copyrightRights          : "",
-        copyrightDateCopyrighted != null ? copyrightDateCopyrighted : ""
+          copyrightRightsHolder    != null ? copyrightRightsHolder    : "",
+          copyrightRights          != null ? copyrightRights          : "",
+          copyrightDateCopyrighted != null ? copyrightDateCopyrighted : ""
       );
     } else {
       this.copyright = null;
     }
     Set<Author> authors = new LinkedHashSet<>();
-    for (int i=1; i<Integer.MAX_VALUE; i++) {
+    for (int i = 1; i < Integer.MAX_VALUE; i++) {
       String authorName = getProperty(bookProps, usedKeys, "author." + i + ".name");
       String authorHref = getProperty(bookProps, usedKeys, "author." + i + ".href");
       String authorBook = getProperty(bookProps, usedKeys, "author." + i + ".book");
@@ -112,10 +112,10 @@ public class Book implements Comparable<Book> {
         throw new IllegalStateException(name + ": Author name required when author is in a different book: " + authorPage);
       }
       Author newAuthor = new Author(
-        authorName,
-        authorHref,
-        authorBook,
-        authorPage
+          authorName,
+          authorHref,
+          authorBook,
+          authorPage
       );
       if (!authors.add(newAuthor)) {
         throw new IllegalStateException(name + ": Duplicate author: " + newAuthor);
@@ -126,13 +126,13 @@ public class Book implements Comparable<Book> {
     this.allowRobots = allowRobots;
     Map<String, String> newParam = new LinkedHashMap<>();
     @SuppressWarnings("unchecked")
-    Enumeration<String> propertyNames = (Enumeration)bookProps.propertyNames();
+    Enumeration<String> propertyNames = (Enumeration) bookProps.propertyNames();
     while (propertyNames.hasMoreElements()) {
       String propertyName = propertyNames.nextElement();
       if (propertyName.startsWith(PARAM_PREFIX)) {
         newParam.put(
-          propertyName.substring(PARAM_PREFIX.length()),
-          getProperty(bookProps, usedKeys, propertyName)
+            propertyName.substring(PARAM_PREFIX.length()),
+            getProperty(bookProps, usedKeys, propertyName)
         );
       }
     }
@@ -167,7 +167,7 @@ public class Book implements Comparable<Book> {
     if (!(obj instanceof Book)) {
       return false;
     }
-    Book other = (Book)obj;
+    Book other = (Book) obj;
     return name.equals(other.name);
   }
 

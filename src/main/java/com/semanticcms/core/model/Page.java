@@ -79,7 +79,7 @@ public class Page extends Node implements Comparable<Page> {
     if (!(obj instanceof Page)) {
       return false;
     }
-    return getPageRef().equals(((Page)obj).getPageRef());
+    return getPageRef().equals(((Page) obj).getPageRef());
   }
 
   @Override
@@ -261,23 +261,23 @@ public class Page extends Node implements Comparable<Page> {
     DateTime modified = this.dateModified;
     DateTime reviewed = this.dateReviewed;
     if (
-      created != null
-      && published != null
-      && published.compareTo(created) < 0
+        created != null
+            && published != null
+            && published.compareTo(created) < 0
     ) {
       throw new IllegalArgumentException("published may not be before created");
     }
     if (
-      created != null
-      && modified != null
-      && modified.compareTo(created) < 0
+        created != null
+            && modified != null
+            && modified.compareTo(created) < 0
     ) {
       throw new IllegalArgumentException("modified may not be before created");
     }
     if (
-      created != null
-      && reviewed != null
-      && reviewed.compareTo(created) < 0
+        created != null
+            && reviewed != null
+            && reviewed.compareTo(created) < 0
     ) {
       throw new IllegalArgumentException("reviewed may not be before created");
     }
