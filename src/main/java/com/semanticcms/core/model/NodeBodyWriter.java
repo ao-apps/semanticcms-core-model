@@ -62,7 +62,7 @@ public class NodeBodyWriter extends Writer {
   private final Writer out;
   private final ElementContext context;
   private final char[] elementKeyBuffer = new char[ELEMENT_KEY_LEN];
-  private int markerPos = 0;
+  private int markerPos;
 
   public NodeBodyWriter(Node node, Writer out, ElementContext context) {
     this.node = node;

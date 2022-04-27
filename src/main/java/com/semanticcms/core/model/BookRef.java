@@ -45,7 +45,7 @@ public class BookRef {
     this.domain = NullArgumentException.checkNotNull(domain, "domain");
     this.path = NullArgumentException.checkNotNull(path, "path");
     String pathStr = path.toString();
-    if (!pathStr.equals("/") && pathStr.endsWith("/")) {
+    if (!"/".equals(pathStr) && pathStr.endsWith("/")) {
       throw new IllegalArgumentException("Book path may not end in a slash: " + this.path);
     }
   }
