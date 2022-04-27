@@ -31,4 +31,4 @@ module com.semanticcms.core.model {
   requires org.joda.time; // <groupId>joda-time</groupId><artifactId>joda-time</artifactId>
   // Java SE
   requires java.logging;
-}
+} // TODO: Avoiding rewrite-maven-plugin-4.22.2 truncation
