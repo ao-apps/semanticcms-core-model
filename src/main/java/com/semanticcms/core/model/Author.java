@@ -99,7 +99,7 @@ public class Author {
     }
     assert bookName != null;
     assert page != null;
-    if (bookName.equals("/")) {
+    if ("/".equals(bookName)) {
       return page;
     } else {
       return bookName + page;
