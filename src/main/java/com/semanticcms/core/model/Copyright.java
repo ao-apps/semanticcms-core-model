@@ -26,9 +26,7 @@ package com.semanticcms.core.model;
 import java.util.Objects;
 
 /**
- * The copyright info for a book, a page, or a set of pages.
- *
- * Expected to be used with Dublin Core Terms:
+ * The copyright info for a book, a page, or a set of pages.  Expected to be used with Dublin Core Terms:
  * <ul>
  * <li>http://stackoverflow.com/questions/6665312/is-the-copyright-meta-tag-valid-in-html5</li>
  * <li>https://wiki.whatwg.org/wiki/MetaExtensions</li>
@@ -101,8 +99,7 @@ public class Copyright {
     return
         Objects.equals(rightsHolder, otherRightsHolder)
             && Objects.equals(rights, otherRights)
-            && Objects.equals(dateCopyrighted, otherDateCopyrighted)
-    ;
+            && Objects.equals(dateCopyrighted, otherDateCopyrighted);
   }
 
   @Override
@@ -146,19 +143,17 @@ public class Copyright {
     return
         rightsHolder != null
             && rights != null
-            && dateCopyrighted != null
-    ;
+            && dateCopyrighted != null;
   }
 
   /**
-   * Checks if the copyright is empty (has all null or blank fields)
+   * Checks if the copyright is empty (has all null or blank fields).
    */
   public boolean isEmpty() {
     return
         (rightsHolder == null || rightsHolder.isEmpty())
             && (rights == null || rights.isEmpty())
-            && (dateCopyrighted == null || dateCopyrighted.isEmpty())
-    ;
+            && (dateCopyrighted == null || dateCopyrighted.isEmpty());
   }
 
   /*

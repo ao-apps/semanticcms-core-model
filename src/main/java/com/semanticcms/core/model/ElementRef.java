@@ -32,9 +32,10 @@ import java.io.IOException;
 /**
  * An element reference contains a book, a path, and an element id.
  * Any path to a directory must end with a slash (/).
- *
- * // TODO: Support parameters to a page, child, link, ...
- *          Parameters provided in path/page?, param.* attributes, and nested tags - matching/extending AO taglib.
+ * <p>
+ * TODO: Support parameters to a page, child, link, ...
+ *       Parameters provided in path/page?, param.* attributes, and nested tags - matching/extending AO taglib.
+ * </p>
  */
 public class ElementRef implements Comparable<ElementRef> {
 
@@ -75,8 +76,7 @@ public class ElementRef implements Comparable<ElementRef> {
     ElementRef other = (ElementRef) obj;
     return
         pageRef.equals(other.pageRef)
-            && id.equals(other.id)
-    ;
+            && id.equals(other.id);
   }
 
   @Override
@@ -151,6 +151,8 @@ public class ElementRef implements Comparable<ElementRef> {
   }
 
   /**
+   * {@inheritDoc}
+   *
    * @see  #getServletPath()
    */
   @Override

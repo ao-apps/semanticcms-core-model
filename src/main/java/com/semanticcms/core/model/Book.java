@@ -68,7 +68,7 @@ public class Book implements Comparable<Book> {
     }
 
     // Tracks each properties key used, will throw exception if any key exists in the properties file that is not used
-    Set<Object> usedKeys = AoCollections.newHashSet(bookProps.size());
+    final Set<Object> usedKeys = AoCollections.newHashSet(bookProps.size());
 
     this.name = name;
     this.pathPrefix = "/".equals(name) ? "" : this.name;

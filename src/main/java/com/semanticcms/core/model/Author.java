@@ -27,10 +27,11 @@ import java.util.Objects;
 
 /**
  * An author of a book, a page, or a set of pages.
- *
+ * <p>
  * TODO: Possible Google+ integration: http://www.vervesearch.com/blog/how-to-implement-the-relauthor-tag-a-step-by-step-guide/
  * TODO: And also: https://yoast.com/push-rel-author-head/
  * TODO: This seems killed by Google, any value in it still?
+ * </p>
  */
 public class Author {
 
@@ -116,8 +117,7 @@ public class Author {
         Objects.equals(name, o.name)
             && Objects.equals(href, o.href)
             && Objects.equals(bookName, o.bookName)
-            && Objects.equals(page, o.page)
-    ;
+            && Objects.equals(page, o.page);
   }
 
   @Override

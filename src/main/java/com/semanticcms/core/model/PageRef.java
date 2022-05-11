@@ -31,9 +31,10 @@ import java.io.IOException;
 /**
  * A page reference contains both a book and a path to a page or directory.
  * Any path to a directory must end with a slash (/).
- *
- * // TODO: Support parameters to a page, child, link, ...
- *          Parameters provided in path/page?, param.* attributes, and nested tags - matching/extending AO taglib.
+ * <p>
+ * TODO: Support parameters to a page, child, link, ...
+ *       Parameters provided in path/page?, param.* attributes, and nested tags - matching/extending AO taglib.
+ * </p>
  */
 public class PageRef implements PageReferrer {
 
@@ -136,8 +137,7 @@ public class PageRef implements PageReferrer {
     PageRef other = (PageRef) obj;
     return
         bookName.equals(other.bookName)
-            && path.equals(other.path)
-    ;
+            && path.equals(other.path);
   }
 
   @Override
@@ -200,7 +200,7 @@ public class PageRef implements PageReferrer {
   private volatile Boolean exists;
 
   /**
-   * the underlying file, only available when have access to the referenced book
+   * the underlying file, only available when have access to the referenced book.
    *
    * @param requireBook when true, will always get a File object back
    * @param requireFile when true, any File object returned will exist on the filesystem
