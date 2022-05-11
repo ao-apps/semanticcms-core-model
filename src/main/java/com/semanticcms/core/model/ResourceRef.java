@@ -79,8 +79,7 @@ public class ResourceRef implements Comparable<ResourceRef> {
     ResourceRef other = (ResourceRef) obj;
     return
         bookRef.equals(other.bookRef)
-            && path.equals(other.path)
-    ;
+            && path.equals(other.path);
   }
 
   @Override

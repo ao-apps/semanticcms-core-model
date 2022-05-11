@@ -58,8 +58,7 @@ public abstract class Element extends Node {
     Element other = (Element) obj;
     return
         p.equals(other.page)
-            && i.equals(other.id)
-    ;
+            && i.equals(other.id);
   }
 
   @Override

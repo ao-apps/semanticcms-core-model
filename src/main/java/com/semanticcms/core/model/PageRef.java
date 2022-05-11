@@ -28,9 +28,10 @@ import com.aoapps.net.Path;
 
 /**
  * A page reference contains a domain, a book, and a path to a page.
- *
+ * <p>
  * TODO: Support parameters to a page, child, link, ...
  *       Parameters provided in path/page?, param.* attributes, and nested tags - matching/extending AO taglib.
+ * </p>
  *
  * @see  ResourceRef  to refer to a non-page resource
  */
@@ -96,8 +97,7 @@ public class PageRef implements PageReferrer {
     PageRef other = (PageRef) obj;
     return
         bookRef.equals(other.bookRef)
-            && path.equals(other.path)
-    ;
+            && path.equals(other.path);
   }
 
   @Override

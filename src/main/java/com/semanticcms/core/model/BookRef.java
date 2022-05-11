@@ -88,8 +88,7 @@ public class BookRef {
     BookRef other = (BookRef) obj;
     return
         domain.equals(other.domain)
-            && path.equals(other.path)
-    ;
+            && path.equals(other.path);
   }
 
   @Override

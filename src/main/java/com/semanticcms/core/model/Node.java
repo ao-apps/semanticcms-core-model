@@ -102,6 +102,7 @@ public abstract class Node implements Freezable<Node> {
   private static class Lock {
     // Empty lock class to help heap profile
   }
+
   protected final Object lock = new Lock();
   protected volatile boolean frozen; // Accessed without lock, only updated under lock
   private Map<String, Object> properties;
@@ -111,7 +112,7 @@ public abstract class Node implements Freezable<Node> {
   private volatile BufferResult body;
 
   /**
-   * The toString calls {@link #getLabel()}
+   * The toString calls {@link #getLabel()}.
    */
   @Override
   public String toString() {

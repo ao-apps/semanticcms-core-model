@@ -23,13 +23,14 @@
 
 package com.semanticcms.core.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -65,6 +66,7 @@ public class NodeBodyWriterTest {
           public String getLabel() {
             return "Test Element";
           }
+
           @Override
           protected String getDefaultIdPrefix() {
             return "test";

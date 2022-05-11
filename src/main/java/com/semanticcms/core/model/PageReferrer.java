@@ -34,10 +34,11 @@ public interface PageReferrer extends Comparable<PageReferrer> {
   PageRef getPageRef();
 
   /**
-   * @see  PageRef#compareTo(com.semanticcms.core.model.PageRef)
+   * {@inheritDoc}
    *
-   * Java 1.8: Implement this as a default method
+   * @see  PageRef#compareTo(com.semanticcms.core.model.PageRef)
    */
+  // Java 1.8: Implement this as a default method
   @Override
   int compareTo(PageReferrer o);
   //  return getPageRef().compareTo(o.getPageRef());

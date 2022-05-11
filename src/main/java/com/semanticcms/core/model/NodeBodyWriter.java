@@ -33,9 +33,10 @@ import java.util.logging.Logger;
 /**
  * Writes node body content, while replacing nested child element markers with
  * child element content.
- *
+ * <p>
  * TODO: Performance: It may be faster to deal with strings and char[] instead of sending
  *                    everything through as single characters.
+ * </p>
  */
 public class NodeBodyWriter extends Writer {
 
@@ -48,7 +49,9 @@ public class NodeBodyWriter extends Writer {
   private static final int    MARKER_SUFFIX_LEN    = MARKER_SUFFIX.length();
   private static final char[] MARKER_SUFFIX_CHARS  = MARKER_SUFFIX.toCharArray();
 
-  /** The number of hex characters in the 64-bit element key */
+  /**
+   * The number of hex characters in the 64-bit element key.
+   */
   private static final int ELEMENT_KEY_LEN = 16;
 
   @SuppressWarnings("deprecation")
@@ -71,7 +74,7 @@ public class NodeBodyWriter extends Writer {
   }
 
   /**
-   * Writes characters, ignores calls with {@code len < 0}
+   * Writes characters, ignores calls with {@code len < 0}.
    */
   private void writeCharsToOut(char[] cbuf, int len) throws IOException {
     if (len > 0) {
