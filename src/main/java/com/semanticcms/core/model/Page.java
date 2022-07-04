@@ -165,6 +165,7 @@ public class Page extends Node implements Comparable<Page> {
     this.copyright = copyright;
   }
 
+  @SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
   public Set<Author> getAuthors() {
     synchronized (lock) {
       if (authors == null) {
@@ -396,6 +397,7 @@ public class Page extends Node implements Comparable<Page> {
     this.tocLevels = tocLevels;
   }
 
+  @SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
   public Set<ParentRef> getParentRefs() {
     synchronized (lock) {
       if (parentRefs == null) {
@@ -429,6 +431,7 @@ public class Page extends Node implements Comparable<Page> {
     this.allowParentMismatch = allowParentMismatch;
   }
 
+  @SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
   public Set<ChildRef> getChildRefs() {
     synchronized (lock) {
       if (childRefs == null) {
@@ -466,6 +469,7 @@ public class Page extends Node implements Comparable<Page> {
    * Gets all elements in the page (including all child elements), in the
    * order they were declared in the page.
    */
+  @SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
   public List<Element> getElements() {
     synchronized (lock) {
       if (elements == null) {
@@ -498,6 +502,7 @@ public class Page extends Node implements Comparable<Page> {
    *
    * @see  #freeze()
    */
+  @SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
   public Map<String, Element> getElementsById() {
     synchronized (lock) {
       if (elementsById == null) {
@@ -513,6 +518,7 @@ public class Page extends Node implements Comparable<Page> {
   /**
    * Gets which element IDs were generated.
    */
+  @SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
   public Set<String> getGeneratedIds() {
     synchronized (lock) {
       if (generatedIds == null) {
