@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2020, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -31,10 +31,9 @@ import java.io.IOException;
 /**
  * A page reference contains both a book and a path to a page or directory.
  * Any path to a directory must end with a slash (/).
- * <p>
- * TODO: Support parameters to a page, child, link, ...
- *       Parameters provided in path/page?, param.* attributes, and nested tags - matching/extending AO taglib.
- * </p>
+ *
+ * <p>TODO: Support parameters to a page, child, link, ...
+ *       Parameters provided in path/page?, param.* attributes, and nested tags - matching/extending AO taglib.</p>
  */
 public class PageRef implements PageReferrer {
 

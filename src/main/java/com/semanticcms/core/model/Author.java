@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2016, 2017, 2019, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -27,11 +27,10 @@ import java.util.Objects;
 
 /**
  * An author of a book, a page, or a set of pages.
- * <p>
- * TODO: Possible Google+ integration: http://www.vervesearch.com/blog/how-to-implement-the-relauthor-tag-a-step-by-step-guide/
+ *
+ * <p>TODO: Possible Google+ integration: http://www.vervesearch.com/blog/how-to-implement-the-relauthor-tag-a-step-by-step-guide/
  * TODO: And also: https://yoast.com/push-rel-author-head/
- * TODO: This seems killed by Google, any value in it still?
- * </p>
+ * TODO: This seems killed by Google, any value in it still?</p>
  */
 public class Author {
 

@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2015, 2016, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -33,10 +33,9 @@ import java.util.logging.Logger;
 /**
  * Writes node body content, while replacing nested child element markers with
  * child element content.
- * <p>
- * TODO: Performance: It may be faster to deal with strings and char[] instead of sending
- *                    everything through as single characters.
- * </p>
+ *
+ * <p>TODO: Performance: It may be faster to deal with strings and char[] instead of sending
+ *                    everything through as single characters.</p>
  */
 public class NodeBodyWriter extends Writer {
 

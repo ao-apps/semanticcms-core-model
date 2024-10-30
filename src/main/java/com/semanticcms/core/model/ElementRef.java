@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2016, 2017, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -32,10 +32,9 @@ import java.io.IOException;
 /**
  * An element reference contains a book, a path, and an element id.
  * Any path to a directory must end with a slash (/).
- * <p>
- * TODO: Support parameters to a page, child, link, ...
- *       Parameters provided in path/page?, param.* attributes, and nested tags - matching/extending AO taglib.
- * </p>
+ *
+ * <p>TODO: Support parameters to a page, child, link, ...
+ *       Parameters provided in path/page?, param.* attributes, and nested tags - matching/extending AO taglib.</p>
  */
 public class ElementRef implements Comparable<ElementRef> {
 
@@ -103,9 +102,8 @@ public class ElementRef implements Comparable<ElementRef> {
   /**
    * Gets the combination of the book, the path, and element anchor that refers to the
    * element resource within the web application.
-   * <p>
-   * The element anchor is not URL-encoded - Unicode characters are verbatim.
-   * </p>
+   *
+   * <p>The element anchor is not URL-encoded - Unicode characters are verbatim.</p>
    *
    * @see #appendServletPath(java.lang.Appendable)
    */
@@ -133,9 +131,8 @@ public class ElementRef implements Comparable<ElementRef> {
   /**
    * Appends the combination of the book, the path, and element anchor that refers to the
    * element resource within the web application.
-   * <p>
-   * The element anchor is not URL-encoded - Unicode characters are verbatim.
-   * </p>
+   *
+   * <p>The element anchor is not URL-encoded - Unicode characters are verbatim.</p>
    *
    * @see #getServletPath()
    */
