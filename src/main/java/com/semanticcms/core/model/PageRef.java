@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2020, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -28,10 +28,9 @@ import com.aoapps.net.Path;
 
 /**
  * A page reference contains a domain, a book, and a path to a page.
- * <p>
- * TODO: Support parameters to a page, child, link, ...
- *       Parameters provided in path/page?, param.* attributes, and nested tags - matching/extending AO taglib.
- * </p>
+ *
+ * <p>TODO: Support parameters to a page, child, link, ...
+ *       Parameters provided in path/page?, param.* attributes, and nested tags - matching/extending AO taglib.</p>
  *
  * @see  ResourceRef  to refer to a non-page resource
  */
@@ -60,14 +59,13 @@ public class PageRef implements PageReferrer {
 
   /**
    * The book-relative path to the page, always starting with a slash (/).
-   * <p>
-   * The path is to the external, abstract name of the page, which can be independent
+   *
+   * <p>The path is to the external, abstract name of the page, which can be independent
    * of the page implementation.  For example, the page at path <code>/example/page</code>
    * might be implemented in JSP by a file at <code>/example/page.jsp</code>, but its
    * path remains <code>/example/page</code>.  This allows the implementation to be
    * changed on a per-page basis, such as switching from JSP to JSPX, without requiring
-   * updates to references to the page.
-   * </p>
+   * updates to references to the page.</p>
    */
   public Path getPath() {
     return path;

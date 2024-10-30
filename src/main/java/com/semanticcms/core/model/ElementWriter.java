@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2015, 2016, 2019, 2022  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2019, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -32,14 +32,11 @@ import java.io.Writer;
 public interface ElementWriter {
 
   /**
-   * <p>
    * Writes the element into the given writer.
    * This should include everything added before the body, the body itself,
    * and everything after after the body.
-   * </p>
-   * <p>
-   * For efficiency, this should not be called when the output would otherwise be discarded.
-   * </p>
+   *
+   * <p>For efficiency, this should not be called when the output would otherwise be discarded.</p>
    */
   void writeTo(Writer out, ElementContext context) throws Exception;
 }
