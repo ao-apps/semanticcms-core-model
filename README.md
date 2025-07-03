@@ -22,7 +22,7 @@ Java API for modeling web page content and relationships.
 * [Project Home](https://semanticcms.com/core/model/)
 * [Changelog](https://semanticcms.com/core/model/changelog)
 * [API Docs](https://semanticcms.com/core/model/apidocs/)
-* [Maven Central Repository](https://central.sonatype.com/artifact/com.semanticcms/semanticcms-core-model)
+* [Central Repository](https://central.sonatype.com/artifact/com.semanticcms/semanticcms-core-model)
 * [GitHub](https://github.com/ao-apps/semanticcms-core-model)
 
 ## Contact Us
