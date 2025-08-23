@@ -41,6 +41,6 @@ public interface PageReferrer extends Comparable<PageReferrer> {
   // Java 1.8: Implement this as a default method
   @Override
   int compareTo(PageReferrer o);
-  //  return getPageRef().compareTo(o.getPageRef());
-  //}
+  //   return getPageRef().compareTo(o.getPageRef());
+  // }
 }

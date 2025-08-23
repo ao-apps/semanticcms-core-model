@@ -55,15 +55,15 @@ public class Author {
     if (href != null && href.isEmpty()) {
       throw new IllegalArgumentException("empty href not allowed");
     }
-    //if (domain != null && domain.isEmpty()) {
-    //  throw new IllegalArgumentException("empty domain not allowed");
-    //}
-    //if (book != null && book.isEmpty()) {
-    //  throw new IllegalArgumentException("empty book not allowed");
-    //}
-    //if (page != null && page.isEmpty()) {
-    //  throw new IllegalArgumentException("empty page not allowed");
-    //}
+    // if (domain != null && domain.isEmpty()) {
+    //   throw new IllegalArgumentException("empty domain not allowed");
+    // }
+    // if (book != null && book.isEmpty()) {
+    //   throw new IllegalArgumentException("empty book not allowed");
+    // }
+    // if (page != null && page.isEmpty()) {
+    //   throw new IllegalArgumentException("empty page not allowed");
+    // }
     // Other checks
     if (href != null) {
       if (domain != null) {
