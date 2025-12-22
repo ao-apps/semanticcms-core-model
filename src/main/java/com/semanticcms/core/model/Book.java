@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -77,6 +77,7 @@ public class Book implements Comparable<Book> {
     } else {
       this.cvsworkDirectory = new File(cvsworkDirectory);
     }
+    // TODO: Require cvsworkDirectory directory exists and is readable for books.xml in dev mode.
     this.unmodifiableParentRefs = AoCollections.optimalUnmodifiableSet(parentRefs);
     String copyrightRightsHolder = getProperty(bookProps, usedKeys, "copyright.rightsHolder");
     String copyrightRights = getProperty(bookProps, usedKeys, "copyright.rights");
