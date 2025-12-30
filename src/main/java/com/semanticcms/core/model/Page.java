@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -25,6 +25,7 @@ package com.semanticcms.core.model;
 
 import com.aoapps.collections.AoCollections;
 import com.aoapps.web.resources.registry.Registry;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,8 +34,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.joda.time.DateTime;
-import org.joda.time.ReadableDateTime;
 
 public class Page extends Node implements Comparable<Page> {
 
@@ -53,10 +52,10 @@ public class Page extends Node implements Comparable<Page> {
   private volatile PageRef src;
   private volatile Copyright copyright;
   private Set<Author> authors;
-  private volatile DateTime dateCreated;
-  private volatile DateTime datePublished;
-  private volatile DateTime dateModified;
-  private volatile DateTime dateReviewed;
+  private volatile ZonedDateTime dateCreated;
+  private volatile ZonedDateTime datePublished;
+  private volatile ZonedDateTime dateModified;
+  private volatile ZonedDateTime dateReviewed;
   private volatile String title;
   private volatile String shortTitle;
   private volatile String description;
@@ -197,13 +196,13 @@ public class Page extends Node implements Comparable<Page> {
    *                            published because it seems to have more use overall than created.
    */
   // Matches com.aoapps.tldparser.Dates.getCreated()
-  public DateTime getDateCreated() {
+  public ZonedDateTime getDateCreated() {
     return dateCreated;
   }
 
-  public void setDateCreated(ReadableDateTime dateCreated) {
+  public void setDateCreated(ZonedDateTime dateCreated) {
     checkNotFrozen();
-    this.dateCreated = dateCreated == null ? null : dateCreated.toDateTime();
+    this.dateCreated = dateCreated;
     checkDates();
   }
 
@@ -214,13 +213,13 @@ public class Page extends Node implements Comparable<Page> {
    *                          published because it seems to have more use overall than created.
    */
   // Matches com.aoapps.tldparser.Dates.getPublished()
-  public DateTime getDatePublished() {
+  public ZonedDateTime getDatePublished() {
     return datePublished;
   }
 
-  public void setDatePublished(ReadableDateTime datePublished) {
+  public void setDatePublished(ZonedDateTime datePublished) {
     checkNotFrozen();
-    this.datePublished = datePublished == null ? null : datePublished.toDateTime();
+    this.datePublished = datePublished;
     checkDates();
   }
 
@@ -228,13 +227,13 @@ public class Page extends Node implements Comparable<Page> {
    * <a href="https://schema.org/dateModified">https://schema.org/dateModified</a>
    */
   // Matches com.aoapps.tldparser.Dates.getModified()
-  public DateTime getDateModified() {
+  public ZonedDateTime getDateModified() {
     return dateModified;
   }
 
-  public void setDateModified(ReadableDateTime dateModified) {
+  public void setDateModified(ZonedDateTime dateModified) {
     checkNotFrozen();
-    this.dateModified = dateModified == null ? null : dateModified.toDateTime();
+    this.dateModified = dateModified;
     checkDates();
   }
 
@@ -244,13 +243,13 @@ public class Page extends Node implements Comparable<Page> {
    * has not been modified.
    */
   // Matches com.aoapps.tldparser.Dates.getReviewed()
-  public DateTime getDateReviewed() {
+  public ZonedDateTime getDateReviewed() {
     return dateReviewed;
   }
 
-  public void setDateReviewed(ReadableDateTime dateReviewed) {
+  public void setDateReviewed(ZonedDateTime dateReviewed) {
     checkNotFrozen();
-    this.dateReviewed = dateReviewed == null ? null : dateReviewed.toDateTime();
+    this.dateReviewed = dateReviewed;
     checkDates();
   }
 
@@ -258,10 +257,10 @@ public class Page extends Node implements Comparable<Page> {
    * Checks the dates for consistency.
    */
   private void checkDates() {
-    DateTime created = this.dateCreated;
-    DateTime published = this.datePublished;
-    DateTime modified = this.dateModified;
-    DateTime reviewed = this.dateReviewed;
+    ZonedDateTime created = this.dateCreated;
+    ZonedDateTime published = this.datePublished;
+    ZonedDateTime modified = this.dateModified;
+    ZonedDateTime reviewed = this.dateReviewed;
     if (
         created != null
             && published != null
