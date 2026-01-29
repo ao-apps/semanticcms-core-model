@@ -70,7 +70,7 @@ public class ChildRef implements PageReferrer {
   /**
    * Orders by pageRef only.
    *
-   * @see  #getPageRef()
+   * @see  ChildRef#getPageRef()
    */
   @Override
   public int compareTo(PageReferrer o) {

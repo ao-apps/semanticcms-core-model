@@ -105,7 +105,7 @@ public class ElementRef implements Comparable<ElementRef> {
    *
    * <p>The element anchor is not URL-encoded - Unicode characters are verbatim.</p>
    *
-   * @see #appendServletPath(java.lang.Appendable)
+   * @see ElementRef#appendServletPath(java.lang.Appendable)
    */
   @SuppressWarnings("ReplaceStringBufferByString")
   public String getServletPath() {
@@ -134,7 +134,7 @@ public class ElementRef implements Comparable<ElementRef> {
    *
    * <p>The element anchor is not URL-encoded - Unicode characters are verbatim.</p>
    *
-   * @see #getServletPath()
+   * @see ElementRef#getServletPath()
    */
   // TODO: Encoder variant, other classes, too, see which uses of getServletPath can be streamed
   public void appendServletPath(Appendable out) throws IOException {
@@ -150,7 +150,7 @@ public class ElementRef implements Comparable<ElementRef> {
   /**
    * {@inheritDoc}
    *
-   * @see  #getServletPath()
+   * @see  ElementRef#getServletPath()
    */
   @Override
   public String toString() {

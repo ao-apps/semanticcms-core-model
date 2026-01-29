@@ -111,7 +111,7 @@ public abstract class Node implements Freezable<Node> {
   private volatile BufferResult body;
 
   /**
-   * The toString calls {@link #getLabel()}.
+   * The toString calls {@link Node#getLabel()}.
    */
   @Override
   public String toString() {
@@ -286,7 +286,7 @@ public abstract class Node implements Freezable<Node> {
   /**
    * Appends a short description, useful for links and lists, for this node.
    *
-   * @deprecated  Please use {@link #getLabel()}
+   * @deprecated  Please use {@link Node#getLabel()}
    */
   @Deprecated(forRemoval = true)
   public final void appendLabel(Appendable out) throws IOException {
@@ -313,7 +313,7 @@ public abstract class Node implements Freezable<Node> {
   /**
    * Recursive component of findTopLevelElements.
    *
-   * @see  #findTopLevelElements(java.lang.Class)
+   * @see  Node#findTopLevelElements(java.lang.Class)
    */
   private static <E> List<E> findTopLevelElementsRecurse(Class<E> elementType, Node node, List<E> matches) {
     for (Element elem : node.getChildElements()) {
@@ -346,7 +346,7 @@ public abstract class Node implements Freezable<Node> {
   /**
    * Recursive component of findChild.
    *
-   * @see  #findChildElement(java.lang.Class, java.util.function.Predicate)
+   * @see  Node#findChildElement(java.lang.Class, java.util.function.Predicate)
    */
   private static <E> E findChildElementRecurse(Class<E> elementType, Predicate<? super E> filter, Node node) {
     for (Element elem : node.getChildElements()) {
