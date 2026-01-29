@@ -147,7 +147,7 @@ public class PageRef implements PageReferrer {
   /**
    * Orders by servletPath.
    *
-   * @see  #getServletPath()
+   * @see  PageRef#getServletPath()
    */
   public int compareTo(PageRef o) {
     return getServletPath().compareTo(o.getServletPath());
@@ -164,7 +164,7 @@ public class PageRef implements PageReferrer {
    * Gets the combination of the book and the path that refers to the
    * page resource within the web application.
    *
-   * @see #appendServletPath(java.lang.Appendable)
+   * @see PageRef#appendServletPath(java.lang.Appendable)
    */
   public String getServletPath() {
     String sp = servletPath;
@@ -180,7 +180,7 @@ public class PageRef implements PageReferrer {
    * Appends the combination of the book and the path that refers to the
    * page resource within the web application.
    *
-   * @see #getServletPath()
+   * @see PageRef#getServletPath()
    */
   public void appendServletPath(Appendable out) throws IOException {
     String bn = bookName;

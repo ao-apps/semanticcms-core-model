@@ -91,7 +91,7 @@ public abstract class Element extends Node {
   /**
    * Gets the element ID template for generating IDs.
    *
-   * @see  #getLabel()  Defaults to getLabel()
+   * @see  Element#getLabel()  Defaults to getLabel()
    */
   protected String getElementIdTemplate() {
     return getLabel();

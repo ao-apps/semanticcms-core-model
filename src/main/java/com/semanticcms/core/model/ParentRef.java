@@ -87,7 +87,7 @@ public class ParentRef implements PageReferrer {
   /**
    * Orders by pageRef only.
    *
-   * @see  #getPageRef()
+   * @see  ParentRef#getPageRef()
    */
   @Override
   public int compareTo(PageReferrer o) {
