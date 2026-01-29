@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -333,9 +333,9 @@ public class Page extends Node implements Comparable<Page> {
   /**
    * Gets the allowRobots setting.
    * <ul>
-   *   <li>{@literal null} (The default) - Inherit setting from parent(s) within the book or book settings if have no parents within the book</li>
-   *   <li>{@literal true} - Robots allowed</li>
-   *   <li>{@literal false} - Robots not allowed</li>
+   *   <li>{@code null} (The default) - Inherit setting from parent(s) within the book or book settings if have no parents within the book</li>
+   *   <li>{@code true} - Robots allowed</li>
+   *   <li>{@code false} - Robots not allowed</li>
    * </ul>
    */
   public Boolean getAllowRobots() {
@@ -367,9 +367,9 @@ public class Page extends Node implements Comparable<Page> {
   /**
    * Gets the table of contents (toc) setting:
    * <ul>
-   *   <li>{@literal null} (The default) - Show table of contents depending on number of entries in the table</li>
-   *   <li>{@literal true} - Always show table of contents</li>
-   *   <li>{@literal false} - Never show table of contents</li>
+   *   <li>{@code null} (The default) - Show table of contents depending on number of entries in the table</li>
+   *   <li>{@code true} - Always show table of contents</li>
+   *   <li>{@code false} - Never show table of contents</li>
    * </ul>
    * TODO: Move this to Section.
    */
