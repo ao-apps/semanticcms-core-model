@@ -192,7 +192,7 @@ public class Page extends Node implements Comparable<Page> {
   /**
    * <a href="https://schema.org/dateCreated">https://schema.org/dateCreated</a>
    *
-   * @see  #getDatePublished()  When created and published are the same date, prefer
+   * @see  Page#getDatePublished()  When created and published are the same date, prefer
    *                            published because it seems to have more use overall than created.
    */
   // Matches com.aoapps.tldparser.Dates.getCreated()
@@ -209,7 +209,7 @@ public class Page extends Node implements Comparable<Page> {
   /**
    * <a href="https://schema.org/datePublished">https://schema.org/datePublished</a>
    *
-   * @see  #getDateCreated()  When created and published are the same date, prefer
+   * @see  Page#getDateCreated()  When created and published are the same date, prefer
    *                          published because it seems to have more use overall than created.
    */
   // Matches com.aoapps.tldparser.Dates.getPublished()
@@ -299,7 +299,7 @@ public class Page extends Node implements Comparable<Page> {
    *
    * @return  the short page title
    *
-   * @see  #getTitle
+   * @see  Page#getTitle
    */
   public String getShortTitle() {
     String st = shortTitle;
@@ -499,7 +499,7 @@ public class Page extends Node implements Comparable<Page> {
    * Note, while the page is being created, elements with automatic IDs will not be in
    * this map.  However, once frozen, every element will have an ID.
    *
-   * @see  #freeze()
+   * @see  Page#freeze()
    */
   @SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
   public Map<String, Element> getElementsById() {
@@ -583,7 +583,7 @@ public class Page extends Node implements Comparable<Page> {
   /**
    * The page label is its short title.
    *
-   * @see  #getShortTitle()
+   * @see  Page#getShortTitle()
    */
   @Override
   public String getLabel() {

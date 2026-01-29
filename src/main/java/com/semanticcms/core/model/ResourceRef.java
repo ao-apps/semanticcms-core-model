@@ -91,7 +91,7 @@ public class ResourceRef implements Comparable<ResourceRef> {
    * Ordered by bookRef, path.
    *
    * @see  BookRef#compareTo(com.semanticcms.core.model.BookRef)
-   * @see  #getPath()
+   * @see  ResourceRef#getPath()
    */
   @Override
   public int compareTo(ResourceRef o) {

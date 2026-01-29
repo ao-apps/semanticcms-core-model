@@ -61,7 +61,7 @@ public class BookRef {
   /**
    * The path of the book this refers to.
    * This will be <code>"/"</code> for the root book,
-   * otherwise matches {@link #getPrefix()}.
+   * otherwise matches {@link BookRef#getPrefix()}.
    */
   public Path getPath() {
     return path;
@@ -70,7 +70,7 @@ public class BookRef {
   /**
    * The prefix of the book this refers to, useful for direct path concatenation.
    * This will be <code>""</code> for the root book <code>"/"</code>,
-   * otherwise matches {@link #getPath()}.
+   * otherwise matches {@link BookRef#getPath()}.
    */
   public String getPrefix() {
     String bn = path.toString();

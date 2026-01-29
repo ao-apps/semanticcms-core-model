@@ -107,7 +107,7 @@ public class PageRef implements PageReferrer {
    * Ordered by bookRef, path.
    *
    * @see  BookRef#compareTo(com.semanticcms.core.model.BookRef)
-   * @see  #getPath()
+   * @see  PageRef#getPath()
    */
   public int compareTo(PageRef o) {
     int diff = bookRef.compareTo(o.bookRef);
