@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2015, 2016, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2019, 2020, 2021, 2022, 2024, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -41,12 +41,12 @@ public class NodeBodyWriter extends Writer {
 
   private static final Logger logger = Logger.getLogger(NodeBodyWriter.class.getName());
 
-  static final String MARKER_PREFIX        = "<A<O<ELEMENT ";
-  private static final int    MARKER_PREFIX_LEN    = MARKER_PREFIX.length();
-  private static final char[] MARKER_PREFIX_CHARS  = MARKER_PREFIX.toCharArray();
-  static final String MARKER_SUFFIX        = ">O>A>";
-  private static final int    MARKER_SUFFIX_LEN    = MARKER_SUFFIX.length();
-  private static final char[] MARKER_SUFFIX_CHARS  = MARKER_SUFFIX.toCharArray();
+  static final String MARKER_PREFIX = "<A<O<ELEMENT ";
+  private static final int MARKER_PREFIX_LEN = MARKER_PREFIX.length();
+  private static final char[] MARKER_PREFIX_CHARS = MARKER_PREFIX.toCharArray();
+  static final String MARKER_SUFFIX = ">O>A>";
+  private static final int MARKER_SUFFIX_LEN = MARKER_SUFFIX.length();
+  private static final char[] MARKER_SUFFIX_CHARS = MARKER_SUFFIX.toCharArray();
 
   /**
    * The number of hex characters in the 64-bit element key.
@@ -184,8 +184,8 @@ public class NodeBodyWriter extends Writer {
     if (markerPos > 0) {
       // Flush any unwritten
       writeCharsToOut(MARKER_PREFIX_CHARS, Math.min(markerPos, MARKER_PREFIX_LEN));
-      writeCharsToOut(elementKeyBuffer,    Math.min(markerPos - MARKER_PREFIX_LEN, ELEMENT_KEY_LEN));
-      writeCharsToOut(MARKER_SUFFIX_CHARS,          markerPos - (MARKER_PREFIX_LEN + ELEMENT_KEY_LEN));
+      writeCharsToOut(elementKeyBuffer, Math.min(markerPos - MARKER_PREFIX_LEN, ELEMENT_KEY_LEN));
+      writeCharsToOut(MARKER_SUFFIX_CHARS, markerPos - (MARKER_PREFIX_LEN + ELEMENT_KEY_LEN));
       markerPos = 0;
       out.flush();
     }

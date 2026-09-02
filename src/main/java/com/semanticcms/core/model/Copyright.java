@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-model - Java API for modeling web page content and relationships.
- * Copyright (C) 2016, 2019, 2022  AO Industries, Inc.
+ * Copyright (C) 2016, 2019, 2022, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -159,21 +159,19 @@ public class Copyright {
   /*
    * Inherits missing fields from the given parent.
    */
-  /*
-  public Copyright inheritFieldsFrom(Copyright parent) {
-    String newRightsHolder    = this.rightsHolder    != null ? this.rightsHolder    : parent.rightsHolder;
-    String newRights          = this.rights          != null ? this.rights          : parent.rights;
-    String newDateCopyrighted = this.dateCopyrighted != null ? this.dateCopyrighted : parent.dateCopyrighted;
-    // Use "this" if matches
-    if (this.equals(newRightsHolder, newRights, newDateCopyrighted)) {
-      return this;
-    }
-    // Use "parent" if matches
-    if (parent.equals(newRightsHolder, newRights, newDateCopyrighted)) {
-      return parent;
-    }
-    // Create a new object
-    return new Copyright(newRightsHolder, newRights, newDateCopyrighted);
-  }
-   */
+  // public Copyright inheritFieldsFrom(Copyright parent) {
+  //   String newRightsHolder    = this.rightsHolder    != null ? this.rightsHolder    : parent.rightsHolder;
+  //   String newRights          = this.rights          != null ? this.rights          : parent.rights;
+  //   String newDateCopyrighted = this.dateCopyrighted != null ? this.dateCopyrighted : parent.dateCopyrighted;
+  //   // Use "this" if matches
+  //   if (this.equals(newRightsHolder, newRights, newDateCopyrighted)) {
+  //     return this;
+  //   }
+  //   // Use "parent" if matches
+  //   if (parent.equals(newRightsHolder, newRights, newDateCopyrighted)) {
+  //     return parent;
+  //   }
+  //   // Create a new object
+  //   return new Copyright(newRightsHolder, newRights, newDateCopyrighted);
+  // }
 }
